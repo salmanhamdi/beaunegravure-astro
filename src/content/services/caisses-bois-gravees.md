@@ -14,7 +14,7 @@ points:
   - "Armoiries et blasons gravés"
   - "Séries pour domaines et négociants"
 usages: "Domaines viticoles, maisons de vin, négociants, caveaux, cadeaux d’entreprise et coffrets d’événement."
-vedette: true
+vedette: false
 faq:
   - question: "Pouvez-vous graver des caisses que nous utilisons déjà ?"
     reponse: "Oui, c’est même le cas le plus fréquent. Envoyez une photo, les dimensions et l’essence de bois. Certaines caisses comportent des agrafes, des rainures ou un vernis qui influencent le positionnement et le rendu : nous le vérifions avant de valider."
