@@ -87,12 +87,17 @@ jobs:
 
           CIBLE="${FTP_PATH:-public_html}"
 
-          # TLS obligatoire, certificat vérifié : les identifiants ne doivent
-          # jamais transiter en clair.
+          # TLS obligatoire : les identifiants ne doivent jamais transiter en
+          # clair. La chaîne de certification reste vérifiée ; seule la
+          # correspondance du nom d'hôte est levée, car Hostinger présente un
+          # certificat mutualisé qui ne porte pas le nom du serveur FTP du
+          # compte. Un certificat auto-signé ou d'une autorité inconnue est
+          # donc toujours rejeté.
           lftp -u "$FTP_USER,$FTP_PASS" -p "${FTP_PORT:-21}" "$FTP_HOST" <<FTP
             set ftp:ssl-force yes
             set ftp:ssl-protect-data yes
             set ssl:verify-certificate yes
+            set ssl:check-hostname no
             set ftp:passive-mode yes
             set net:timeout 30
             set net:max-retries 3
