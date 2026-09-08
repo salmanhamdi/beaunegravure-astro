@@ -73,7 +73,7 @@ jobs:
           FTP_HOST: ${{ secrets.HOSTINGER_HOST }}
           FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
           FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
-          FTP_PATH: ${{ secrets.HOSTINGER_TARGET }}
+          FTP_PATH: ${{ vars.HOSTINGER_TARGET }}
           FTP_PORT: ${{ secrets.HOSTINGER_PORT }}
         run: |
           set -euo pipefail
@@ -85,7 +85,17 @@ jobs:
             fi
           done
 
-          CIBLE="${FTP_PATH:-public_html}"
+          # Racine réellement servie par le domaine. Sur ce compte Hostinger,
+          # le serveur web sert « / » : c'est là que se trouvait la page par
+          # défaut « default.php ». Le répertoire de connexion FTP est
+          # « /public_html », qui n'est PAS servi — y déposer le site laissait
+          # le domaine afficher indéfiniment la page par défaut.
+          #
+          # Le chemin de destination n'est pas une donnée sensible : il est
+          # exposé comme variable de dépôt et non comme secret, afin de rester
+          # lisible dans les journaux en cas de nouvelle erreur d'aiguillage.
+          CIBLE="${FTP_PATH:-/}"
+          echo "Destination distante : $CIBLE"
 
           # TLS obligatoire : les identifiants ne doivent jamais transiter en
           # clair. La chaîne de certification reste vérifiée ; seule la
