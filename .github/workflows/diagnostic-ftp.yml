@@ -1,0 +1,51 @@
+name: Diagnostic FTP
+
+# Outil temporaire de diagnostic : se connecte au FTP et affiche l'arborescence
+# du compte, sans rien écrire ni supprimer. Sert à identifier la racine réelle
+# servie par le domaine. Aucun secret n'est affiché (GitHub les masque).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspecter:
+    name: Inspecter l’arborescence distante
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Installer lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Lister
+        env:
+          FTP_HOST: ${{ secrets.HOSTINGER_HOST }}
+          FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
+          FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
+          FTP_PATH: ${{ secrets.HOSTINGER_TARGET }}
+          FTP_PORT: ${{ secrets.HOSTINGER_PORT }}
+        run: |
+          set -euo pipefail
+
+          lftp -u "$FTP_USER,$FTP_PASS" -p "${FTP_PORT:-21}" "$FTP_HOST" <<'FTP'
+            set ftp:ssl-force yes
+            set ftp:ssl-protect-data yes
+            set ssl:verify-certificate yes
+            set ssl:check-hostname no
+            set ftp:passive-mode yes
+            set net:timeout 30
+            set cmd:fail-exit no
+
+            echo "===== RACINE DE CONNEXION ====="
+            pwd
+            cls -l
+
+            echo "===== ./domains ====="
+            cls -l domains/
+
+            echo "===== ./public_html (10 premieres entrees) ====="
+            cls public_html/
+
+            bye
+          FTP
