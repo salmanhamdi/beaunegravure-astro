@@ -1237,9 +1237,13 @@ const schema = graphe([
     color: var(--c-encre-douce);
   }
 
-  /* Le compteur est décoratif : le même chiffre est lu dans le bouton. */
+  /*
+    Le compteur est décoratif — le même chiffre est lu dans le bouton — mais il
+    reste du texte visible : sa teinte doit passer le contraste. Une première
+    version en `--c-filet-fort` tombait à 1,79:1.
+  */
   .realisations__compte {
-    color: var(--c-filet-fort);
+    color: color-mix(in srgb, var(--c-encre) 52%, transparent);
     font-family: var(--f-mono);
     font-size: var(--t-4);
     line-height: 1;
