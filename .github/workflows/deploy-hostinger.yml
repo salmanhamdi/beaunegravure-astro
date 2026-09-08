@@ -94,6 +94,10 @@ jobs:
           # Le chemin de destination n'est pas une donnée sensible : il est
           # exposé comme variable de dépôt et non comme secret, afin de rester
           # lisible dans les journaux en cas de nouvelle erreur d'aiguillage.
+          # « public_html » est un répertoire système du compte, non servi et
+          # non supprimable : il est exclu de la synchronisation, faute de quoi
+          # le déploiement échoue à la toute fin sur un « 550 Permission
+          # denied » alors que tous les fichiers sont déjà en place.
           CIBLE="${FTP_PATH:-/}"
           echo "Destination distante : $CIBLE"
 
@@ -115,6 +119,7 @@ jobs:
             mirror --reverse --delete --parallel=4 --verbose \
               --exclude-glob api/config.php \
               --exclude-glob api/.data/ \
+              --exclude-glob public_html/ \
               dist/ "$CIBLE/"
             bye
           FTP
