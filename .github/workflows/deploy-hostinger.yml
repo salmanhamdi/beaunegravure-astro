@@ -113,10 +113,13 @@ jobs:
             set ssl:verify-certificate yes
             set ssl:check-hostname no
             set ftp:passive-mode yes
-            set net:timeout 30
-            set net:max-retries 3
+            set net:timeout 60
+            set net:max-retries 10
+            set net:reconnect-interval-base 5
+            set net:reconnect-interval-multiplier 1
+            set mirror:parallel-transfer-count 2
             set cmd:fail-exit yes
-            mirror --reverse --delete --parallel=4 --verbose \
+            mirror --reverse --delete --parallel=2 --verbose \
               --exclude-glob api/config.php \
               --exclude-glob api/.data/ \
               --exclude-glob public_html/ \

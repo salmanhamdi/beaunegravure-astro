@@ -1,5 +1,5 @@
 ---
-import { navigation, ctaPrincipal, site, telephone } from '@data/site';
+import { navigation, ctaPrincipal, telephone } from '@data/site';
 import Monogramme from './Monogramme.astro';
 
 const chemin = Astro.url.pathname;
@@ -12,12 +12,19 @@ function estActif(href: string): boolean {
 
 <header class="entete">
   <div class="entete__barre enveloppe--large">
-    <a class="entete__marque" href="/" aria-label={`${site.nom} — retour à l’accueil`}>
+    {/*
+      Pas d'aria-label ici : il remplacerait le texte visible par un libellé
+      qui ne le contient pas, ce qui échoue au critère WCAG 2.5.3 « Label in
+      Name ». Le nom accessible est donc construit à partir du texte visible,
+      complété par une précision réservée aux lecteurs d'écran.
+    */}
+    <a class="entete__marque" href="/">
       <Monogramme taille={38} class="entete__logo" />
       <span class="entete__nom">
         <strong>Beaune Gravure</strong>
         <small>Création · Personnalisation · Fabrication</small>
       </span>
+      <span class="visuellement-cache"> — retour à l’accueil</span>
     </a>
 
     <nav class="entete__nav" aria-label="Navigation principale">

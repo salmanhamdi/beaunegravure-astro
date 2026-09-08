@@ -58,7 +58,12 @@ export default defineConfig({
   ],
   vite: {
     build: {
-      assetsInlineLimit: 1024,
+      // Aucun actif — script compris — ne doit être intégré dans le HTML :
+      // l'en-tête Content-Security-Policy du site n'autorise `script-src` que
+      // depuis `'self'`, donc un script en ligne est bloqué par le navigateur.
+      // C'est ce qui rendait le menu mobile inopérant en production alors
+      // qu'il fonctionnait en développement, où aucune CSP n'est appliquée.
+      assetsInlineLimit: 0,
     },
   },
 });
