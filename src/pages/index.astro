@@ -24,24 +24,67 @@ const articles = (await getCollection('blog'))
   .sort((a, b) => b.data.datePublication.getTime() - a.data.datePublication.getTime())
   .slice(0, 3);
 
-/* Une matière différente par vignette : c'est la diversité qui porte le message. */
+/*
+  Règle éditoriale de la page d'accueil : UNE IMAGE = UNE OCCURRENCE.
+  Aucune photographie ne doit apparaître deux fois sur cette page. Les deux
+  sélections ci-dessous et le héros sont donc disjoints, et le contrôle en est
+  automatisé plus bas (`imagesAccueil`) : le build échoue si un doublon
+  réapparaît.
+
+  Réalisations : la question posée n'est pas « sur quelles matières
+  travaillez-vous ? » — c'est la section Matières qui y répond — mais
+  « qu'êtes-vous capables de créer ? ». Chaque vignette montre donc un usage
+  différent : objet de série, signalétique posée, impression couleur, cadeau
+  d'entreprise, découpe sur mesure, identité de marque.
+*/
 const selection = parIds(
-  'gravure-laser-etui-cuir-rouge',
-  'pieces-inox-marquage-numero-serie',
-  'medaillons-plexiglass-decoupes-graves',
-  'medailles-bois-decoupees-gravees-serie',
-  'verre-grave-machine-laser-logo-entreprise',
-  'couteaux-pliants-personnalises-serie',
+  'gobelets-isothermes-personnalises-laser',
+  'plaque-professionnelle-avocat-exterieure-beaune-gravure',
+  'impression-uv-coffret-bois-mariage-personnalise',
+  'cles-usb-bois-personnalisees-gravure',
+  'decoupe-plexiglass-plaque-numero-porte',
+  'badge-professionnel-grave-personnalise',
 );
 
+/*
+  Matières : une pièce finie par matière, jamais une machine — le visiteur doit
+  voir ce que l'atelier fabrique, pas l'outil qui le fabrique. La couleur
+  naturelle de chaque matière fait partie de la démonstration : elle n'est plus
+  désaturée.
+
+  Le cuir n'a pas de vignette : la seule photographie de cuir de l'atelier est
+  celle du héros, et la règle « une image = une occurrence » interdit de la
+  répéter ici. Le cuir est donc porté par la plus grande image de la page, avec
+  sa légende, et le liège prend la sixième vignette.
+*/
 const matieres = [
-  { nom: 'Métal', detail: 'Inox, aluminium, laiton', id: 'plaque-inox-marquee-laser-en-production' },
-  { nom: 'Bois', detail: 'Massif, contreplaqué, placage', id: 'medailles-bois-decoupees-gravees-serie' },
-  { nom: 'Verre', detail: 'Verrerie, bouteilles, trophées', id: 'verre-grave-machine-laser-logo-entreprise' },
+  { nom: 'Métal', detail: 'Inox, aluminium, laiton', id: 'pieces-inox-marquage-numero-serie' },
+  { nom: 'Bois', detail: 'Massif, contreplaqué, placage', id: 'gravure-laser-panneau-bois-moto-club' },
+  { nom: 'Verre', detail: 'Verrerie, trophées, cristal', id: 'trophee-verre-grave-personnalise' },
   { nom: 'Plexiglass', detail: 'PMMA coulé, extrudé, bicouche', id: 'medaillons-plexiglass-decoupes-graves' },
-  { nom: 'Cuir', detail: 'Cuir, daim, simili compatibles', id: 'gravure-laser-etui-cuir-rouge' },
-  { nom: 'Objets', detail: 'Outillage, accessoires, séries', id: 'couteaux-pliants-personnalises-serie' },
+  { nom: 'Liège', detail: 'Liège, matières fines, textile', id: 'sous-verres-liege-graves-restauration' },
+  { nom: 'Objets', detail: 'Outillage, accessoires, séries', id: 'stylos-bois-graves-cadeaux-entreprise' },
 ];
+
+/* Le fichier devient une pièce : l'image de la section Savoir-faire. */
+const visuelSavoir = imagesRealisations['decoupe-bois-prenoms-cercles-personnalises']!;
+
+/*
+  Garde-fou de la règle « une image = une occurrence ». Une erreur ici arrête le
+  build : impossible de réintroduire un doublon sans s'en apercevoir.
+*/
+const imagesAccueil = [
+  'gravure-laser-etui-cuir-rouge',
+  ...matieres.map((m) => m.id),
+  ...selection.map((r) => r.id),
+  'decoupe-bois-prenoms-cercles-personnalises',
+];
+const doublons = imagesAccueil.filter((id, i) => imagesAccueil.indexOf(id) !== i);
+if (doublons.length > 0) {
+  throw new Error(
+    `Page d'accueil : image utilisée plusieurs fois — ${[...new Set(doublons)].join(', ')}`,
+  );
+}
 
 const chaine = [
   {
@@ -51,9 +94,9 @@ const chaine = [
   },
   {
     numero: '02',
-    titre: 'Un dessin',
+    titre: 'Une création',
     texte:
-      'Le visuel est vectorisé, adapté, simplifié. C’est ici que se joue la lisibilité finale.',
+      'Le visuel est dessiné, vectorisé, adapté, simplifié. C’est ici que se joue la lisibilité finale.',
   },
   {
     numero: '03',
@@ -122,13 +165,24 @@ const schema = graphe([
       </figure>
     </div>
 
-    <ol class="chaine-bandeau enveloppe--large" aria-label="Notre chaîne de valeur">
-      <li>Idée</li>
-      <li>Dessin</li>
-      <li>Matière</li>
-      <li>Fabrication</li>
-      <li>Objet</li>
-    </ol>
+    <!--
+      Le bandeau n'est pas une frise décorative : c'est l'argument commercial
+      central — « vous arrivez avec une idée, nous l'amenons jusqu'à l'objet ».
+      Il est donc énoncé, puis décliné en cinq étapes lisibles.
+    -->
+    <div class="chaine-bandeau enveloppe--large">
+      <p class="chaine-bandeau__annonce">
+        Vous arrivez avec une idée.<br />
+        <strong>Nous l’amenons jusqu’à l’objet.</strong>
+      </p>
+      <ol class="chaine-bandeau__liste" aria-label="Notre chaîne de valeur">
+        <li>Idée</li>
+        <li>Création</li>
+        <li>Matière</li>
+        <li>Fabrication</li>
+        <li>Objet</li>
+      </ol>
+    </div>
   </section>
 
   <!-- ========================= Ce que nous faisons ===================== -->
@@ -220,14 +274,121 @@ const schema = graphe([
     </div>
   </section>
 
+  <!-- =========================== Réalisations ========================== -->
+  <section class="section realisations">
+    <div class="enveloppe--large">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Réalisations</p>
+          <h2>Des pièces réellement sorties de l’atelier.</h2>
+        </div>
+        <p class="chapo">
+          Toutes les photographies de ce site montrent des pièces que nous avons
+          produites. Aucun visuel de catalogue, aucune image de synthèse.
+        </p>
+      </div>
+
+      <GrilleRealisations realisations={selection} colonnes={3} />
+
+      <p class="suite">
+        <a class="bouton bouton--fantome" href="/realisations/">
+          Voir les {realisations.length} réalisations
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== Appel à l'action intermédiaire ============== -->
+  <!--
+    Point de conversion précoce. Il arrive juste après la première preuve
+    visuelle : le visiteur pressé peut s'arrêter là, le visiteur curieux
+    continue. L'appel final reste en bas de page.
+  -->
+  <section class="section section--serree sur-nuit relance">
+    <div class="enveloppe relance__grille">
+      <p class="relance__titre">Vous avez un projet ?</p>
+      <p class="relance__texte">
+        Une photo, un croquis, un logo : c’est déjà suffisant pour en parler.
+      </p>
+      <a class="bouton bouton--inverse" href="/contact/">Parlons-en</a>
+    </div>
+  </section>
+
+  <!-- ============================== Projets ============================ -->
+  <section class="section section--creuse projets">
+    <div class="enveloppe">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Nos projets</p>
+          <h2>Deux marques nées de l’atelier.</h2>
+        </div>
+        <p class="chapo">
+          La preuve la plus directe de ce que nous savons faire n’est pas une référence
+          client : ce sont deux marques que nous avons conçues, fabriquées et menées
+          jusqu’au marché.
+        </p>
+      </div>
+
+      <ul class="projets__liste">
+        {
+          projets.map((projet) => (
+            <li class="projets__item revele">
+              <p class="projets__nature">{projet.nature}</p>
+              <h3>{projet.nom}</h3>
+              <p class="projets__accroche">{projet.accroche}</p>
+              <ul class="projets__reperes">
+                {projet.reperes.map((repere) => (
+                  <li>{repere}</li>
+                ))}
+              </ul>
+              <a class="lien-fleche" href={projet.url} rel="noopener" target="_blank">
+                {projet.libelleLien}
+                <span class="visuellement-cache"> (nouvel onglet)</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="suite">
+        <a class="bouton bouton--fantome" href="/projets/">Comment ces projets sont nés</a>
+      </p>
+    </div>
+  </section>
+
   <!-- =========================== Savoir-faire ========================== -->
   <section class="section savoir">
     <div class="enveloppe">
-      <div class="tete-section">
-        <div>
-          <p class="surtitre">Savoir-faire</p>
-          <h2>Des moyens, pas une identité.</h2>
+      <!--
+        Une seule image ici, et elle raconte l'enchaînement que la liste ne peut
+        pas montrer : un prénom dessiné, vectorisé, puis découpé dans le bois,
+        photographié sur le plateau de la machine. C'est la démonstration que le
+        savoir-faire commence avant l'outil.
+      -->
+      <div class="savoir__entete">
+        <div class="tete-section">
+          <div>
+            <p class="surtitre">Savoir-faire</p>
+            <h2>Des moyens, pas une identité.</h2>
+          </div>
         </div>
+
+        <figure class="savoir__visuel revele">
+          <Picture
+            src={visuelSavoir}
+            alt="Prénoms découpés au laser dans du bois clair, posés sur le plateau de la machine"
+            widths={[420, 640, 900]}
+            sizes="(min-width: 56rem) 40vw, 100vw"
+            loading="lazy"
+            quality={72}
+            formats={['avif']}
+            fallbackFormat="webp"
+          />
+          <figcaption>
+            Un prénom dessiné, vectorisé, puis découpé. La machine n’intervient
+            qu’à la dernière étape.
+          </figcaption>
+        </figure>
       </div>
 
       <div class="savoir__famille">
@@ -289,30 +450,6 @@ const schema = graphe([
     </div>
   </section>
 
-  <!-- =========================== Réalisations ========================== -->
-  <section class="section section--creuse">
-    <div class="enveloppe--large">
-      <div class="tete-section tete-section--duo">
-        <div>
-          <p class="surtitre">Réalisations</p>
-          <h2>Des pièces réellement sorties de l’atelier.</h2>
-        </div>
-        <p class="chapo">
-          Toutes les photographies de ce site montrent des pièces que nous avons
-          produites. Aucun visuel de catalogue, aucune image de synthèse.
-        </p>
-      </div>
-
-      <GrilleRealisations realisations={selection} colonnes={3} />
-
-      <p class="suite">
-        <a class="bouton bouton--fantome" href="/realisations/">
-          Voir les {realisations.length} réalisations
-        </a>
-      </p>
-    </div>
-  </section>
-
   <!-- ========================= Du dessin à l'objet ===================== -->
   <section class="section sur-nuit chaine">
     <div class="enveloppe">
@@ -338,48 +475,6 @@ const schema = graphe([
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  <!-- ============================== Projets ============================ -->
-  <section class="section projets">
-    <div class="enveloppe">
-      <div class="tete-section tete-section--duo">
-        <div>
-          <p class="surtitre">Nos projets</p>
-          <h2>Deux marques nées de l’atelier.</h2>
-        </div>
-        <p class="chapo">
-          La preuve la plus directe de ce que nous savons faire n’est pas une référence
-          client : ce sont deux marques que nous avons conçues, fabriquées et menées
-          jusqu’au marché.
-        </p>
-      </div>
-
-      <ul class="projets__liste">
-        {
-          projets.map((projet) => (
-            <li class="projets__item revele">
-              <p class="projets__nature">{projet.nature}</p>
-              <h3>{projet.nom}</h3>
-              <p class="projets__accroche">{projet.accroche}</p>
-              <ul class="projets__reperes">
-                {projet.reperes.map((repere) => (
-                  <li>{repere}</li>
-                ))}
-              </ul>
-              <a class="lien-fleche" href={projet.url} rel="noopener" target="_blank">
-                {projet.libelleLien}
-                <span class="visuellement-cache"> (nouvel onglet)</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="suite">
-        <a class="bouton bouton--fantome" href="/projets/">Comment ces projets sont nés</a>
-      </p>
     </div>
   </section>
 
@@ -557,43 +652,68 @@ const schema = graphe([
     letter-spacing: 0.02em;
   }
 
-  /* Bandeau de chaîne : la signature conceptuelle de la marque. */
+  /*
+    Bandeau de chaîne : la signature méthodologique de la marque, et un
+    argument commercial à part entière. Il est donc énoncé avant d'être
+    décliné, et porté par un filet plein plutôt que par un trait discret.
+  */
   .chaine-bandeau {
+    margin-block-start: var(--e-2xl);
+    padding-block: var(--e-l);
+    border-block-start: 2px solid var(--c-encre);
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .chaine-bandeau__annonce {
+    margin-block-end: var(--e-m);
+    max-width: 34ch;
+    color: var(--c-encre-douce);
+    font-size: var(--t-2);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .chaine-bandeau__annonce strong {
+    color: var(--c-encre);
+    font-weight: 600;
+  }
+
+  .chaine-bandeau__liste {
     display: flex;
     flex-wrap: wrap;
     gap: var(--e-xs) 0;
-    margin-block-start: var(--e-2xl);
-    padding-block: var(--e-s);
-    border-block: 1px solid var(--c-filet);
+    margin: 0;
+    padding: 0;
     list-style: none;
     counter-reset: maillon;
   }
 
-  .chaine-bandeau li {
+  .chaine-bandeau__liste li {
     display: flex;
     align-items: center;
     gap: var(--e-xs);
     flex: 1 1 auto;
-    color: var(--c-encre-muette);
+    color: var(--c-encre);
     font-family: var(--f-mono);
-    font-size: var(--t--2);
+    font-size: var(--t--1);
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
-  .chaine-bandeau li::before {
+  .chaine-bandeau__liste li::before {
     counter-increment: maillon;
     content: '0' counter(maillon);
-    color: var(--c-encre);
+    color: var(--c-encre-muette);
   }
 
-  .chaine-bandeau li:not(:last-child)::after {
+  .chaine-bandeau__liste li:not(:last-child)::after {
     content: '';
     flex: 1;
     block-size: 1px;
     min-inline-size: var(--e-s);
-    background-color: var(--c-filet);
+    background-color: var(--c-filet-fort);
   }
 
   /* ========================= Ce que nous faisons ===================== */
@@ -670,24 +790,23 @@ const schema = graphe([
     background-color: var(--c-blanc);
   }
 
+  /*
+    Aucun filtre : la couleur naturelle de la matière EST la démonstration.
+    Une version antérieure désaturait ces vignettes ; le noir et blanc rendait
+    le métal, le bois et le liège indiscernables, et annulait donc le message
+    de la section.
+  */
   .matieres__media :global(img) {
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.04);
-    transition: filter var(--duree-longue) var(--courbe);
+    transition: transform var(--duree-longue) var(--courbe-sortie);
   }
 
-  /* La couleur revient au contact : la matière reprend ses droits. */
-  .matieres__item:hover .matieres__media :global(img),
-  .matieres__item:focus-within .matieres__media :global(img) {
-    filter: none;
-  }
-
-  /* Sans survol possible, la matière s'affiche d'emblée en couleur. */
-  @media (hover: none) {
-    .matieres__media :global(img) {
-      filter: none;
+  @media (hover: hover) {
+    .matieres__item:hover .matieres__media :global(img),
+    .matieres__item:focus-within .matieres__media :global(img) {
+      transform: scale(1.03);
     }
   }
 
@@ -704,7 +823,72 @@ const schema = graphe([
     line-height: 1.5;
   }
 
+  /* ====================== Appel à l'action intermédiaire ============== */
+
+  .relance__grille {
+    display: grid;
+    gap: var(--e-xs);
+    justify-items: start;
+  }
+
+  @media (min-width: 52rem) {
+    .relance__grille {
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--e-m) var(--e-l);
+    }
+  }
+
+  .relance__titre {
+    color: var(--c-clair);
+    font-size: var(--t-2);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .relance__texte {
+    max-width: 40ch;
+    color: var(--c-clair-doux);
+  }
+
   /* =========================== Savoir-faire ========================== */
+
+  .savoir__entete {
+    display: grid;
+    gap: var(--e-l);
+    margin-block-end: var(--e-xl);
+  }
+
+  @media (min-width: 56rem) {
+    .savoir__entete {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+      align-items: end;
+      gap: var(--e-2xl);
+    }
+  }
+
+  .savoir__entete .tete-section {
+    margin-block-end: 0;
+  }
+
+  .savoir__visuel {
+    margin: 0;
+  }
+
+  .savoir__visuel :global(img) {
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .savoir__visuel figcaption {
+    margin-block-start: var(--e-xs);
+    max-width: 46ch;
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    line-height: 1.55;
+  }
 
   .savoir__famille + .savoir__famille {
     margin-block-start: var(--e-xl);

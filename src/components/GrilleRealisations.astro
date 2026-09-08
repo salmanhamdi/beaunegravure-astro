@@ -18,12 +18,13 @@ const {
   sansLegende = false,
 } = Astro.props;
 
+/* La grille tient deux colonnes dès le mobile : les largeurs en tiennent compte. */
 const sizes =
   colonnes === 4
-    ? '(min-width: 68rem) 23vw, (min-width: 40rem) 45vw, 92vw'
+    ? '(min-width: 68rem) 23vw, 46vw'
     : colonnes === 2
-      ? '(min-width: 40rem) 46vw, 92vw'
-      : '(min-width: 68rem) 31vw, (min-width: 40rem) 46vw, 92vw';
+      ? '46vw'
+      : '(min-width: 68rem) 31vw, 46vw';
 ---
 
 <div class="grille-realisations" data-colonnes={colonnes}>
@@ -45,14 +46,20 @@ const sizes =
     aucune image n'est déformée ni recadrée arbitrairement. Le rendu est
     volontairement irrégulier, comme une planche-contact d'atelier.
   */
+  /*
+    Deux colonnes dès le mobile : une colonne unique donnait une image par
+    écran, et il fallait près de quatre écrans pour parcourir six pièces. La
+    densité sert ici la découverte, pas l'économie de place.
+  */
   .grille-realisations {
     display: grid;
-    gap: var(--e-m);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-s);
   }
 
   @media (min-width: 40rem) {
     .grille-realisations {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--e-m);
     }
   }
 

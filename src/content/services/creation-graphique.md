@@ -1,10 +1,10 @@
 ---
 titre: "Création graphique"
-h1: "Création graphique et préparation de fichiers"
+h1: "Création graphique : de l’idée à la pièce fabricable"
 seoTitle: "Création graphique et fichiers de gravure | Beaune Gravure"
 description: "Création graphique et préparation de fichiers pour la gravure, la découpe et l’impression : vectorisation, adaptation de logo, mise au format, bon à tirer."
-surtitre: "En amont de la machine"
-chapo: "Une machine ne rattrape jamais un mauvais fichier. Avant de graver quoi que ce soit, nous dessinons, adaptons ou reconstruisons le visuel pour qu’il fonctionne réellement sur la matière choisie — c’est là que se joue la différence entre un marquage correct et une pièce juste."
+surtitre: "Le métier de départ"
+chapo: "C’est ici que commence chaque projet. Nous dessinons, redessinons, composons et adaptons le visuel jusqu’à ce qu’il tienne vraiment sur la matière choisie — un monogramme, un blason, un motif, l’identité d’un commerce. La machine n’intervient qu’ensuite."
 ordre: 1
 famille: "creation"
 galerie: "objets"
@@ -28,13 +28,13 @@ faq:
     reponse: "Bien sûr, et c’est le cas idéal. Nous contrôlons le fichier, signalons ce qui posera problème à la fabrication et proposons les ajustements nécessaires. Votre graphiste garde la main sur l’identité, nous garantissons qu’elle est fabricable."
 ---
 
-## La partie du travail qui ne se voit pas
+## Le travail qui décide du résultat
 
-Un projet de personnalisation ne commence pas devant la machine. Il commence devant un fichier.
+Un projet de personnalisation ne commence pas devant la machine. Il commence devant un dessin.
 
-Avant chaque production, quelqu’un doit décider de la **taille** du marquage, de sa **position**, de ce qui est **conservé** et de ce qui doit être **retiré** pour que le motif reste lisible sur la matière. Cette décision détermine le résultat bien plus que le réglage laser.
+Il faut décider de la **taille** du marquage, de sa **position**, de ce qui est **conservé** et de ce qui doit être **retiré** pour que le motif reste lisible sur la matière. Il faut parfois redessiner entièrement un tracé, composer une mise en page, inventer un monogramme là où il n’existait qu’un nom. Ces décisions déterminent le résultat bien plus que le réglage laser.
 
-C’est cette compétence graphique, autant que le parc machine, qui distingue l’atelier d’un simple prestataire de marquage.
+C’est cette compétence graphique, autant que le parc machine, qui distingue l’atelier d’un simple prestataire de marquage. Nous ne recevons pas seulement des fichiers : nous recevons aussi des idées, des croquis et des photographies, et nous en faisons des pièces.
 
 ## Ce que nous faisons sur un fichier
 
