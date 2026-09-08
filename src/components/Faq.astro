@@ -1,0 +1,117 @@
+---
+interface Entree {
+  question: string;
+  reponse: string;
+}
+
+interface Props {
+  entrees: Entree[];
+  titre?: string;
+  surtitre?: string;
+  /** Identifiant d'ancre pour le sommaire ou un lien direct. */
+  id?: string;
+}
+
+const { entrees, titre = 'Questions fréquentes', surtitre = 'Aide', id } = Astro.props;
+---
+
+{
+  entrees.length > 0 && (
+    <section class="section faq" id={id}>
+      <div class="enveloppe">
+        <div class="faq__tete">
+          <p class="surtitre">{surtitre}</p>
+          <h2>{titre}</h2>
+        </div>
+        <div class="faq__liste">
+          {entrees.map((entree, index) => (
+            <details class="faq__entree" open={index === 0}>
+              <summary>
+                <span>{entree.question}</span>
+                <span class="faq__signe" aria-hidden="true" />
+              </summary>
+              <div class="faq__reponse">
+                <p>{entree.reponse}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .faq__tete {
+    margin-block-end: var(--e-l);
+  }
+
+  .faq__tete h2 {
+    max-width: 22ch;
+    font-size: var(--t-3);
+  }
+
+  .faq__liste {
+    border-block-start: 1px solid var(--c-filet);
+    max-width: 62rem;
+  }
+
+  .faq__entree {
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .faq__entree summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-m);
+    padding-block: var(--e-s);
+    cursor: pointer;
+    color: var(--c-encre);
+    font-family: var(--f-titre);
+    font-size: var(--t-1);
+    line-height: 1.35;
+    list-style: none;
+  }
+
+  .faq__entree summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq__entree summary:hover {
+    color: var(--c-laiton);
+  }
+
+  .faq__signe {
+    position: relative;
+    flex: none;
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .faq__signe::before,
+  .faq__signe::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 0;
+    inline-size: 1rem;
+    block-size: 1.5px;
+    background-color: var(--c-laiton);
+    transition: transform var(--duree) var(--courbe);
+  }
+
+  .faq__signe::after {
+    transform: rotate(90deg);
+  }
+
+  .faq__entree[open] .faq__signe::after {
+    transform: rotate(0deg);
+  }
+
+  .faq__reponse {
+    padding-block-end: var(--e-m);
+    max-width: 68ch;
+    color: var(--c-encre-douce);
+  }
+</style>

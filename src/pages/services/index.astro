@@ -1,0 +1,198 @@
+---
+import { Picture } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { imagesRealisations } from '@data/realisations';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+const services = (await getCollection('services')).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+
+const chemin = '/services/';
+const url = urlAbsolue(chemin);
+const titre = 'Savoir-faire : gravure, découpe et marquage | Beaune Gravure';
+const description =
+  'Les savoir-faire de l’atelier Beaune Gravure : gravure sur verre, gravure laser, caisses bois, cadeaux personnalisés, plaques, marquage industriel et signalétique.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Savoir-faire', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Savoir-faire</p>
+      <h1>Ce que l’atelier sait faire, et jusqu’où.</h1>
+      <p class="chapo">
+        La gravure sur verre est le cœur du métier. Autour d’elle, l’atelier travaille le
+        bois, le métal, le plexiglass et la couleur, avec un principe constant&nbsp;:
+        chaque support impose son réglage, et certains supports ne conviennent pas.
+      </p>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="enveloppe--large">
+      <ul class="services">
+        {
+          services.map((service, index) => (
+            <li class="services__item revele">
+              <a href={`/services/${service.id}/`}>
+                <div class="services__media">
+                  <Picture
+                    src={imagesRealisations[service.data.visuel]!}
+                    alt=""
+                    widths={[400, 640, 900]}
+                    sizes="(min-width: 68rem) 30vw, (min-width: 44rem) 46vw, 92vw"
+                    loading={index < 2 ? 'eager' : 'lazy'}
+                    quality={72}
+                    formats={['avif']}
+                    fallbackFormat="webp"
+                  />
+                  {service.data.vedette && <span class="etiquette services__badge">Savoir-faire principal</span>}
+                </div>
+                <div class="services__copie">
+                  <h2>{service.data.titre}</h2>
+                  <p>{service.data.chapo}</p>
+                  <ul class="services__points">
+                    {service.data.points.slice(0, 3).map((point) => (
+                      <li>{point}</li>
+                    ))}
+                  </ul>
+                  <span class="lien-fleche">Découvrir</span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <SectionDevis
+    surtitre="Un doute sur le support ?"
+    titre="Envoyez une photo, nous vous dirons si c’est gravable."
+    texte="Certaines matières ne passent pas sous le laser, d’autres demandent un essai. Nous préférons le dire avant plutôt qu’après."
+  />
+</Base>
+
+<style>
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 18ch;
+  }
+
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .services {
+    display: grid;
+    gap: var(--e-l);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 44rem) {
+    .services {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .services {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .services__item a {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+    text-decoration: none;
+  }
+
+  .services__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .services__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--duree-longue) var(--courbe-sortie);
+  }
+
+  @media (hover: hover) {
+    .services__item a:hover .services__media :global(img) {
+      transform: scale(1.04);
+    }
+  }
+
+  .services__badge {
+    position: absolute;
+    inset-block-start: var(--e-xs);
+    inset-inline-start: var(--e-xs);
+    background-color: var(--c-papier-vif);
+  }
+
+  .services__copie {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--e-2xs);
+    flex: 1;
+    padding-block-start: var(--e-s);
+  }
+
+  .services__copie h2 {
+    font-size: var(--t-2);
+  }
+
+  .services__copie > p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .services__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-3xs) var(--e-2xs);
+    margin-block: var(--e-2xs);
+    list-style: none;
+    padding: 0;
+  }
+
+  .services__points li {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  .services__points li:not(:last-child)::after {
+    content: ' ·';
+    color: var(--c-laiton);
+  }
+
+  .services__copie .lien-fleche {
+    margin-block-start: auto;
+    padding-block-start: var(--e-xs);
+  }
+</style>

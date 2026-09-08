@@ -1,0 +1,89 @@
+---
+import '@styles/global.css';
+import Polices from '@components/Polices.astro';
+import Seo from '@components/Seo.astro';
+import Entete from '@components/Entete.astro';
+import Pied from '@components/Pied.astro';
+
+interface Props {
+  titre: string;
+  description: string;
+  chemin: string;
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  datePublication?: Date;
+  dateModification?: Date;
+  noindex?: boolean;
+  schema?: unknown;
+  /** Classe appliquée à <main>, pour les pages qui ouvrent sur un fond sombre. */
+  classeMain?: string;
+}
+
+const {
+  titre,
+  description,
+  chemin,
+  image,
+  imageAlt,
+  type,
+  datePublication,
+  dateModification,
+  noindex,
+  schema,
+  classeMain,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f3ee" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <Polices />
+
+    <Seo
+      titre={titre}
+      description={description}
+      chemin={chemin}
+      image={image}
+      imageAlt={imageAlt}
+      type={type}
+      datePublication={datePublication}
+      dateModification={dateModification}
+      noindex={noindex}
+      schema={schema}
+    />
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="lien-evitement" href="#contenu">Aller au contenu principal</a>
+    <Entete />
+    <main id="contenu" class={classeMain}>
+      <slot />
+    </main>
+    <Pied />
+  </body>
+</html>
+
+<style is:global>
+  /* Le pied de page reste en bas même sur les pages courtes (404, merci). */
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+</style>

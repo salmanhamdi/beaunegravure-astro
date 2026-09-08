@@ -1,0 +1,156 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import CarteArticle from '@components/CarteArticle.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { CATEGORIES_BLOG, type CategorieBlogSlug } from '@data/categoriesBlog';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+/**
+ * Seules les catégories contenant au moins un article génèrent une page.
+ * C'est ce garde-fou qui empêche la réapparition des pages de catégorie vides
+ * constatées sur l'ancien site.
+ */
+export async function getStaticPaths() {
+  const articles = await getCollection('blog');
+  const utilisees = [...new Set(articles.map((a) => a.data.categorie))];
+
+  return utilisees.map((slug) => ({
+    params: { categorie: slug },
+    props: {
+      slug: slug as CategorieBlogSlug,
+      articles: articles
+        .filter((a) => a.data.categorie === slug)
+        .sort((a, b) => b.data.datePublication.getTime() - a.data.datePublication.getTime()),
+    },
+  }));
+}
+
+interface Props {
+  slug: CategorieBlogSlug;
+  articles: Awaited<ReturnType<typeof getCollection<'blog'>>>;
+}
+
+const { slug, articles } = Astro.props;
+const categorie = CATEGORIES_BLOG[slug];
+
+const tous = await getCollection('blog');
+const utilisees = [...new Set(tous.map((a) => a.data.categorie))] as CategorieBlogSlug[];
+
+const chemin = `/blog/categories/${slug}/`;
+const url = urlAbsolue(chemin);
+const titre = `${categorie.titre} | Journal Beaune Gravure`;
+const description = categorie.description;
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Journal', href: '/blog/' },
+  { nom: categorie.nom, href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Journal</p>
+      <h1>{categorie.titre}</h1>
+      <p class="chapo">{categorie.description}</p>
+
+      <nav class="filtres" aria-label="Catégories du journal">
+        <a href="/blog/">Tous les articles</a>
+        {
+          utilisees.map((autre) =>
+            autre === slug ? (
+              <span class="filtres__actif" aria-current="page">
+                {CATEGORIES_BLOG[autre].nom}
+              </span>
+            ) : (
+              <a href={`/blog/categories/${autre}/`}>{CATEGORIES_BLOG[autre].nom}</a>
+            ),
+          )
+        }
+      </nav>
+    </div>
+  </header>
+
+  <section class="section section--serree">
+    <div class="enveloppe">
+      <h2 class="visuellement-cache">Articles de la catégorie {categorie.nom}</h2>
+      <div class="liste">
+        {articles.map((article, index) => (
+          <CarteArticle article={article} prioritaire={index === 0} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <SectionDevis />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 18ch;
+  }
+
+  .filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs);
+    margin-block-start: var(--e-xl);
+  }
+
+  .filtres a,
+  .filtres__actif {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .filtres a:hover {
+    border-color: var(--c-laiton);
+    color: var(--c-encre);
+  }
+
+  .filtres__actif {
+    border-color: var(--c-encre);
+    background-color: var(--c-encre);
+    color: var(--c-papier);
+  }
+
+  .liste {
+    display: grid;
+    gap: var(--e-l);
+  }
+
+  @media (min-width: 44rem) {
+    .liste {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .liste {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

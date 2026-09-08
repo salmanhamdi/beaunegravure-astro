@@ -1,0 +1,339 @@
+---
+import { Picture } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import Faq from '@components/Faq.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { CATEGORIES, imagesRealisations, parCategorie } from '@data/realisations';
+import { urlAbsolue } from '@utils/env';
+import {
+  faqSchema,
+  filAriane,
+  graphe,
+  organisation,
+  pageWeb,
+  serviceSchema,
+} from '@utils/schema';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: CollectionEntry<'services'>;
+}
+
+const { service } = Astro.props;
+const { data } = service;
+const { Content } = await render(service);
+
+const chemin = `/services/${service.id}/`;
+const url = urlAbsolue(chemin);
+
+const visuel = imagesRealisations[data.visuel]!;
+const galerie = parCategorie(data.galerie).slice(0, 6);
+const categorie = CATEGORIES[data.galerie];
+
+const autres = (await getCollection('services'))
+  .filter((s) => s.id !== service.id)
+  .sort((a, b) => a.data.ordre - b.data.ordre)
+  .slice(0, 4);
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Savoir-faire', href: '/services/' },
+  { nom: data.titre, href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre: data.seoTitle, description: data.description }),
+  serviceSchema({ nom: data.h1, description: data.description, url }),
+  filAriane(miettes),
+  faqSchema(data.faq.map((f) => ({ question: f.question, reponse: f.reponse }))),
+]);
+---
+
+<Base
+  titre={data.seoTitle}
+  description={data.description}
+  chemin={chemin}
+  schema={schema}
+>
+  <article>
+    <header class="tete">
+      <div class="enveloppe--large tete__grille">
+        <div class="tete__copie">
+          <FilAriane miettes={miettes} />
+          <p class="surtitre">{data.surtitre}</p>
+          <h1>{data.h1}</h1>
+          <p class="chapo">{data.chapo}</p>
+          <div class="boutons">
+            <a class="bouton" href={`/contact/?projet=${encodeURIComponent(data.titre)}`}>
+              Demander un devis
+            </a>
+            <a class="bouton bouton--fantome" href="#realisations">Voir les réalisations</a>
+          </div>
+          <ul class="tete__points">
+            {data.points.map((point) => <li>{point}</li>)}
+          </ul>
+        </div>
+        <div class="tete__media">
+          <Picture
+            src={visuel}
+            alt={`${data.titre} — réalisation de l’atelier Beaune Gravure`}
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 64rem) 44vw, 92vw"
+            loading="eager"
+            fetchpriority="high"
+            quality={74}
+            formats={['avif']}
+            fallbackFormat="webp"
+          />
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="enveloppe prose contenu">
+        <Content />
+      </div>
+    </section>
+
+    <section class="section section--creuse" id="realisations">
+      <div class="enveloppe--large">
+        <div class="tete-section tete-section--duo">
+          <div>
+            <p class="surtitre">Réalisations</p>
+            <h2>{categorie.titre}</h2>
+          </div>
+          <p class="chapo">{categorie.description}</p>
+        </div>
+        <GrilleRealisations realisations={galerie} colonnes={3} />
+        <p class="suite">
+          <a class="bouton bouton--fantome" href={`/realisations/${categorie.slug}/`}>
+            Toute la catégorie {categorie.nom.toLowerCase()}
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <Faq entrees={data.faq.map((f) => ({ question: f.question, reponse: f.reponse }))} />
+
+    <section class="section section--serree">
+      <div class="enveloppe">
+        <p class="surtitre">Autres savoir-faire</p>
+        <ul class="autres">
+          {
+            autres.map((autre) => (
+              <li>
+                <a href={`/services/${autre.id}/`}>
+                  <strong>{autre.data.titre}</strong>
+                  <span>{autre.data.usages}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </article>
+
+  <SectionDevis projet={data.titre} />
+</Base>
+
+<style>
+  .tete {
+    padding-block: var(--e-l) var(--e-2xl);
+  }
+
+  .tete__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: center;
+  }
+
+  @media (min-width: 64rem) {
+    .tete__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .tete__copie {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .tete__copie .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .tete__copie h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 16ch;
+    font-size: var(--t-5);
+  }
+
+  .tete__copie .chapo {
+    margin-block-end: var(--e-l);
+  }
+
+  .tete__points {
+    display: grid;
+    gap: 0;
+    inline-size: 100%;
+    margin-block-start: var(--e-l);
+    list-style: none;
+    padding: 0;
+  }
+
+  .tete__points li {
+    padding-block: var(--e-xs);
+    border-block-start: 1px solid var(--c-filet);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+  }
+
+  .tete__points li:last-child {
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .tete__media {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  @media (min-width: 64rem) {
+    .tete__media {
+      aspect-ratio: 4 / 5;
+    }
+
+    .tete__media :global(img) {
+      inline-size: 100%;
+      block-size: 100%;
+      object-fit: cover;
+    }
+  }
+
+  /* ---------- Corps rédactionnel ---------- */
+
+  .contenu :global(h2) {
+    margin-block-start: var(--e-xl);
+    font-size: var(--t-3);
+  }
+
+  .contenu :global(h3) {
+    margin-block-start: var(--e-l);
+    font-size: var(--t-1);
+  }
+
+  .contenu :global(table) {
+    inline-size: 100%;
+    margin-block: var(--e-m);
+    border-collapse: collapse;
+    font-size: var(--t--1);
+  }
+
+  .contenu :global(th),
+  .contenu :global(td) {
+    padding: 0.7rem 0.9rem;
+    border-block-end: 1px solid var(--c-filet);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .contenu :global(th) {
+    color: var(--c-encre);
+    font-weight: 600;
+    border-block-end-color: var(--c-filet-fort);
+  }
+
+  .contenu :global(ol) {
+    counter-reset: pas;
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  .contenu :global(ol li) {
+    counter-increment: pas;
+    padding-inline-start: 2.25rem;
+    position: relative;
+  }
+
+  .contenu :global(ol li)::before {
+    content: counter(pas, decimal-leading-zero);
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--c-laiton);
+    font-family: var(--f-titre);
+    font-style: italic;
+  }
+
+  /* Le tableau doit défiler seul plutôt que déborder la page. */
+  .contenu {
+    overflow-wrap: break-word;
+  }
+
+  .suite {
+    margin-block-start: var(--e-xl);
+    text-align: center;
+  }
+
+  /* ---------- Autres savoir-faire ---------- */
+
+  .autres {
+    display: grid;
+    gap: var(--e-s);
+    margin-block-start: var(--e-m);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 44rem) {
+    .autres {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 72rem) {
+    .autres {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .autres a {
+    display: grid;
+    gap: var(--e-3xs);
+    block-size: 100%;
+    padding: var(--e-s) var(--e-m);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe);
+  }
+
+  .autres a:hover {
+    border-color: var(--c-laiton);
+  }
+
+  .autres strong {
+    font-family: var(--f-titre);
+    font-size: var(--t-1);
+    font-weight: 400;
+  }
+
+  .autres span {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.5;
+  }
+</style>

@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import CarteArticle from '@components/CarteArticle.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { CATEGORIES_BLOG, type CategorieBlogSlug } from '@data/categoriesBlog';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+const articles = (await getCollection('blog')).sort(
+  (a, b) => b.data.datePublication.getTime() - a.data.datePublication.getTime(),
+);
+
+const [premier, ...suivants] = articles;
+
+// Seules les catégories qui portent réellement un article sont proposées.
+const utilisees = [...new Set(articles.map((a) => a.data.categorie))] as CategorieBlogSlug[];
+
+const chemin = '/blog/';
+const url = urlAbsolue(chemin);
+const titre = 'Journal de l’atelier : conseils gravure laser | Beaune Gravure';
+const description =
+  'Conseils de l’atelier Beaune Gravure : gravure sur verre, préparation des fichiers, choix des matières, plaques professionnelles et cadeaux d’entreprise.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Journal', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+  {
+    '@type': 'Blog',
+    '@id': `${url}#blog`,
+    name: 'Journal de l’atelier Beaune Gravure',
+    description,
+    url,
+    inLanguage: 'fr-FR',
+    publisher: { '@id': urlAbsolue('/#organization') },
+  },
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Journal</p>
+      <h1>Ce qu’il faut savoir avant de faire graver.</h1>
+      <p class="chapo">
+        Des repères concrets sur les matières, les fichiers, les rendus et les limites du
+        procédé. Écrits depuis l’établi, à partir de projets réels.
+      </p>
+
+      <nav class="filtres" aria-label="Catégories du journal">
+        <span class="filtres__actif" aria-current="page">Tous les articles</span>
+        {
+          utilisees.map((slug) => (
+            <a href={`/blog/categories/${slug}/`}>{CATEGORIES_BLOG[slug].nom}</a>
+          ))
+        }
+      </nav>
+    </div>
+  </header>
+
+  {
+    premier && (
+      <section class="section section--serree">
+        <div class="enveloppe">
+          <h2 class="visuellement-cache">Dernier article</h2>
+          <CarteArticle article={premier} prioritaire large />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--serree">
+    <div class="enveloppe">
+      <h2 class="visuellement-cache">Articles précédents</h2>
+      <div class="liste">
+        {suivants.map((article) => <CarteArticle article={article} />)}
+      </div>
+    </div>
+  </section>
+
+  <SectionDevis
+    surtitre="Une question précise ?"
+    titre="Un échange vaut souvent mieux qu’un article."
+    texte="Décrivez votre support et votre visuel : nous répondons sur la faisabilité réelle, pas sur des généralités."
+  />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 18ch;
+  }
+
+  .filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs);
+    margin-block-start: var(--e-xl);
+  }
+
+  .filtres a,
+  .filtres__actif {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .filtres a:hover {
+    border-color: var(--c-laiton);
+    color: var(--c-encre);
+  }
+
+  .filtres__actif {
+    border-color: var(--c-encre);
+    background-color: var(--c-encre);
+    color: var(--c-papier);
+  }
+
+  .liste {
+    display: grid;
+    gap: var(--e-l);
+  }
+
+  @media (min-width: 44rem) {
+    .liste {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .liste {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

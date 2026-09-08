@@ -1,0 +1,310 @@
+---
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import FormulaireDevis from '@components/FormulaireDevis.astro';
+import Faq from '@components/Faq.astro';
+import { adresse, email, reseaux, telephone, whatsapp, zones } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import {
+  faqSchema,
+  filAriane,
+  graphe,
+  organisation,
+  pageWeb,
+} from '@utils/schema';
+
+const chemin = '/contact/';
+const url = urlAbsolue(chemin);
+const titre = 'Contact et devis | Beaune Gravure';
+const description =
+  'Contactez l’atelier Beaune Gravure à Ladoix-Serrigny, près de Beaune : téléphone, e-mail et formulaire de devis pour vos projets de gravure laser.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Contact', href: chemin },
+];
+
+const questions = [
+  {
+    question: 'Quels fichiers dois-je envoyer pour une gravure ?',
+    reponse:
+      'L’idéal est un fichier vectoriel au format AI, EPS, SVG ou PDF. Si vous n’en disposez pas, envoyez une image ou une photo nette : nous vérifions si elle peut être exploitée et, le cas échéant, nous la retravaillons.',
+  },
+  {
+    question: 'Puis-je commander une seule pièce ?',
+    reponse:
+      'Oui, selon le support et la faisabilité. L’atelier réalise aussi bien des pièces uniques que des petites et moyennes séries. Le coût dépend surtout de la préparation et du temps machine.',
+  },
+  {
+    question: 'Travaillez-vous avec les entreprises et les domaines ?',
+    reponse:
+      'Oui. Nous travaillons régulièrement avec des domaines viticoles, des restaurants, des hôtels, des artisans, des collectivités et des industriels pour des verres, des caisses, des plaques et du marquage technique.',
+  },
+  {
+    question: 'Comment obtenir un devis rapidement ?',
+    reponse:
+      'Indiquez le support, la quantité, les dimensions, le visuel à graver et le délai souhaité. Avec ces cinq informations, nous pouvons répondre précisément dès le premier échange.',
+  },
+  {
+    question: 'Faut-il venir à l’atelier ?',
+    reponse:
+      'Ce n’est pas indispensable : la plupart des projets se traitent à distance. Une visite reste possible pour déposer des pièces à graver ou voir des échantillons ; convenez d’un créneau par téléphone au préalable.',
+  },
+  {
+    question: 'Travaillez-vous uniquement en Bourgogne ?',
+    reponse:
+      'L’atelier est basé en Côte-d’Or et travaille principalement pour la Bourgogne-Franche-Comté. Certaines réalisations peuvent être expédiées ailleurs en France selon leur nature et leur fragilité.',
+  },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  {
+    '@type': 'ContactPage',
+    '@id': `${url}#contactpage`,
+    url,
+    name: titre,
+    mainEntity: { '@id': urlAbsolue('/#organization') },
+  },
+  filAriane(miettes),
+  faqSchema(questions),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Contact</p>
+      <h1>Parlons de votre projet.</h1>
+      <p class="chapo">
+        Décrivez votre support, votre visuel et vos quantités. Nous répondons sur la
+        faisabilité réelle&nbsp;: ce qui est possible, ce qui demande un essai, et ce que
+        nous ne savons pas faire.
+      </p>
+    </div>
+  </header>
+
+  <section class="section section--serree">
+    <div class="enveloppe contact__grille">
+      <div class="contact__coordonnees">
+        <h2 class="visuellement-cache">Coordonnées de l’atelier</h2>
+
+        <ul class="canaux">
+          <li>
+            <span class="canaux__label">Téléphone</span>
+            <a class="canaux__valeur" href={`tel:${telephone.e164}`}>
+              {telephone.affichage}
+            </a>
+            <span class="canaux__note">Le plus direct pour une question rapide.</span>
+          </li>
+          <li>
+            <span class="canaux__label">E-mail</span>
+            <a class="canaux__valeur" href={`mailto:${email}`}>{email}</a>
+            <span class="canaux__note">Pour transmettre un fichier ou un cahier des charges.</span>
+          </li>
+          <li>
+            <span class="canaux__label">WhatsApp</span>
+            <a
+              class="canaux__valeur"
+              href={whatsapp.url}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Écrire sur WhatsApp
+            </a>
+            <span class="canaux__note">Pratique pour envoyer une photo de votre support.</span>
+          </li>
+        </ul>
+
+        <div class="adresse">
+          <h3>L’atelier</h3>
+          <address>
+            {adresse.rue}<br />
+            {adresse.codePostal} {adresse.ville}<br />
+            {adresse.pays}
+          </address>
+          <a
+            class="lien-fleche"
+            href={reseaux.googleMaps}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Itinéraire sur Google Maps
+          </a>
+        </div>
+
+        <div class="zone">
+          <h3>Zone d’intervention</h3>
+          <p>
+            {zones.join(' · ')}. Certaines pièces sont expédiées ailleurs en France
+            selon leur nature.
+          </p>
+        </div>
+
+        <div class="prepa">
+          <h3>Pour un devis précis</h3>
+          <ol class="liste-filet">
+            <li>Le support exact, ou une photo</li>
+            <li>Les dimensions et la quantité</li>
+            <li>Le visuel ou le texte à graver</li>
+            <li>Le délai souhaité</li>
+            <li>L’usage final de la pièce</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="contact__formulaire">
+        <h2>Demande de devis</h2>
+        <p class="contact__intro">
+          Les champs marqués d’un <span aria-hidden="true">*</span
+          ><span class="visuellement-cache">astérisque</span> sont obligatoires.
+        </p>
+        <FormulaireDevis />
+      </div>
+    </div>
+  </section>
+
+  <Faq entrees={questions} surtitre="Aide" titre="Questions fréquentes" />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+  }
+
+  .contact__grille {
+    display: grid;
+    gap: var(--e-2xl);
+    align-items: start;
+  }
+
+  @media (min-width: 64rem) {
+    .contact__grille {
+      grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+      gap: var(--e-3xl);
+    }
+
+    .contact__coordonnees {
+      position: sticky;
+      top: calc(var(--entete-hauteur) + var(--e-m));
+    }
+  }
+
+  .canaux {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    padding: 0;
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .canaux li {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block: var(--e-s);
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .canaux__label {
+    color: var(--c-laiton);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: var(--ls-large);
+    text-transform: uppercase;
+  }
+
+  .canaux__valeur {
+    justify-self: start;
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    text-decoration: none;
+    border-block-end: 1px solid var(--c-laiton);
+  }
+
+  .canaux__valeur:hover {
+    color: var(--c-laiton);
+  }
+
+  .canaux__note {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.5;
+  }
+
+  .adresse,
+  .zone,
+  .prepa {
+    margin-block-start: var(--e-l);
+  }
+
+  .contact__coordonnees h3 {
+    margin-block-end: var(--e-2xs);
+    font-family: var(--f-texte);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: var(--ls-large);
+    text-transform: uppercase;
+    color: var(--c-laiton);
+  }
+
+  .adresse address {
+    margin-block-end: var(--e-2xs);
+    font-style: normal;
+    color: var(--c-encre-douce);
+    line-height: 1.7;
+  }
+
+  .zone p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .prepa ol {
+    counter-reset: pas;
+  }
+
+  .prepa li {
+    counter-increment: pas;
+    padding-inline-start: 2rem;
+    position: relative;
+  }
+
+  .prepa li::before {
+    content: counter(pas, decimal-leading-zero);
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--c-laiton);
+    font-family: var(--f-titre);
+    font-style: italic;
+  }
+
+  .contact__formulaire {
+    padding: var(--e-m);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-vif);
+  }
+
+  @media (min-width: 44rem) {
+    .contact__formulaire {
+      padding: var(--e-xl);
+    }
+  }
+
+  .contact__formulaire h2 {
+    font-size: var(--t-3);
+  }
+
+  .contact__intro {
+    margin-block: var(--e-2xs) var(--e-m);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+</style>

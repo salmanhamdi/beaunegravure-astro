@@ -1,0 +1,408 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import { realisationsVedettes } from '@data/realisations';
+import { adresse, site } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+import portrait from '@assets/images/atelier/about-faire-simple-faire-juste.jpg';
+import poste from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
+import machine from '@assets/images/atelier/contact-hero-trotec-speedy-400.jpg';
+
+const chemin = '/a-propos/';
+const url = urlAbsolue(chemin);
+const titre = 'L’atelier Beaune Gravure | Gravure laser en Bourgogne';
+const description =
+  'Atelier artisanal de gravure laser près de Beaune : vingt ans de pratique et trois technologies laser, pour les particuliers comme pour les professionnels.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'L’atelier', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+  {
+    '@type': 'AboutPage',
+    '@id': `${url}#aboutpage`,
+    url,
+    name: titre,
+    mainEntity: { '@id': urlAbsolue('/#organization') },
+  },
+]);
+
+const engagements = [
+  {
+    numero: '01',
+    titre: 'Dire ce qui est faisable',
+    texte:
+      'Toutes les matières ne passent pas sous le laser, et tous les logos ne se gravent pas tels quels. Nous préférons l’annoncer avant, quitte à proposer autre chose, plutôt que livrer un résultat approximatif.',
+  },
+  {
+    numero: '02',
+    titre: 'Un seul interlocuteur',
+    texte:
+      'La personne qui répond à votre demande est celle qui prépare le fichier, règle la machine et contrôle les pièces. Rien ne se perd entre un commercial et un atelier.',
+  },
+  {
+    numero: '03',
+    titre: 'Rien sans bon à tirer',
+    texte:
+      'Aucune série ne démarre avant validation de la taille, du placement et du rendu. Une gravure ne se corrige pas après coup.',
+  },
+];
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">L’atelier</p>
+      <h1>Un atelier, une machine, et le temps de bien faire.</h1>
+      <p class="chapo">
+        Beaune Gravure est un atelier artisanal de gravure et de découpe laser installé
+        à {adresse.ville}, en Côte-d’Or. Il travaille pour les particuliers comme pour
+        les professionnels, sur des pièces uniques comme sur des séries.
+      </p>
+    </div>
+  </header>
+
+  <section class="section section--serree">
+    <div class="enveloppe--large mosaique">
+      <div class="mosaique__grand">
+        <Picture
+          src={poste}
+          alt="Poste de marquage laser de l’atelier, avec son ordinateur de préparation, un pied à coulisse et des lunettes de protection"
+          widths={[480, 768, 1024, 1440]}
+          sizes="(min-width: 56rem) 62vw, 92vw"
+          loading="eager"
+          fetchpriority="high"
+          quality={74}
+          formats={['avif']}
+          fallbackFormat="webp"
+        />
+      </div>
+      <div class="mosaique__petit">
+        <Picture
+          src={machine}
+          alt="Machine de gravure laser CO₂ Trotec Speedy 400 installée dans l’atelier"
+          widths={[320, 480, 720]}
+          sizes="(min-width: 56rem) 32vw, 92vw"
+          loading="lazy"
+          quality={70}
+          formats={['avif']}
+          fallbackFormat="webp"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section histoire">
+    <div class="enveloppe histoire__grille">
+      <div class="histoire__media revele">
+        <Picture
+          src={portrait}
+          alt="Établi de l’atelier avec plusieurs pièces personnalisées en cours de finition"
+          widths={[400, 600, 900]}
+          sizes="(min-width: 56rem) 40vw, 92vw"
+          loading="lazy"
+          quality={72}
+          formats={['avif']}
+          fallbackFormat="webp"
+        />
+      </div>
+      <div class="histoire__texte prose">
+        <p class="surtitre">Notre histoire</p>
+        <h2>Vingt ans à regarder la matière réagir.</h2>
+        <p>
+          Tout a commencé par une passion pour le graphisme, l’informatique et tout ce
+          qui permet de transformer une idée en objet concret.
+        </p>
+        <p>
+          Mon histoire avec la gravure laser a débuté il y a plus de vingt ans, lors de
+          mon premier travail, où je gravais des fonds de tonneaux. C’est là que j’ai
+          découvert la précision du laser, le travail de la matière, et surtout le
+          plaisir de donner du caractère à un objet.
+        </p>
+        <p>
+          Avec le temps, j’ai approfondi les techniques et appris à m’adapter à chaque
+          support, chaque projet, chaque demande. Un chêne ne réagit pas comme un
+          contreplaqué, un verre soufflé bouche ne se règle pas comme un verre
+          industriel, et un logo pensé pour l’impression demande presque toujours une
+          adaptation avant d’être gravé.
+        </p>
+        <p>
+          Aujourd’hui, cette expérience permet d’accompagner aussi bien un particulier
+          venu faire graver deux flûtes qu’un domaine qui commande une série complète,
+          avec la même exigence&nbsp;: écouter, conseiller, et réaliser un travail qui a
+          du sens.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--creuse">
+    <div class="enveloppe">
+      <div class="tete-section">
+        <div>
+          <p class="surtitre">Nos engagements</p>
+          <h2>Trois principes, tenus depuis le premier échange.</h2>
+        </div>
+      </div>
+      <ul class="engagements">
+        {
+          engagements.map((engagement) => (
+            <li class="revele">
+              <span class="engagements__numero">{engagement.numero}</span>
+              <h3>{engagement.titre}</h3>
+              <p>{engagement.texte}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section equipement sur-nuit">
+    <div class="enveloppe equipement__grille">
+      <div>
+        <p class="surtitre">L’équipement</p>
+        <h2>Trois lasers, parce qu’un seul ne suffit pas.</h2>
+        <p class="chapo">
+          Chaque famille de matière demande une longueur d’onde différente. C’est ce qui
+          permet de graver un verre de dégustation le matin et de marquer une pièce inox
+          l’après-midi, sans compromis sur le résultat.
+        </p>
+      </div>
+      <dl class="equipement__liste">
+        <div>
+          <dt>Laser CO₂</dt>
+          <dd>Bois, cuir, acrylique, liège, ardoise · zone 101 × 65 cm</dd>
+        </div>
+        <div>
+          <dt>Laser UV 355 nm</dt>
+          <dd>Verre et surfaces délicates, faible apport thermique · zone 10 × 10 cm</dd>
+        </div>
+        <div>
+          <dt>Laser fibre 1064 nm</dt>
+          <dd>Inox, aluminium, laiton, titane, traçabilité · zone 30 × 30 cm</dd>
+        </div>
+        <div>
+          <dt>Impression UV</dt>
+          <dd>Couleur directe sur supports rigides compatibles</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="enveloppe--large">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Le travail</p>
+          <h2>Ce qui sort de l’atelier.</h2>
+        </div>
+        <p class="chapo">
+          Un aperçu des pièces récentes. Toutes les photographies du site montrent des
+          réalisations effectives, jamais des visuels de catalogue.
+        </p>
+      </div>
+      <GrilleRealisations realisations={realisationsVedettes.slice(0, 6)} colonnes={3} />
+      <p class="suite">
+        <a class="bouton bouton--fantome" href="/realisations/">Voir toutes les réalisations</a>
+      </p>
+    </div>
+  </section>
+
+  <SectionDevis
+    surtitre="Travaillons ensemble"
+    titre="Un projet, même flou, mérite un échange."
+    texte={`Cela fait ${site.anneesExperience} ans que nous aidons des clients à préciser ce qu’ils veulent vraiment. Décrivez votre idée, nous ferons le tri technique.`}
+  />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 17ch;
+  }
+
+  /* ---------- Mosaïque ---------- */
+
+  .mosaique {
+    display: grid;
+    gap: var(--e-s);
+  }
+
+  @media (min-width: 56rem) {
+    .mosaique {
+      grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    }
+  }
+
+  .mosaique__grand,
+  .mosaique__petit {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .mosaique__grand :global(img),
+  .mosaique__petit :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 56rem) {
+    .mosaique__grand {
+      aspect-ratio: 16 / 9;
+    }
+
+    .mosaique__petit {
+      aspect-ratio: 3 / 4;
+    }
+  }
+
+  /* ---------- Histoire ---------- */
+
+  .histoire__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .histoire__grille {
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+
+    .histoire__media {
+      position: sticky;
+      top: calc(var(--entete-hauteur) + var(--e-m));
+    }
+  }
+
+  .histoire__media {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .histoire__texte h2 {
+    margin-block: 0 var(--e-m);
+    max-width: 16ch;
+    font-size: var(--t-3);
+  }
+
+  /* ---------- Engagements ---------- */
+
+  .engagements {
+    display: grid;
+    gap: var(--e-l);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 56rem) {
+    .engagements {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .engagements li {
+    display: grid;
+    gap: var(--e-2xs);
+    align-content: start;
+    padding-block-start: var(--e-s);
+    border-block-start: 2px solid var(--c-encre);
+  }
+
+  .engagements__numero {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-style: italic;
+    color: var(--c-laiton);
+    line-height: 1;
+  }
+
+  .engagements h3 {
+    font-size: var(--t-1);
+  }
+
+  .engagements p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.65;
+  }
+
+  /* ---------- Équipement ---------- */
+
+  .equipement__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .equipement__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .equipement h2 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 16ch;
+    font-size: var(--t-3);
+  }
+
+  .equipement__liste {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .equipement__liste > div {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block: var(--e-s);
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  @media (min-width: 40rem) {
+    .equipement__liste > div {
+      grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+      gap: var(--e-m);
+      align-items: baseline;
+    }
+  }
+
+  .equipement__liste dt {
+    font-family: var(--f-titre);
+    font-size: var(--t-1);
+  }
+
+  .equipement__liste dd {
+    margin: 0;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.55;
+  }
+
+  .suite {
+    margin-block-start: var(--e-xl);
+    text-align: center;
+  }
+</style>

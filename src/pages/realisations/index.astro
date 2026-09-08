@@ -1,0 +1,107 @@
+---
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { categoriesOrdonnees, realisations } from '@data/realisations';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+const chemin = '/realisations/';
+const url = urlAbsolue(chemin);
+const titre = 'Réalisations : verres, coffrets et objets gravés | Beaune Gravure';
+const description =
+  'Les réalisations de l’atelier Beaune Gravure : verres gravés, caisses de vin, plaques, objets personnalisés et marquage industriel. Photographies de pièces réelles.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Réalisations', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe--large">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Réalisations</p>
+      <h1>{realisations.length} pièces sorties de l’atelier.</h1>
+      <p class="chapo">
+        Chaque photographie de cette page montre une pièce réellement produite ici.
+        Aucun visuel de catalogue, aucune image de synthèse. Les logos visibles
+        appartiennent à leurs propriétaires et illustrent le travail effectué.
+      </p>
+
+      <nav class="filtres" aria-label="Catégories de réalisations">
+        <span class="filtres__actif" aria-current="page">Tout voir</span>
+        {
+          categoriesOrdonnees.map((categorie) => (
+            <a href={`/realisations/${categorie.slug}/`}>
+              {categorie.nom}
+              <span aria-hidden="true"> ({categorie.total})</span>
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </header>
+
+  <div class="section section--serree">
+    <div class="enveloppe--large">
+      <GrilleRealisations realisations={realisations} colonnes={3} prioritaires={3} />
+    </div>
+  </div>
+
+  <SectionDevis
+    surtitre="Votre pièce"
+    titre="Vous avez un support en tête ? Montrez-le-nous."
+    texte="Une photo, les dimensions et la quantité suffisent pour savoir si le projet est réalisable et à quelles conditions."
+  />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 16ch;
+  }
+
+  .filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs);
+    margin-block-start: var(--e-xl);
+  }
+
+  .filtres a,
+  .filtres__actif {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .filtres a:hover {
+    border-color: var(--c-laiton);
+    color: var(--c-encre);
+  }
+
+  .filtres__actif {
+    border-color: var(--c-encre);
+    background-color: var(--c-encre);
+    color: var(--c-papier);
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { nomCategorie } from '@data/categoriesBlog';
+import type { ImageMetadata } from 'astro';
+
+const couvertures = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/images/blog/*.{webp,jpg,jpeg,png}',
+  { eager: true },
+);
+
+interface Props {
+  article: CollectionEntry<'blog'>;
+  prioritaire?: boolean;
+  /** Rendu allongé pour la mise en avant d'un article pilier. */
+  large?: boolean;
+}
+
+const { article, prioritaire = false, large = false } = Astro.props;
+const { data } = article;
+
+const couverture = couvertures[`../assets/images/blog/${data.couverture}`]?.default;
+const dateLisible = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(data.datePublication);
+---
+
+<article class:list={['article', large && 'article--large']}>
+  <a href={`/blog/${article.id}/`}>
+    {
+      couverture && (
+        <div class="article__media">
+          <Picture
+            src={couverture}
+            alt={data.couvertureAlt}
+            widths={[400, 640, 900]}
+            sizes={large ? '(min-width: 56rem) 52vw, 92vw' : '(min-width: 56rem) 31vw, 92vw'}
+            loading={prioritaire ? 'eager' : 'lazy'}
+            fetchpriority={prioritaire ? 'high' : 'auto'}
+            quality={70}
+            formats={['avif']}
+            fallbackFormat="webp"
+          />
+        </div>
+      )
+    }
+    <div class="article__copie">
+      <p class="article__meta">
+        <span>{nomCategorie(data.categorie)}</span>
+        <span aria-hidden="true">·</span>
+        <span>{data.tempsLecture} de lecture</span>
+      </p>
+      <h3>{data.titre}</h3>
+      <p class="article__chapo">{data.chapo}</p>
+      <p class="article__date">
+        <time datetime={data.datePublication.toISOString()}>{dateLisible}</time>
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .article a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-s);
+    block-size: 100%;
+    text-decoration: none;
+  }
+
+  .article__media {
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .article__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--duree-longue) var(--courbe-sortie);
+  }
+
+  @media (hover: hover) {
+    .article a:hover .article__media :global(img) {
+      transform: scale(1.04);
+    }
+  }
+
+  .article__copie {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-2xs);
+    flex: 1;
+  }
+
+  .article__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+    color: var(--c-laiton);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .article h3 {
+    font-size: var(--t-2);
+  }
+
+  .article--large h3 {
+    font-size: var(--t-3);
+  }
+
+  .article__chapo {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .article__date {
+    margin-block-start: auto;
+    padding-block-start: var(--e-2xs);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  @media (min-width: 56rem) {
+    .article--large a {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--e-l);
+      align-items: center;
+    }
+
+    .article--large .article__media {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

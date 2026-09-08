@@ -1,0 +1,31 @@
+---
+interface Miette {
+  nom: string;
+  href: string;
+}
+
+interface Props {
+  miettes: Miette[];
+  /** Sur fond sombre, les couleurs sont héritées via .sur-nuit. */
+  class?: string;
+}
+
+const { miettes, class: classe } = Astro.props;
+const dernier = miettes.length - 1;
+---
+
+<nav class:list={['fil-ariane', classe]} aria-label="Fil d’Ariane">
+  <ol>
+    {
+      miettes.map((miette, index) => (
+        <li>
+          {index === dernier ? (
+            <span aria-current="page">{miette.nom}</span>
+          ) : (
+            <a href={miette.href}>{miette.nom}</a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

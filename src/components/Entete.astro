@@ -1,0 +1,546 @@
+---
+import { navigation, ctaPrincipal, site, telephone } from '@data/site';
+import Monogramme from './Monogramme.astro';
+
+const chemin = Astro.url.pathname;
+
+function estActif(href: string): boolean {
+  if (href === '/') return chemin === '/';
+  return chemin === href || chemin.startsWith(href);
+}
+---
+
+<header class="entete">
+  <div class="entete__barre enveloppe--large">
+    <a class="entete__marque" href="/" aria-label={`${site.nom} — retour à l’accueil`}>
+      <Monogramme taille={38} class="entete__logo" />
+      <span class="entete__nom">
+        <strong>Beaune Gravure</strong>
+        <small>Gravure laser sur verre · Bourgogne</small>
+      </span>
+    </a>
+
+    <nav class="entete__nav" aria-label="Navigation principale">
+      <ul class="entete__liste">
+        {
+          navigation.map((lien) => (
+            <li class={lien.enfants ? 'entete__item entete__item--sous' : 'entete__item'}>
+              <a
+                href={lien.href}
+                class="entete__lien"
+                aria-current={estActif(lien.href) ? 'page' : undefined}
+              >
+                {lien.label}
+                {lien.enfants && (
+                  <svg viewBox="0 0 12 8" width="10" height="7" aria-hidden="true" focusable="false">
+                    <path d="M1 1.5 6 6.5l5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                )}
+              </a>
+              {lien.enfants && (
+                <div class="sous-menu">
+                  <ul>
+                    {lien.enfants.map((enfant) => (
+                      <li>
+                        <a
+                          href={enfant.href}
+                          aria-current={chemin === enfant.href ? 'page' : undefined}
+                        >
+                          {enfant.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="entete__actions">
+      <a
+        class="entete__tel"
+        href={`tel:${telephone.e164}`}
+        aria-label={`Appeler l’atelier au ${telephone.affichage}`}
+      >
+        <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true" focusable="false">
+          <path
+            d="M4.2 2.6h3l1.5 3.7-1.9 1.2a10.6 10.6 0 0 0 4.7 4.7l1.2-1.9 3.7 1.5v3a1.4 1.4 0 0 1-1.5 1.4A13.9 13.9 0 0 1 2.8 4.1 1.4 1.4 0 0 1 4.2 2.6Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="entete__tel-texte">{telephone.affichage}</span>
+      </a>
+      <a class="bouton entete__cta" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
+      <button
+        class="entete__bascule"
+        type="button"
+        aria-expanded="false"
+        aria-controls="menu-mobile"
+        data-bascule-menu
+      >
+        <span class="visuellement-cache">Ouvrir le menu</span>
+        <span class="entete__burger" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-mobile" id="menu-mobile" hidden data-menu-mobile>
+  <nav class="menu-mobile__contenu enveloppe" aria-label="Navigation mobile">
+    <ul class="menu-mobile__liste">
+      <li>
+        <a href="/" aria-current={chemin === '/' ? 'page' : undefined}>Accueil</a>
+      </li>
+      {
+        navigation.map((lien) => (
+          <li>
+            <a href={lien.href} aria-current={estActif(lien.href) ? 'page' : undefined}>
+              {lien.label}
+            </a>
+            {lien.enfants && (
+              <ul class="menu-mobile__sous">
+                {lien.enfants.map((enfant) => (
+                  <li>
+                    <a href={enfant.href}>{enfant.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="menu-mobile__pied">
+      <a class="bouton bouton--laiton" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
+      <a class="menu-mobile__tel" href={`tel:${telephone.e164}`}>
+        Appeler l’atelier · {telephone.affichage}
+      </a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  .entete {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-entete);
+    background-color: color-mix(in srgb, var(--c-papier) 88%, transparent);
+    border-block-end: 1px solid var(--c-filet);
+    backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  .entete__barre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-s);
+    min-block-size: var(--entete-hauteur);
+  }
+
+  /* ---------- Marque ---------- */
+
+  .entete__marque {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2xs);
+    flex: none;
+    text-decoration: none;
+  }
+
+  .entete__logo {
+    flex: none;
+    inline-size: 2.375rem;
+    block-size: auto;
+  }
+
+  .entete__nom {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .entete__nom strong {
+    font-family: var(--f-titre);
+    font-size: var(--t-1);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .entete__nom small {
+    color: var(--c-encre-muette);
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 26rem) {
+    .entete__nom small {
+      display: none;
+    }
+  }
+
+  /* ---------- Navigation ---------- */
+
+  .entete__nav {
+    display: none;
+  }
+
+  .entete__liste {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entete__item {
+    position: relative;
+  }
+
+  .entete__lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    padding: 0.6rem 0.75rem;
+    border-radius: var(--r-m);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--duree-courte) var(--courbe);
+  }
+
+  .entete__lien:hover,
+  .entete__lien[aria-current='page'] {
+    color: var(--c-encre);
+  }
+
+  .entete__lien[aria-current='page'] {
+    font-weight: 600;
+  }
+
+  .entete__lien svg {
+    transition: transform var(--duree) var(--courbe);
+  }
+
+  /* ---------- Sous-menu ---------- */
+
+  .sous-menu {
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: calc(100% + 0.35rem);
+    min-inline-size: 17rem;
+    padding: var(--e-2xs);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-vif);
+    box-shadow: var(--ombre-l);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-0.35rem);
+    transition: opacity var(--duree) var(--courbe), transform var(--duree) var(--courbe),
+      visibility var(--duree);
+  }
+
+  .entete__item--sous:hover .sous-menu,
+  .entete__item--sous:focus-within .sous-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .entete__item--sous:hover .entete__lien svg,
+  .entete__item--sous:focus-within .entete__lien svg {
+    transform: rotate(180deg);
+  }
+
+  .sous-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sous-menu a {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    border-radius: var(--r-m);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    text-decoration: none;
+    transition: background-color var(--duree-courte) var(--courbe),
+      color var(--duree-courte) var(--courbe);
+  }
+
+  .sous-menu a:hover,
+  .sous-menu a[aria-current='page'] {
+    background-color: var(--c-papier-creux);
+    color: var(--c-encre);
+  }
+
+  /* ---------- Actions ---------- */
+
+  .entete__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2xs);
+    flex: none;
+  }
+
+  /*
+    Sur mobile, le téléphone reste accessible sous forme de bouton rond :
+    c'est le canal de contact le plus direct pour un artisan local.
+  */
+  .entete__tel {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border: 1px solid var(--c-filet-fort);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre);
+    text-decoration: none;
+  }
+
+  .entete__tel-texte {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .entete__tel:hover {
+    color: var(--c-laiton);
+  }
+
+  .entete__cta {
+    display: none;
+    min-block-size: 2.75rem;
+    padding-inline: var(--e-s);
+  }
+
+  /* ---------- Bascule mobile ---------- */
+
+  .entete__bascule {
+    display: grid;
+    place-items: center;
+    inline-size: 2.75rem;
+    block-size: 2.75rem;
+    border: 1px solid var(--c-filet-fort);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre);
+  }
+
+  .entete__burger,
+  .entete__burger::before,
+  .entete__burger::after {
+    display: block;
+    inline-size: 1.05rem;
+    block-size: 1.5px;
+    background-color: currentColor;
+    transition: transform var(--duree) var(--courbe), opacity var(--duree-courte) var(--courbe);
+  }
+
+  .entete__burger {
+    position: relative;
+  }
+
+  .entete__burger::before,
+  .entete__burger::after {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+  }
+
+  .entete__burger::before {
+    inset-block-start: -0.32rem;
+  }
+
+  .entete__burger::after {
+    inset-block-start: 0.32rem;
+  }
+
+  [aria-expanded='true'] .entete__burger {
+    background-color: transparent;
+  }
+
+  [aria-expanded='true'] .entete__burger::before {
+    transform: translateY(0.32rem) rotate(45deg);
+  }
+
+  [aria-expanded='true'] .entete__burger::after {
+    transform: translateY(-0.32rem) rotate(-45deg);
+  }
+
+  /* ---------- Menu mobile ---------- */
+
+  .menu-mobile {
+    position: fixed;
+    inset: var(--entete-hauteur) 0 0;
+    z-index: var(--z-menu);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: var(--c-papier);
+    animation: menu-entree var(--duree) var(--courbe-sortie);
+  }
+
+  @keyframes menu-entree {
+    from {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+
+  .menu-mobile__contenu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-l);
+    padding-block: var(--e-m) var(--e-xl);
+  }
+
+  .menu-mobile__liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu-mobile__liste > li {
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .menu-mobile__liste > li > a {
+    display: block;
+    padding-block: var(--e-s);
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    text-decoration: none;
+  }
+
+  .menu-mobile__liste > li > a[aria-current='page'] {
+    color: var(--c-laiton);
+  }
+
+  .menu-mobile__sous {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 var(--e-s);
+    display: grid;
+    gap: 1px;
+  }
+
+  .menu-mobile__sous a {
+    display: block;
+    padding: 0.7rem 0;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    text-decoration: none;
+  }
+
+  .menu-mobile__sous a:hover {
+    color: var(--c-laiton);
+  }
+
+  .menu-mobile__pied {
+    display: grid;
+    gap: var(--e-s);
+    justify-items: start;
+  }
+
+  .menu-mobile__pied .bouton {
+    inline-size: 100%;
+  }
+
+  .menu-mobile__tel {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+  }
+
+  /* ---------- Points de rupture ---------- */
+
+  @media (min-width: 30rem) {
+    .entete__cta {
+      display: inline-flex;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .entete__nav {
+      display: block;
+    }
+
+    .entete__tel {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45em;
+      inline-size: auto;
+      block-size: auto;
+      padding: 0.5rem 0.25rem;
+      border: 0;
+      margin-inline-end: var(--e-2xs);
+      color: var(--c-encre-douce);
+      font-size: var(--t--1);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .entete__tel-texte {
+      position: static;
+      inline-size: auto;
+      block-size: auto;
+      overflow: visible;
+      clip-path: none;
+    }
+
+    .entete__bascule {
+      display: none;
+    }
+
+    .menu-mobile {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const bascule = document.querySelector<HTMLButtonElement>('[data-bascule-menu]');
+  const menu = document.querySelector<HTMLElement>('[data-menu-mobile]');
+
+  if (bascule && menu) {
+    const libelle = bascule.querySelector('.visuellement-cache');
+
+    const definirEtat = (ouvert: boolean) => {
+      bascule.setAttribute('aria-expanded', String(ouvert));
+      menu.hidden = !ouvert;
+      document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+      if (libelle) libelle.textContent = ouvert ? 'Fermer le menu' : 'Ouvrir le menu';
+    };
+
+    bascule.addEventListener('click', () => {
+      definirEtat(bascule.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Échap ferme le menu et rend le focus au bouton.
+    document.addEventListener('keydown', (evenement) => {
+      if (evenement.key === 'Escape' && !menu.hidden) {
+        definirEtat(false);
+        bascule.focus();
+      }
+    });
+
+    // Le passage en affichage bureau doit toujours rendre le défilement.
+    const bureau = window.matchMedia('(min-width: 64rem)');
+    bureau.addEventListener('change', (evenement) => {
+      if (evenement.matches) definirEtat(false);
+    });
+  }
+</script>

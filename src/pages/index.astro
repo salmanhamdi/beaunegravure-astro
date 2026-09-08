@@ -1,0 +1,863 @@
+---
+import { Picture } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import {
+  imagesRealisations,
+  realisations,
+  realisationsVedettes,
+} from '@data/realisations';
+import { adresse, reseaux, site, zones } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import { graphe, organisation, pageWeb, siteWeb } from '@utils/schema';
+import atelier from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
+
+const heroImage = imagesRealisations['verre-grave-machine-laser-logo-entreprise']!;
+
+const services = (await getCollection('services')).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+const phare = services.find((s) => s.id === 'verres-graves')!;
+const secondaires = services.filter((s) => s.id !== 'verres-graves').slice(0, 6);
+
+const articles = (await getCollection('blog'))
+  .sort((a, b) => b.data.datePublication.getTime() - a.data.datePublication.getTime())
+  .slice(0, 3);
+
+const url = urlAbsolue('/');
+const titre = 'Gravure laser sur verre à Beaune | Beaune Gravure';
+const description =
+  'Atelier de gravure laser sur verre près de Beaune : verres à vin, flûtes, logos de domaines, mariages et séries professionnelles. Devis sur mesure en Bourgogne.';
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  siteWeb(),
+  pageWeb({ url, titre, description }),
+]);
+
+const publics = [
+  {
+    titre: 'Domaines viticoles',
+    texte:
+      'Verres de dégustation au logo du domaine, caisses gravées, coffrets de cuvée et cadeaux clients. C’est le quotidien de l’atelier en Côte de Beaune.',
+    href: '/realisations/verre/',
+  },
+  {
+    titre: 'Restaurants et hôtels',
+    texte:
+      'Verrerie de service marquée, traits de jauge, plaques de chambre et signalétique intérieure, dans une identité cohérente d’un support à l’autre.',
+    href: '/services/signaletique/',
+  },
+  {
+    titre: 'Entreprises',
+    texte:
+      'Cadeaux clients, objets de séminaire, plaques professionnelles et marquage technique, de la pièce unique à la série répétable.',
+    href: '/services/cadeaux-personnalises/',
+  },
+  {
+    titre: 'Particuliers et mariages',
+    texte:
+      'Flûtes gravées aux prénoms et à la date, bouteilles commémoratives, cadeaux personnalisés. Une paire de verres compte autant qu’une série.',
+    href: '/services/verres-graves/',
+  },
+];
+
+const etapes = [
+  {
+    numero: '01',
+    titre: 'Vous décrivez le projet',
+    texte:
+      'Support, quantité, visuel, délai. Une photo et quelques lignes suffisent pour démarrer.',
+  },
+  {
+    numero: '02',
+    titre: 'Nous validons la faisabilité',
+    texte:
+      'Matière, géométrie, zone de marquage, finesse du motif. Nous disons aussi quand ce n’est pas possible.',
+  },
+  {
+    numero: '03',
+    titre: 'Vous approuvez le BAT',
+    texte:
+      'Taille réelle, position, rendu attendu. Rien ne part en production avant votre accord.',
+  },
+  {
+    numero: '04',
+    titre: 'Nous gravons et contrôlons',
+    texte:
+      'Chaque pièce est positionnée, gravée, nettoyée puis vérifiée avant remise ou expédition.',
+  },
+];
+---
+
+<Base titre={titre} description={description} chemin="/" schema={schema}>
+  <!-- ============================ Hero ============================ -->
+  <section class="hero">
+    <div class="hero__texte">
+      <p class="surtitre">Atelier de gravure laser · Beaune, Bourgogne</p>
+      <h1>
+        La gravure qui <em>reste</em><br />sur le verre.
+      </h1>
+      <p class="hero__chapo">
+        Verres à vin, verres de dégustation, flûtes à champagne. Le laser ne dépose
+        rien&nbsp;: il transforme la surface du verre. Le marquage ne s’efface ni au
+        lavage, ni à l’usage, ni avec les années.
+      </p>
+      <div class="boutons hero__boutons">
+        <a class="bouton" href="/contact/">Demander un devis</a>
+        <a class="bouton bouton--fantome" href="/realisations/">Voir les réalisations</a>
+      </div>
+      <ul class="hero__preuves">
+        <li>
+          <strong>{site.anneesExperience} ans</strong>
+          <span>de pratique de la gravure laser</span>
+        </li>
+        <li>
+          <strong>3 lasers</strong>
+          <span>CO₂, UV et fibre à l’atelier</span>
+        </li>
+        <li>
+          <strong>1 à 1 000</strong>
+          <span>de la pièce unique à la série</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="hero__media">
+      <Picture
+        src={heroImage}
+        alt="Verre de dégustation gravé au logo d’une entreprise, positionné dans la machine laser de l’atelier"
+        widths={[480, 720, 960, 1350]}
+        sizes="(min-width: 64rem) 42vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+        quality={74}
+        formats={['avif']}
+        fallbackFormat="webp"
+      />
+      <p class="hero__credit">Marquage d’un verre de dégustation au laser UV</p>
+    </div>
+  </section>
+
+  <!-- ======================= Proposition ========================= -->
+  <section class="section manifeste sur-nuit">
+    <div class="enveloppe">
+      <p class="surtitre">Ce que nous faisons</p>
+      <p class="manifeste__phrase">
+        Nous gravons le verre, le bois et le métal pour les domaines de Bourgogne, les
+        restaurants, les entreprises et ceux qui veulent offrir un objet qui dure.
+        <span>Un support, un réglage, une pièce juste.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ======================== Savoir-faire ======================== -->
+  <section class="section savoir-faire">
+    <div class="enveloppe">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Savoir-faire</p>
+          <h2>Le verre d’abord, et tout ce qui l’accompagne.</h2>
+        </div>
+        <p class="chapo">
+          La gravure sur verre est le cœur du métier. Autour d’elle, l’atelier maîtrise
+          les supports qui composent un projet complet&nbsp;: coffrets, plaques, objets
+          et marquage technique.
+        </p>
+      </div>
+
+      <a class="phare revele" href={`/services/${phare.id}/`}>
+        <div class="phare__media">
+          <Picture
+            src={imagesRealisations[phare.data.visuel]!}
+            alt=""
+            widths={[480, 720, 960, 1280]}
+            sizes="(min-width: 56rem) 46vw, 92vw"
+            loading="lazy"
+            quality={72}
+            formats={['avif']}
+            fallbackFormat="webp"
+          />
+        </div>
+        <div class="phare__copie">
+          <p class="etiquette">Savoir-faire principal</p>
+          <h3>{phare.data.h1}</h3>
+          <p>{phare.data.chapo}</p>
+          <ul class="liste-filet">
+            {phare.data.points.map((point) => <li>{point}</li>)}
+          </ul>
+          <span class="lien-fleche">Découvrir la gravure sur verre</span>
+        </div>
+      </a>
+
+      <ul class="services-liste">
+        {
+          secondaires.map((service) => (
+            <li class="revele">
+              <a href={`/services/${service.id}/`}>
+                <span class="services-liste__titre">{service.data.titre}</span>
+                <span class="services-liste__texte">{service.data.usages}</span>
+                <span class="lien-fleche">Voir</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ======================== Réalisations ======================== -->
+  <section class="section section--creuse">
+    <div class="enveloppe--large">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Réalisations</p>
+          <h2>Des pièces réellement sorties de l’atelier.</h2>
+        </div>
+        <p class="chapo">
+          Toutes les photographies de ce site montrent des pièces que nous avons
+          produites. Aucun visuel de catalogue, aucune mise en scène de synthèse.
+        </p>
+      </div>
+
+      <GrilleRealisations realisations={realisationsVedettes.slice(0, 6)} colonnes={3} />
+
+      <p class="section__suite">
+        <a class="bouton bouton--fantome" href="/realisations/">
+          Voir les {realisations.length} réalisations
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- =========================== Publics ========================== -->
+  <section class="section">
+    <div class="enveloppe">
+      <div class="tete-section">
+        <div>
+          <p class="surtitre">Pour qui</p>
+          <h2>Particuliers et professionnels, sans distinction de traitement.</h2>
+        </div>
+      </div>
+      <div class="publics">
+        {
+          publics.map((bloc) => (
+            <article class="publics__carte revele">
+              <h3>{bloc.titre}</h3>
+              <p>{bloc.texte}</p>
+              <a class="lien-fleche" href={bloc.href}>
+                En savoir plus
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== Méthode ========================== -->
+  <section class="section section--creuse">
+    <div class="enveloppe">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Méthode</p>
+          <h2>Quatre étapes, aucune surprise.</h2>
+        </div>
+        <p class="chapo">
+          La gravure elle-même prend quelques minutes. C’est la préparation qui fait la
+          différence entre une pièce correcte et une pièce juste.
+        </p>
+      </div>
+      <ol class="etapes">
+        {
+          etapes.map((etape) => (
+            <li class="etapes__item revele">
+              <span class="etapes__numero">{etape.numero}</span>
+              <h3>{etape.titre}</h3>
+              <p>{etape.texte}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- =========================== Atelier ========================== -->
+  <section class="section atelier">
+    <div class="enveloppe atelier__grille">
+      <div class="atelier__media revele">
+        <Picture
+          src={atelier}
+          alt="Poste de marquage laser de l’atelier, avec son ordinateur de préparation et les lunettes de protection"
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 56rem) 48vw, 92vw"
+          loading="lazy"
+          quality={72}
+          formats={['avif']}
+          fallbackFormat="webp"
+        />
+      </div>
+      <div class="atelier__copie">
+        <p class="surtitre">L’atelier</p>
+        <h2>Un interlocuteur unique, du premier échange à la dernière pièce.</h2>
+        <p>
+          Beaune Gravure est un atelier à taille humaine installé à {adresse.ville}, à
+          quelques minutes de Beaune. La personne qui répond à votre demande est celle
+          qui prépare le fichier, règle la machine et contrôle les pièces.
+        </p>
+        <p>
+          C’est ce qui permet de dire franchement quand un support ne convient pas,
+          plutôt que de livrer un résultat approximatif.
+        </p>
+        <a class="lien-fleche" href="/a-propos/">Découvrir l’atelier</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ Local =========================== -->
+  <section class="section section--serree local">
+    <div class="enveloppe local__grille">
+      <div>
+        <p class="surtitre">Ancrage</p>
+        <h2>Au cœur de la Côte de Beaune.</h2>
+        <p class="chapo">
+          L’atelier est installé {adresse.rue}, à {adresse.ville}. Nous travaillons pour
+          les particuliers et les professionnels de {zones.slice(0, 5).join(', ')} et de
+          toute la Bourgogne-Franche-Comté. Certaines pièces sont expédiées ailleurs en
+          France selon leur nature.
+        </p>
+        <a class="lien-fleche" href={reseaux.googleMaps} rel="noopener noreferrer" target="_blank">
+          Voir l’atelier sur Google Maps
+        </a>
+      </div>
+      <ul class="local__zones">
+        {zones.map((zone) => <li>{zone}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- =========================== Journal ========================== -->
+  <section class="section section--creuse">
+    <div class="enveloppe">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Journal</p>
+          <h2>Ce qu’il faut savoir avant de faire graver.</h2>
+        </div>
+        <p class="chapo">
+          Des repères concrets sur les matières, les fichiers, les rendus et les limites
+          du procédé — écrits depuis l’établi, pas depuis un service marketing.
+        </p>
+      </div>
+      <ul class="journal">
+        {
+          articles.map((article) => (
+            <li class="revele">
+              <a href={`/blog/${article.id}/`}>
+                <span class="journal__meta">{article.data.tempsLecture} de lecture</span>
+                <h3>{article.data.titre}</h3>
+                <p>{article.data.chapo}</p>
+                <span class="lien-fleche">Lire</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="section__suite">
+        <a class="bouton bouton--fantome" href="/blog/">Tous les articles</a>
+      </p>
+    </div>
+  </section>
+
+  <SectionDevis />
+</Base>
+
+<style>
+  /* ============================== Hero ============================== */
+
+  .hero {
+    display: grid;
+    gap: var(--e-l);
+    padding-block: var(--e-xl) var(--e-2xl);
+    padding-inline: var(--gouttiere);
+  }
+
+  .hero__texte {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    max-width: 34rem;
+  }
+
+  .hero h1 {
+    font-size: var(--t-6);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--c-laiton);
+  }
+
+  .hero__chapo {
+    margin-block-start: var(--e-m);
+    max-width: 46ch;
+    color: var(--c-encre-douce);
+    font-size: var(--t-1);
+    line-height: 1.55;
+  }
+
+  .hero__boutons {
+    margin-block-start: var(--e-l);
+  }
+
+  .hero__preuves {
+    display: grid;
+    gap: var(--e-s);
+    margin-block-start: var(--e-xl);
+    padding-block-start: var(--e-m);
+    border-block-start: 1px solid var(--c-filet);
+    inline-size: 100%;
+    list-style: none;
+    padding-inline: 0;
+  }
+
+  .hero__preuves li {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero__preuves strong {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-weight: 400;
+    letter-spacing: var(--ls-titre);
+  }
+
+  .hero__preuves span {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.4;
+  }
+
+  .hero__media {
+    position: relative;
+    border-radius: var(--r-l);
+    overflow: hidden;
+    background-color: var(--c-papier-creux);
+  }
+
+  .hero__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .hero__credit {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding: var(--e-m) var(--e-s) var(--e-s);
+    background: linear-gradient(to top, rgb(0 0 0 / 0.62), transparent);
+    color: #fff;
+    font-size: var(--t--2);
+    letter-spacing: 0.03em;
+  }
+
+  @media (min-width: 30rem) {
+    .hero__preuves {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--e-m);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+      gap: var(--e-2xl);
+      align-items: center;
+      padding-block: var(--e-2xl) var(--e-3xl);
+      inline-size: min(100% - (var(--gouttiere) * 2), var(--largeur-large));
+      margin-inline: auto;
+      padding-inline: 0;
+    }
+
+    .hero__media {
+      aspect-ratio: 4 / 5;
+      max-block-size: 40rem;
+    }
+  }
+
+  /* ============================ Manifeste =========================== */
+
+  .manifeste__phrase {
+    max-width: 30ch;
+    font-family: var(--f-titre);
+    font-size: var(--t-4);
+    line-height: 1.15;
+    letter-spacing: var(--ls-titre);
+    text-wrap: balance;
+  }
+
+  .manifeste__phrase span {
+    display: block;
+    margin-block-start: var(--e-m);
+    color: var(--c-laiton);
+    font-size: var(--t-2);
+  }
+
+  @media (min-width: 56rem) {
+    .manifeste__phrase {
+      max-width: 26ch;
+      font-size: var(--t-5);
+    }
+  }
+
+  /* =========================== Savoir-faire ========================= */
+
+  .phare {
+    display: grid;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-vif);
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe);
+  }
+
+  .phare:hover {
+    border-color: var(--c-laiton);
+  }
+
+  .phare__media {
+    overflow: hidden;
+    background-color: var(--c-papier-creux);
+  }
+
+  .phare__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    transition: transform var(--duree-longue) var(--courbe-sortie);
+  }
+
+  @media (hover: hover) {
+    .phare:hover .phare__media :global(img) {
+      transform: scale(1.03);
+    }
+  }
+
+  .phare__copie {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--e-s);
+    padding: var(--e-m);
+  }
+
+  .phare__copie h3 {
+    font-size: var(--t-3);
+  }
+
+  .phare__copie p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .phare__copie .liste-filet {
+    inline-size: 100%;
+  }
+
+  @media (min-width: 56rem) {
+    .phare {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .phare__copie {
+      padding: var(--e-xl);
+      justify-content: center;
+    }
+  }
+
+  .services-liste {
+    display: grid;
+    gap: 0;
+    margin-block-start: var(--e-l);
+    list-style: none;
+    padding: 0;
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .services-liste li {
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .services-liste a {
+    display: grid;
+    gap: var(--e-3xs);
+    align-items: baseline;
+    padding-block: var(--e-m);
+    text-decoration: none;
+  }
+
+  .services-liste__titre {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    letter-spacing: var(--ls-titre);
+    /* Décalage au survol par transformation : pas de recalcul de mise en page. */
+    transition: transform var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .services-liste a:hover .services-liste__titre {
+    transform: translateX(0.5rem);
+    color: var(--c-laiton);
+  }
+
+  .services-liste__texte {
+    color: var(--c-encre-muette);
+    font-size: var(--t--1);
+    line-height: 1.55;
+  }
+
+  @media (min-width: 56rem) {
+    .services-liste a {
+      grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+      gap: var(--e-m);
+      align-items: center;
+    }
+  }
+
+  /* =========================== Réalisations ========================= */
+
+  .section__suite {
+    margin-block-start: var(--e-xl);
+    text-align: center;
+  }
+
+  /* ============================= Publics ============================ */
+
+  .publics {
+    display: grid;
+    gap: var(--e-m);
+  }
+
+  @media (min-width: 44rem) {
+    .publics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 72rem) {
+    .publics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--e-l);
+    }
+  }
+
+  .publics__carte {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--e-xs);
+    padding-block-start: var(--e-s);
+    border-block-start: 2px solid var(--c-encre);
+  }
+
+  .publics__carte h3 {
+    font-size: var(--t-2);
+  }
+
+  .publics__carte p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .publics__carte .lien-fleche {
+    margin-block-start: auto;
+    padding-block-start: var(--e-xs);
+  }
+
+  /* ============================= Étapes ============================= */
+
+  .etapes {
+    display: grid;
+    gap: var(--e-l);
+    list-style: none;
+    padding: 0;
+    counter-reset: etape;
+  }
+
+  @media (min-width: 44rem) {
+    .etapes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 72rem) {
+    .etapes {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .etapes__item {
+    display: grid;
+    gap: var(--e-2xs);
+    align-content: start;
+  }
+
+  .etapes__numero {
+    font-family: var(--f-titre);
+    font-size: var(--t-3);
+    font-style: italic;
+    color: var(--c-laiton);
+    line-height: 1;
+  }
+
+  .etapes__item h3 {
+    font-size: var(--t-1);
+  }
+
+  .etapes__item p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  /* ============================= Atelier ============================ */
+
+  .atelier__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: center;
+  }
+
+  @media (min-width: 56rem) {
+    .atelier__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .atelier__media {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .atelier__copie {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--e-s);
+  }
+
+  .atelier__copie h2 {
+    max-width: 18ch;
+    font-size: var(--t-3);
+  }
+
+  .atelier__copie p {
+    max-width: 52ch;
+    color: var(--c-encre-douce);
+  }
+
+  /* ============================== Local ============================= */
+
+  .local__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .local__grille {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .local h2 {
+    font-size: var(--t-3);
+  }
+
+  .local .chapo {
+    margin-block: var(--e-s);
+  }
+
+  .local__zones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs);
+    list-style: none;
+    padding: 0;
+  }
+
+  .local__zones li {
+    padding: 0.4em 0.9em;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre-douce);
+    font-size: var(--t--2);
+  }
+
+  /* ============================= Journal ============================ */
+
+  .journal {
+    display: grid;
+    gap: var(--e-m);
+    list-style: none;
+    padding: 0;
+  }
+
+  @media (min-width: 52rem) {
+    .journal {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--e-l);
+    }
+  }
+
+  .journal a {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: var(--e-2xs);
+    block-size: 100%;
+    padding: var(--e-m);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-vif);
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe);
+  }
+
+  .journal a:hover {
+    border-color: var(--c-laiton);
+  }
+
+  .journal__meta {
+    color: var(--c-laiton);
+    font-size: var(--t--2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .journal h3 {
+    font-size: var(--t-1);
+  }
+
+  .journal p {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .journal .lien-fleche {
+    margin-block-start: auto;
+    padding-block-start: var(--e-xs);
+  }
+</style>

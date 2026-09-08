@@ -1,0 +1,99 @@
+---
+import { Picture } from 'astro:assets';
+import { imageDe, CATEGORIES, type Realisation } from '@data/realisations';
+
+interface Props {
+  realisation: Realisation;
+  /** Largeurs candidates transmises au navigateur. */
+  sizes?: string;
+  /** La première image d'une grille peut être chargée en priorité. */
+  prioritaire?: boolean;
+  /** Masque la légende, pour les grilles purement visuelles. */
+  sansLegende?: boolean;
+}
+
+const {
+  realisation,
+  sizes = '(min-width: 68rem) 30vw, (min-width: 40rem) 45vw, 92vw',
+  prioritaire = false,
+  sansLegende = false,
+} = Astro.props;
+
+const image = imageDe(realisation);
+const categorie = CATEGORIES[realisation.categorie];
+---
+
+<figure class="realisation">
+  <div class="realisation__cadre">
+    <Picture
+      src={image}
+      alt={realisation.alt}
+      widths={[400, 640, 900]}
+      sizes={sizes}
+      loading={prioritaire ? 'eager' : 'lazy'}
+      fetchpriority={prioritaire ? 'high' : 'auto'}
+      decoding={prioritaire ? 'sync' : 'async'}
+      quality={72}
+      formats={['avif']}
+      fallbackFormat="webp"
+    />
+  </div>
+  {
+    !sansLegende && (
+      <figcaption class="realisation__legende">
+        <span class="realisation__titre">{realisation.titre}</span>
+        <span class="realisation__categorie">{categorie.nom}</span>
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .realisation {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-xs);
+    margin: 0;
+  }
+
+  .realisation__cadre {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .realisation__cadre :global(img) {
+    inline-size: 100%;
+    block-size: auto;
+    transition: transform var(--duree-longue) var(--courbe-sortie);
+  }
+
+  @media (hover: hover) {
+    .realisation:hover .realisation__cadre :global(img) {
+      transform: scale(1.03);
+    }
+  }
+
+  .realisation__legende {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-2xs);
+  }
+
+  .realisation__titre {
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .realisation__categorie {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+</style>

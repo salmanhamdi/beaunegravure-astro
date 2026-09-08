@@ -1,0 +1,109 @@
+name: Déployer sur Hostinger
+
+# Déclenchement manuel uniquement : aucun push ne déploie automatiquement.
+# Voir DEPLOIEMENT.md pour la liste des secrets à créer.
+on:
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: Environnement de destination
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: deploiement-${{ inputs.cible }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deployer:
+    name: Construire et téléverser
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Vérifier les types
+        run: npx astro check
+
+      - name: Construire
+        env:
+          SITE_URL: ${{ inputs.cible == 'production' && 'https://beaunegravure.fr' || 'https://dimgrey-caribou-115686.hostingersite.com' }}
+          SITE_ENV: ${{ inputs.cible }}
+        run: npx astro build
+
+      - name: Contrôler le site généré
+        run: node scripts/verifier.mjs
+
+      - name: Confirmer l’indexabilité attendue
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.cible }}" = "production" ]; then
+            grep -q "Allow: /" dist/robots.txt
+            grep -q "index, follow" dist/index.html
+            test -f dist/sitemap-index.xml
+            echo "Production : site indexable, sitemap présent."
+          else
+            grep -q "Disallow: /" dist/robots.txt
+            grep -q "noindex, nofollow" dist/index.html
+            echo "Préproduction : site non indexable."
+          fi
+
+      - name: Installer lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Téléverser
+        env:
+          FTP_HOST: ${{ secrets.HOSTINGER_HOST }}
+          FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
+          FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
+          FTP_PATH: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          set -euo pipefail
+
+          for variable in FTP_HOST FTP_USER FTP_PASS; do
+            if [ -z "${!variable:-}" ]; then
+              echo "Secret manquant : $variable" >&2
+              exit 1
+            fi
+          done
+
+          CIBLE="${FTP_PATH:-public_html}"
+
+          # TLS obligatoire, certificat vérifié : les identifiants ne doivent
+          # jamais transiter en clair.
+          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<FTP
+            set ftp:ssl-force yes
+            set ftp:ssl-protect-data yes
+            set ssl:verify-certificate yes
+            set ftp:passive-mode yes
+            set net:timeout 30
+            set net:max-retries 3
+            set cmd:fail-exit yes
+            mirror --reverse --delete --parallel=4 --verbose \
+              --exclude-glob api/config.php \
+              --exclude-glob api/.data/ \
+              dist/ "$CIBLE/"
+            bye
+          FTP
+
+      - name: Rappel
+        run: |
+          echo "Déploiement terminé sur ${{ inputs.cible }}."
+          echo "Vérifier api/config.php sur le serveur : il n'est jamais transféré."

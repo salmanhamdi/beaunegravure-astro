@@ -1,0 +1,82 @@
+# Beaune Gravure — configuration Apache / LiteSpeed pour un site statique.
+
+# --------------------------------------------------------------------------
+# En-têtes de sécurité
+# --------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+
+    # HSTS : à n'activer qu'une fois le HTTPS confirmé sur le domaine définitif.
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+    # Le site n'appelle aucun service tiers : la politique peut rester stricte.
+    Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+
+    # Les fichiers versionnés par Astro sont immuables.
+    <FilesMatch "\.(avif|webp|jpg|jpeg|png|svg|woff2|css|js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Le HTML doit être revalidé pour que les mises à jour soient visibles.
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=0, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# --------------------------------------------------------------------------
+# Compression
+# --------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# --------------------------------------------------------------------------
+# Types MIME
+# --------------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType image/avif .avif
+    AddType image/webp .webp
+    AddType font/woff2 .woff2
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
+# --------------------------------------------------------------------------
+# Fichiers sensibles
+# --------------------------------------------------------------------------
+<FilesMatch "^(config\.php|config\.example\.php)$">
+    Require all denied
+</FilesMatch>
+
+RedirectMatch 404 /\.git
+RedirectMatch 404 /api/\.data
+
+# --------------------------------------------------------------------------
+# URL canoniques : slash final, sans www
+# --------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # HTTPS obligatoire.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+    # www -> domaine nu (à activer après le basculement DNS).
+    # RewriteCond %{HTTP_HOST} ^www\.beaunegravure\.fr$ [NC]
+    # RewriteRule ^(.*)$ https://beaunegravure.fr/$1 [R=301,L]
+
+    # Ajoute le slash final aux URL de pages, hors fichiers réels.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,5}$
+    RewriteCond %{REQUEST_URI} !/$
+    RewriteRule ^(.*)$ /$1/ [R=301,L]
+</IfModule>
+
+# --------------------------------------------------------------------------
+# Page d'erreur
+# --------------------------------------------------------------------------
+ErrorDocument 404 /404.html

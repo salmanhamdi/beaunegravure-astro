@@ -1,0 +1,83 @@
+---
+import { email, telephone } from '@data/site';
+
+interface Props {
+  surtitre?: string;
+  titre?: string;
+  texte?: string;
+  /** Préremplit le champ « type de projet » du formulaire. */
+  projet?: string;
+}
+
+const {
+  surtitre = 'Votre projet',
+  titre = 'Décrivez votre projet, nous vous dirons ce qui est faisable.',
+  texte = 'Support, quantité, visuel, délai : plus votre demande est précise, plus notre réponse le sera. Nous répondons avec une solution réaliste, pas avec un catalogue.',
+  projet,
+} = Astro.props;
+
+const lienDevis = projet ? `/contact/?projet=${encodeURIComponent(projet)}` : '/contact/';
+---
+
+<section class="devis sur-nuit">
+  <div class="enveloppe devis__grille">
+    <div>
+      <p class="surtitre">{surtitre}</p>
+      <h2>{titre}</h2>
+    </div>
+    <div class="devis__action">
+      <p class="chapo">{texte}</p>
+      <div class="boutons">
+        <a class="bouton bouton--laiton" href={lienDevis}>Demander un devis</a>
+        <a class="bouton bouton--fantome" href={`tel:${telephone.e164}`}>
+          {telephone.affichage}
+        </a>
+      </div>
+      <p class="devis__mail">
+        Ou par courriel : <a href={`mailto:${email}`}>{email}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .devis {
+    padding-block: var(--e-2xl);
+  }
+
+  .devis__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .devis__grille {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .devis h2 {
+    max-width: 16ch;
+    font-size: var(--t-4);
+  }
+
+  .devis__action {
+    display: grid;
+    gap: var(--e-m);
+  }
+
+  .devis__mail {
+    color: var(--c-encre-muette);
+    font-size: var(--t--1);
+  }
+
+  .devis__mail a {
+    color: var(--c-clair);
+  }
+
+  .devis .bouton--fantome {
+    --bouton-texte: var(--c-clair);
+  }
+</style>

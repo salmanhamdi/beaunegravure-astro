@@ -1,0 +1,113 @@
+---
+import Base from '@layouts/Base.astro';
+import { email, telephone } from '@data/site';
+
+const pistes = [
+  { href: '/services/verres-graves/', label: 'Gravure sur verre', note: 'Le cœur du métier' },
+  { href: '/realisations/', label: 'Réalisations', note: 'Les pièces sorties de l’atelier' },
+  { href: '/services/', label: 'Savoir-faire', note: 'Tout ce que nous gravons' },
+  { href: '/contact/', label: 'Demander un devis', note: 'Réponse sous quelques jours' },
+];
+---
+
+<Base
+  titre="Page introuvable | Beaune Gravure"
+  description="Cette page n’existe pas ou a été déplacée. Retrouvez les savoir-faire, les réalisations et le contact de l’atelier Beaune Gravure."
+  chemin="/404/"
+  noindex
+>
+  <section class="section section--ample erreur">
+    <div class="enveloppe">
+      <p class="surtitre">Erreur 404</p>
+      <h1>Cette page n’existe pas.</h1>
+      <p class="chapo">
+        Le lien est peut-être incomplet, ou la page a été déplacée lors de la refonte du
+        site. Voici les chemins les plus utiles.
+      </p>
+
+      <ul class="pistes">
+        {
+          pistes.map((piste) => (
+            <li>
+              <a href={piste.href}>
+                <strong>{piste.label}</strong>
+                <span>{piste.note}</span>
+                <span class="lien-fleche" aria-hidden="true" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="secours">
+        Vous cherchiez quelque chose de précis&nbsp;? Appelez le
+        <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a> ou écrivez à
+        <a href={`mailto:${email}`}>{email}</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .erreur h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 14ch;
+  }
+
+  .pistes {
+    display: grid;
+    gap: 0;
+    margin-block-start: var(--e-xl);
+    list-style: none;
+    padding: 0;
+    border-block-start: 1px solid var(--c-filet);
+    max-width: 46rem;
+  }
+
+  .pistes li {
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .pistes a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--e-3xs) var(--e-m);
+    align-items: center;
+    padding-block: var(--e-s);
+    text-decoration: none;
+  }
+
+  .pistes strong {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-weight: 400;
+    transition: transform var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .pistes a:hover strong {
+    transform: translateX(0.5rem);
+    color: var(--c-laiton);
+  }
+
+  .pistes span:not(.lien-fleche) {
+    grid-column: 1;
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  .pistes .lien-fleche {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .secours {
+    margin-block-start: var(--e-xl);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+  }
+
+  .secours a {
+    color: var(--c-encre);
+    font-weight: 500;
+  }
+</style>

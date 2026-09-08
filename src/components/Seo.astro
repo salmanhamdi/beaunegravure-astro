@@ -1,0 +1,91 @@
+---
+/**
+ * Métadonnées de page : titre, description, canonical, robots, Open Graph,
+ * Twitter Card et données structurées.
+ *
+ * Le canonical pointe toujours vers l'URL du build en cours. Sur le staging,
+ * `noindex, nofollow` est ajouté : les moteurs ne peuvent donc jamais prendre
+ * le staging pour la version officielle.
+ */
+import { EST_INDEXABLE, urlAbsolue } from '@utils/env';
+import { site } from '@data/site';
+
+interface Props {
+  titre: string;
+  description: string;
+  /** Chemin interne de la page, avec slash final. */
+  chemin: string;
+  /** Chemin absolu ou relatif de l'image de partage. */
+  image?: string;
+  imageAlt?: string;
+  type?: 'website' | 'article';
+  datePublication?: Date;
+  dateModification?: Date;
+  /** Empêche l'indexation d'une page précise, même en production. */
+  noindex?: boolean;
+  schema?: unknown;
+}
+
+const {
+  titre,
+  description,
+  chemin,
+  image = '/og/beaune-gravure-partage.jpg',
+  imageAlt = 'Verre de dégustation gravé au laser dans l’atelier Beaune Gravure',
+  type = 'website',
+  datePublication,
+  dateModification,
+  noindex = false,
+  schema,
+} = Astro.props;
+
+const canonical = urlAbsolue(chemin);
+const imageAbsolue = urlAbsolue(image);
+const indexable = EST_INDEXABLE && !noindex;
+const robots = indexable
+  ? 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'
+  : 'noindex, nofollow';
+---
+
+<title>{titre}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+
+<meta property="og:type" content={type} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:site_name" content={site.nom} />
+<meta property="og:title" content={titre} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageAbsolue} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={titre} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageAbsolue} />
+<meta name="twitter:image:alt" content={imageAlt} />
+
+{
+  datePublication && (
+    <meta property="article:published_time" content={datePublication.toISOString()} />
+  )
+}
+{
+  dateModification && (
+    <meta property="article:modified_time" content={dateModification.toISOString()} />
+  )
+}
+
+{
+  schema && (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(schema)}
+    />
+  )
+}

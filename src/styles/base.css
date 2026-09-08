@@ -1,0 +1,332 @@
+/* Beaune Gravure — remise à zéro et fondations typographiques. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Le header est collant : les ancres ne doivent pas passer dessous. */
+  scroll-padding-top: calc(var(--entete-hauteur) + var(--e-m));
+}
+
+body {
+  min-height: 100svh;
+  background-color: var(--c-papier);
+  color: var(--c-encre);
+  font-family: var(--f-texte);
+  font-size: var(--t-0);
+  font-weight: 400;
+  line-height: var(--lh-texte);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+  /* Teinte d'attente neutre : évite le flash blanc sur les fonds sombres. */
+  background-color: color-mix(in srgb, var(--c-encre) 6%, transparent);
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ---------- Titres ---------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--f-titre);
+  font-weight: 400;
+  line-height: var(--lh-titre);
+  letter-spacing: var(--ls-titre);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--t-5);
+  line-height: var(--lh-serre);
+  letter-spacing: var(--ls-serre);
+}
+
+h2 {
+  font-size: var(--t-4);
+}
+
+h3 {
+  font-size: var(--t-2);
+}
+
+h4 {
+  font-size: var(--t-1);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+/* ---------- Liens ---------- */
+
+a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 38%, transparent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: from-font;
+  transition: color var(--duree-courte) var(--courbe),
+    text-decoration-color var(--duree-courte) var(--courbe);
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* ---------- Focus ---------- */
+
+:focus-visible {
+  outline: 2px solid var(--c-laiton);
+  outline-offset: 3px;
+  border-radius: var(--r-s);
+}
+
+.sur-nuit :focus-visible {
+  outline-color: var(--c-laiton-vif);
+}
+
+/* ---------- Listes de contenu ---------- */
+
+ul[class],
+ol[class] {
+  list-style: none;
+  padding: 0;
+}
+
+/* ---------- Utilitaires d'accessibilité ---------- */
+
+.visuellement-cache {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lien-evitement {
+  position: absolute;
+  top: var(--e-2xs);
+  left: var(--e-2xs);
+  z-index: calc(var(--z-modale) + 1);
+  padding: var(--e-xs) var(--e-s);
+  background: var(--c-nuit);
+  color: var(--c-clair);
+  border-radius: var(--r-m);
+  font-size: var(--t--1);
+  font-weight: 500;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--duree) var(--courbe-sortie);
+}
+
+.lien-evitement:focus-visible {
+  transform: translateY(0);
+}
+
+/* ---------- Trame ---------- */
+
+/*
+  Les trois enveloppes sont utilisables seules : le centrage est donc porté par
+  chacune, et non par la seule classe de base.
+*/
+.enveloppe,
+.enveloppe--large,
+.enveloppe--texte {
+  margin-inline: auto;
+}
+
+.enveloppe {
+  width: min(100% - (var(--gouttiere) * 2), var(--largeur-contenu));
+}
+
+.enveloppe--large {
+  width: min(100% - (var(--gouttiere) * 2), var(--largeur-large));
+}
+
+.enveloppe--texte {
+  width: min(100% - (var(--gouttiere) * 2), var(--largeur-texte));
+}
+
+.section {
+  padding-block: var(--e-2xl);
+}
+
+.section--serree {
+  padding-block: var(--e-xl);
+}
+
+.section--ample {
+  padding-block: var(--e-3xl);
+}
+
+.section--creuse {
+  background-color: var(--c-papier-creux);
+}
+
+/* ---------- Éléments éditoriaux communs ---------- */
+
+.surtitre {
+  display: flex;
+  align-items: center;
+  gap: var(--e-xs);
+  margin-block-end: var(--e-s);
+  color: var(--c-laiton);
+  font-family: var(--f-texte);
+  font-size: var(--t--2);
+  font-weight: 600;
+  letter-spacing: var(--ls-large);
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.surtitre::before {
+  content: '';
+  inline-size: clamp(1.5rem, 3vw, 2.75rem);
+  block-size: 1px;
+  flex: none;
+  background-color: currentColor;
+}
+
+.chapo {
+  max-width: 58ch;
+  color: var(--c-encre-douce);
+  font-size: var(--t-1);
+  line-height: 1.55;
+}
+
+.prose > * + * {
+  margin-block-start: var(--e-s);
+}
+
+.prose {
+  max-width: var(--largeur-texte);
+  color: var(--c-encre-douce);
+}
+
+.prose h2,
+.prose h3 {
+  margin-block-start: var(--e-l);
+  color: var(--c-encre);
+}
+
+.prose h2 {
+  font-size: var(--t-3);
+}
+
+.prose h3 {
+  font-size: var(--t-2);
+}
+
+.prose ul,
+.prose ol {
+  padding-inline-start: 1.25em;
+}
+
+.prose li + li {
+  margin-block-start: var(--e-2xs);
+}
+
+.prose a {
+  color: var(--c-encre);
+  text-decoration-color: var(--c-laiton);
+  text-decoration-thickness: 1.5px;
+}
+
+.prose strong {
+  color: var(--c-encre);
+  font-weight: 600;
+}
+
+.prose blockquote {
+  margin-block: var(--e-l);
+  padding-inline-start: var(--e-m);
+  border-inline-start: 2px solid var(--c-laiton);
+  font-family: var(--f-titre);
+  font-size: var(--t-2);
+  line-height: 1.35;
+  color: var(--c-encre);
+}
+
+/* ---------- Filet de séparation ---------- */
+
+.filet {
+  border: 0;
+  border-block-start: 1px solid var(--c-filet);
+}
+
+/* ---------- Mouvement réduit ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Impression ---------- */
+
+@media print {
+  .entete,
+  .pied,
+  .lien-evitement,
+  .fil-ariane {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

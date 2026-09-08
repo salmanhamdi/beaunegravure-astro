@@ -1,0 +1,36 @@
+{
+  "name": "beaunegravure-astro",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site vitrine Beaune Gravure — gravure laser sur verre en Bourgogne. Astro, static-first.",
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "build:staging": "cross-env SITE_URL=https://dimgrey-caribou-115686.hostingersite.com SITE_ENV=staging astro build",
+    "build:prod": "cross-env SITE_URL=https://beaunegravure.fr SITE_ENV=production astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "astro": "^7.3.1",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "cross-env": "^10.1.0",
+    "typescript": "^5.9.3"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true,
+    "esbuild@0.28.2": true
+  }
+}

@@ -1,0 +1,514 @@
+---
+import { Picture } from 'astro:assets';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import type { ImageMetadata } from 'astro';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import Faq from '@components/Faq.astro';
+import CarteArticle from '@components/CarteArticle.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { CATEGORIES_BLOG, nomCategorie, type CategorieBlogSlug } from '@data/categoriesBlog';
+import { urlAbsolue } from '@utils/env';
+import {
+  articleSchema,
+  faqSchema,
+  filAriane,
+  graphe,
+  organisation,
+  pageWeb,
+} from '@utils/schema';
+
+const couvertures = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/blog/*.{webp,jpg,jpeg,png}',
+  { eager: true },
+);
+
+export async function getStaticPaths() {
+  const articles = await getCollection('blog');
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'blog'>;
+}
+
+const { article } = Astro.props;
+const { data } = article;
+const { Content, headings } = await render(article);
+
+const couverture = couvertures[`../../assets/images/blog/${data.couverture}`]?.default;
+const chemin = `/blog/${article.id}/`;
+const url = urlAbsolue(chemin);
+
+const tous = (await getCollection('blog')).sort(
+  (a, b) => b.data.datePublication.getTime() - a.data.datePublication.getTime(),
+);
+const index = tous.findIndex((a) => a.id === article.id);
+const precedent = index > 0 ? tous[index - 1] : undefined;
+const suivant = index < tous.length - 1 ? tous[index + 1] : undefined;
+
+const lies = tous
+  .filter((a) => a.id !== article.id && a.data.categorie === data.categorie)
+  .slice(0, 3);
+const complement = tous
+  .filter((a) => a.id !== article.id && !lies.some((l) => l.id === a.id))
+  .slice(0, Math.max(0, 3 - lies.length));
+const associes = [...lies, ...complement];
+
+const categorieInfo = CATEGORIES_BLOG[data.categorie as CategorieBlogSlug];
+
+const sommaire = headings.filter((h) => h.depth === 2);
+
+const dateLisible = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(data.datePublication);
+const majLisible = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(data.dateModification);
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Journal', href: '/blog/' },
+  { nom: categorieInfo?.nom ?? nomCategorie(data.categorie), href: `/blog/categories/${data.categorie}/` },
+  { nom: data.titre, href: chemin },
+];
+
+const imagePartage = couverture ? couverture.src : '/og/beaune-gravure-partage.jpg';
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({
+    url,
+    titre: data.seoTitle,
+    description: data.description,
+    datePublication: data.datePublication,
+    dateModification: data.dateModification,
+  }),
+  articleSchema({
+    url,
+    titre: data.titre,
+    description: data.description,
+    image: urlAbsolue(imagePartage),
+    datePublication: data.datePublication,
+    dateModification: data.dateModification,
+    auteur: data.auteur,
+  }),
+  filAriane(miettes),
+  faqSchema(data.faq.map((f) => ({ question: f.question, reponse: f.reponse }))),
+]);
+---
+
+<Base
+  titre={`${data.seoTitle} | Beaune Gravure`}
+  description={data.description}
+  chemin={chemin}
+  image={imagePartage}
+  imageAlt={data.couvertureAlt}
+  type="article"
+  datePublication={data.datePublication}
+  dateModification={data.dateModification}
+  schema={schema}
+>
+  <article class="billet">
+    <header class="section section--serree">
+      <div class="enveloppe">
+        <FilAriane miettes={miettes} />
+        <p class="surtitre">{categorieInfo?.nom ?? nomCategorie(data.categorie)}</p>
+        <h1>{data.titre}</h1>
+        <p class="chapo billet__chapo">{data.chapo}</p>
+        <p class="billet__meta">
+          <time datetime={data.datePublication.toISOString()}>Publié le {dateLisible}</time>
+          <span aria-hidden="true">·</span>
+          <time datetime={data.dateModification.toISOString()}>Mis à jour le {majLisible}</time>
+          <span aria-hidden="true">·</span>
+          <span>{data.tempsLecture} de lecture</span>
+        </p>
+      </div>
+    </header>
+
+    {
+      couverture && (
+        <div class="enveloppe--large billet__couverture">
+          <Picture
+            src={couverture}
+            alt={data.couvertureAlt}
+            widths={[480, 768, 1024, 1440]}
+            sizes="(min-width: 96rem) 1440px, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            quality={74}
+            formats={['avif']}
+            fallbackFormat="webp"
+          />
+        </div>
+      )
+    }
+
+    <div class="section section--serree">
+      <div class="enveloppe billet__grille">
+        <aside class="billet__cote">
+          {
+            sommaire.length > 1 && (
+              <nav class="sommaire" aria-labelledby="sommaire-titre">
+                <p class="sommaire__titre" id="sommaire-titre">Sommaire</p>
+                <ol>
+                  {sommaire.map((titre) => (
+                    <li>
+                      <a href={`#${titre.slug}`}>{titre.text}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+
+          {
+            data.liens.length > 0 && (
+              <nav class="apparentes" aria-labelledby="apparentes-titre">
+                <p class="sommaire__titre" id="apparentes-titre">À lire aussi</p>
+                <ul>
+                  {data.liens.map((lien) => (
+                    <li>
+                      <a href={lien.href}>{lien.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )
+          }
+        </aside>
+
+        <div class="billet__corps">
+          {
+            data.aRetenir.length > 0 && (
+              <aside class="retenir">
+                <h2>À retenir</h2>
+                <ul>
+                  {data.aRetenir.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              </aside>
+            )
+          }
+
+          {
+            data.reperes.length > 0 && (
+              <div class="reperes">
+                <h2>Repères</h2>
+                <dl>
+                  {data.reperes.map((repere) => (
+                    <div>
+                      <dt>{repere.label}</dt>
+                      <dd>{repere.valeur}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            )
+          }
+
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <Faq
+      entrees={data.faq.map((f) => ({ question: f.question, reponse: f.reponse }))}
+      surtitre="Questions fréquentes"
+      titre="Les questions qu’on nous pose"
+    />
+
+    <nav class="section section--serree pagination" aria-label="Articles précédent et suivant">
+      <div class="enveloppe pagination__grille">
+        {
+          precedent ? (
+            <a class="pagination__lien" href={`/blog/${precedent.id}/`} rel="prev">
+              <span>Article précédent</span>
+              <strong>{precedent.data.titre}</strong>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          suivant && (
+            <a class="pagination__lien pagination__lien--suivant" href={`/blog/${suivant.id}/`} rel="next">
+              <span>Article suivant</span>
+              <strong>{suivant.data.titre}</strong>
+            </a>
+          )
+        }
+      </div>
+    </nav>
+
+    {
+      associes.length > 0 && (
+        <section class="section section--creuse">
+          <div class="enveloppe">
+            <p class="surtitre">Dans le même esprit</p>
+            <div class="associes">
+              {associes.map((autre) => (
+                <CarteArticle article={autre} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+  </article>
+
+  <SectionDevis />
+</Base>
+
+<style>
+  .billet__chapo {
+    margin-block: var(--e-m) var(--e-s);
+    font-size: var(--t-2);
+    color: var(--c-encre-douce);
+  }
+
+  .billet h1 {
+    margin-block-start: var(--e-2xs);
+    max-width: 20ch;
+    font-size: var(--t-4);
+  }
+
+  .billet .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .billet__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  .billet__couverture {
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-papier-creux);
+  }
+
+  .billet__couverture :global(img) {
+    inline-size: 100%;
+    block-size: auto;
+    max-block-size: 32rem;
+    object-fit: cover;
+  }
+
+  .billet__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 64rem) {
+    .billet__grille {
+      grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+
+    .billet__cote {
+      position: sticky;
+      top: calc(var(--entete-hauteur) + var(--e-m));
+      display: grid;
+      gap: var(--e-l);
+    }
+  }
+
+  .sommaire__titre {
+    margin-block-end: var(--e-2xs);
+    color: var(--c-laiton);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: var(--ls-large);
+    text-transform: uppercase;
+  }
+
+  .sommaire ol,
+  .apparentes ul {
+    display: grid;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: item;
+  }
+
+  .sommaire li {
+    counter-increment: item;
+  }
+
+  .sommaire a,
+  .apparentes a {
+    display: block;
+    padding-block: 0.5rem;
+    border-block-end: 1px solid var(--c-filet);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .sommaire a::before {
+    content: counter(item, decimal-leading-zero) ' ';
+    color: var(--c-laiton);
+  }
+
+  .sommaire a:hover,
+  .apparentes a:hover {
+    color: var(--c-laiton);
+  }
+
+  /* ---------- Encadrés ---------- */
+
+  .retenir {
+    margin-block-end: var(--e-l);
+    padding: var(--e-m);
+    border-inline-start: 2px solid var(--c-laiton);
+    background-color: var(--c-papier-creux);
+    border-radius: 0 var(--r-l) var(--r-l) 0;
+  }
+
+  .retenir h2,
+  .reperes h2 {
+    margin-block-end: var(--e-2xs);
+    font-family: var(--f-texte);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: var(--ls-large);
+    text-transform: uppercase;
+    color: var(--c-laiton);
+  }
+
+  .retenir ul {
+    display: grid;
+    gap: var(--e-2xs);
+    margin: 0;
+    padding-inline-start: 1.1em;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+  }
+
+  .reperes {
+    margin-block-end: var(--e-l);
+  }
+
+  .reperes dl {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .reperes dl > div {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block: var(--e-xs);
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  @media (min-width: 40rem) {
+    .reperes dl > div {
+      grid-template-columns: minmax(0, 12rem) minmax(0, 1fr);
+      gap: var(--e-m);
+    }
+  }
+
+  .reperes dt {
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    font-weight: 600;
+  }
+
+  .reperes dd {
+    margin: 0;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+  }
+
+  .billet__corps .prose :global(h2) {
+    margin-block-start: var(--e-xl);
+    scroll-margin-block-start: calc(var(--entete-hauteur) + var(--e-m));
+  }
+
+  /* ---------- Pagination ---------- */
+
+  .pagination__grille {
+    display: grid;
+    gap: var(--e-m);
+    padding-block-start: var(--e-m);
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  @media (min-width: 44rem) {
+    .pagination__grille {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .pagination__lien {
+    display: grid;
+    gap: var(--e-3xs);
+    text-decoration: none;
+  }
+
+  .pagination__lien span {
+    color: var(--c-laiton);
+    font-size: var(--t--2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .pagination__lien strong {
+    font-family: var(--f-titre);
+    font-size: var(--t-1);
+    font-weight: 400;
+  }
+
+  .pagination__lien:hover strong {
+    color: var(--c-laiton);
+  }
+
+  .pagination__lien--suivant {
+    text-align: end;
+  }
+
+  @media (max-width: 43.99rem) {
+    .pagination__lien--suivant {
+      text-align: start;
+    }
+  }
+
+  /* ---------- Articles associés ---------- */
+
+  .associes {
+    display: grid;
+    gap: var(--e-l);
+    margin-block-start: var(--e-m);
+  }
+
+  @media (min-width: 44rem) {
+    .associes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .associes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

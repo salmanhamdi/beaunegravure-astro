@@ -1,0 +1,75 @@
+---
+import CarteRealisation from './CarteRealisation.astro';
+import type { Realisation } from '@data/realisations';
+
+interface Props {
+  realisations: Realisation[];
+  /** Nombre de colonnes visé sur grand écran. */
+  colonnes?: 2 | 3 | 4;
+  /** Nombre d'images chargées en priorité (celles au-dessus de la ligne de flottaison). */
+  prioritaires?: number;
+  sansLegende?: boolean;
+}
+
+const {
+  realisations,
+  colonnes = 3,
+  prioritaires = 0,
+  sansLegende = false,
+} = Astro.props;
+
+const sizes =
+  colonnes === 4
+    ? '(min-width: 68rem) 23vw, (min-width: 40rem) 45vw, 92vw'
+    : colonnes === 2
+      ? '(min-width: 40rem) 46vw, 92vw'
+      : '(min-width: 68rem) 31vw, (min-width: 40rem) 46vw, 92vw';
+---
+
+<div class="grille-realisations" data-colonnes={colonnes}>
+  {
+    realisations.map((realisation, index) => (
+      <CarteRealisation
+        realisation={realisation}
+        sizes={sizes}
+        prioritaire={index < prioritaires}
+        sansLegende={sansLegende}
+      />
+    ))
+  }
+</div>
+
+<style>
+  /*
+    Colonnes de type « mur d'images » : chaque photo garde son ratio natif, donc
+    aucune image n'est déformée ni recadrée arbitrairement. Le rendu est
+    volontairement irrégulier, comme une planche-contact d'atelier.
+  */
+  .grille-realisations {
+    display: grid;
+    gap: var(--e-m);
+  }
+
+  @media (min-width: 40rem) {
+    .grille-realisations {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .grille-realisations[data-colonnes='3'] {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grille-realisations[data-colonnes='4'] {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Alignement en colonnes indépendantes pour éviter les lignes trop creuses. */
+  @supports (grid-template-rows: masonry) {
+    .grille-realisations {
+      grid-template-rows: masonry;
+    }
+  }
+</style>

@@ -1,0 +1,358 @@
+---
+import { getCollection } from 'astro:content';
+import { email, telephone } from '@data/site';
+
+const services = (await getCollection('services')).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+
+// Type de projet présélectionné depuis une page de savoir-faire.
+const projetDemande = Astro.url.searchParams.get('projet') ?? '';
+const horodatage = Math.floor(Date.now() / 1000);
+---
+
+<form
+  class="formulaire"
+  id="formulaire"
+  method="post"
+  action="/api/contact.php"
+  novalidate
+  data-formulaire-devis
+>
+  <div class="formulaire__etat" data-etat role="status" aria-live="polite"></div>
+
+  <!-- Pot de miel : masqué pour les humains, visible pour les robots. -->
+  <div class="pot-de-miel" aria-hidden="true">
+    <label for="entreprise_web">Ne pas remplir ce champ</label>
+    <input id="entreprise_web" name="entreprise_web" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="_t" value={horodatage} />
+  <input type="hidden" name="page" data-page value="" />
+
+  <div class="formulaire__duo">
+    <p class="champ" data-champ="nom">
+      <label for="nom">Nom et prénom <span class="requis">*</span></label>
+      <input
+        id="nom"
+        name="nom"
+        type="text"
+        autocomplete="name"
+        required
+        aria-describedby="erreur-nom"
+      />
+      <span class="champ__erreur" id="erreur-nom" data-erreur="nom"></span>
+    </p>
+
+    <p class="champ" data-champ="societe">
+      <label for="societe">Domaine ou société</label>
+      <input id="societe" name="societe" type="text" autocomplete="organization" />
+    </p>
+  </div>
+
+  <div class="formulaire__duo">
+    <p class="champ" data-champ="courriel">
+      <label for="courriel">Adresse e-mail <span class="requis">*</span></label>
+      <input
+        id="courriel"
+        name="courriel"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        required
+        aria-describedby="erreur-courriel"
+      />
+      <span class="champ__erreur" id="erreur-courriel" data-erreur="courriel"></span>
+    </p>
+
+    <p class="champ" data-champ="telephone">
+      <label for="telephone">Téléphone</label>
+      <input
+        id="telephone"
+        name="telephone"
+        type="tel"
+        autocomplete="tel"
+        inputmode="tel"
+        aria-describedby="aide-telephone"
+      />
+      <span class="champ__aide" id="aide-telephone">Utile pour les projets urgents.</span>
+    </p>
+  </div>
+
+  <div class="formulaire__duo">
+    <p class="champ" data-champ="projet">
+      <label for="projet">Type de projet</label>
+      <select id="projet" name="projet">
+        <option value="">Je ne sais pas encore</option>
+        {
+          services.map((service) => (
+            <option value={service.data.titre} selected={service.data.titre === projetDemande}>
+              {service.data.titre}
+            </option>
+          ))
+        }
+        <option value="Autre projet" selected={projetDemande === 'Autre projet'}>
+          Autre projet
+        </option>
+      </select>
+    </p>
+
+    <p class="champ" data-champ="quantite">
+      <label for="quantite">Quantité envisagée</label>
+      <input
+        id="quantite"
+        name="quantite"
+        type="text"
+        placeholder="2 verres, 50 caisses, 1 plaque…"
+      />
+    </p>
+  </div>
+
+  <p class="champ" data-champ="message">
+    <label for="message">Votre projet <span class="requis">*</span></label>
+    <textarea
+      id="message"
+      name="message"
+      required
+      aria-describedby="aide-message erreur-message"
+      placeholder="Support, modèle de verre, visuel à graver, dimensions, délai souhaité…"
+    ></textarea>
+    <span class="champ__aide" id="aide-message">
+      Plus votre demande est précise, plus notre réponse le sera. Vous pourrez nous
+      envoyer votre fichier par e-mail après notre premier retour.
+    </span>
+    <span class="champ__erreur" id="erreur-message" data-erreur="message"></span>
+  </p>
+
+  <p class="champ champ--case" data-champ="consentement">
+    <label>
+      <input id="consentement" name="consentement" type="checkbox" value="1" required />
+      <span>
+        J’accepte que ces informations soient utilisées pour répondre à ma demande,
+        conformément à la
+        <a href="/politique-de-confidentialite/">politique de confidentialité</a>.
+        <span class="requis">*</span>
+      </span>
+    </label>
+    <span class="champ__erreur" data-erreur="consentement"></span>
+  </p>
+
+  <div class="formulaire__pied">
+    <button class="bouton bouton--laiton" type="submit" data-envoi>
+      <span data-libelle>Envoyer ma demande</span>
+    </button>
+    <p class="formulaire__note">
+      Réponse sous quelques jours ouvrés. Pour un besoin urgent&nbsp;:
+      <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a>
+      ou <a href={`mailto:${email}`}>{email}</a>.
+    </p>
+  </div>
+</form>
+
+<style>
+  .formulaire {
+    display: grid;
+    gap: var(--e-m);
+  }
+
+  .formulaire__duo {
+    display: grid;
+    gap: var(--e-m);
+  }
+
+  @media (min-width: 34rem) {
+    .formulaire__duo {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .pot-de-miel {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .requis {
+    color: var(--c-laiton);
+  }
+
+  .champ--case label {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--e-2xs);
+    align-items: start;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 400;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .champ--case input {
+    inline-size: 1.15rem;
+    block-size: 1.15rem;
+    min-block-size: 0;
+    margin-block-start: 0.2rem;
+    padding: 0;
+    accent-color: var(--c-laiton);
+  }
+
+  .champ--case a {
+    color: var(--c-encre);
+    text-decoration-color: var(--c-laiton);
+  }
+
+  .formulaire__pied {
+    display: grid;
+    gap: var(--e-s);
+    justify-items: start;
+    padding-block-start: var(--e-2xs);
+  }
+
+  .formulaire__note {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.6;
+  }
+
+  .formulaire__note a {
+    color: var(--c-encre-douce);
+    font-weight: 500;
+  }
+
+  .formulaire__etat:empty {
+    display: none;
+  }
+
+  button[aria-busy='true'] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+</style>
+
+<script>
+  const formulaire = document.querySelector<HTMLFormElement>('[data-formulaire-devis]');
+
+  if (formulaire) {
+    const etat = formulaire.querySelector<HTMLElement>('[data-etat]');
+    const bouton = formulaire.querySelector<HTMLButtonElement>('[data-envoi]');
+    const libelle = formulaire.querySelector<HTMLElement>('[data-libelle]');
+    const champPage = formulaire.querySelector<HTMLInputElement>('[data-page]');
+
+    if (champPage) champPage.value = window.location.pathname;
+
+    const viderErreurs = () => {
+      formulaire.querySelectorAll<HTMLElement>('[data-erreur]').forEach((noeud) => {
+        noeud.textContent = '';
+      });
+      formulaire.querySelectorAll<HTMLElement>('[data-champ]').forEach((noeud) => {
+        noeud.removeAttribute('data-invalide');
+      });
+    };
+
+    const afficherErreurs = (erreurs: Record<string, string>) => {
+      let premier: HTMLElement | null = null;
+      for (const [nom, texte] of Object.entries(erreurs)) {
+        const cible = formulaire.querySelector<HTMLElement>(`[data-erreur="${nom}"]`);
+        const bloc = formulaire.querySelector<HTMLElement>(`[data-champ="${nom}"]`);
+        if (cible) cible.textContent = texte;
+        if (bloc) bloc.setAttribute('data-invalide', 'true');
+        if (!premier) premier = formulaire.querySelector<HTMLElement>(`[name="${nom}"]`);
+      }
+      premier?.focus();
+    };
+
+    const message = (type: 'succes' | 'erreur', texte: string) => {
+      if (!etat) return;
+      etat.className = `formulaire__etat message message--${type}`;
+      etat.textContent = texte;
+      etat.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    };
+
+    formulaire.addEventListener('submit', async (evenement) => {
+      evenement.preventDefault();
+      viderErreurs();
+
+      // Contrôle côté client avant l'aller-retour réseau.
+      const locales: Record<string, string> = {};
+      const nom = formulaire.querySelector<HTMLInputElement>('[name="nom"]');
+      const courriel = formulaire.querySelector<HTMLInputElement>('[name="courriel"]');
+      const texte = formulaire.querySelector<HTMLTextAreaElement>('[name="message"]');
+      const accord = formulaire.querySelector<HTMLInputElement>('[name="consentement"]');
+
+      if (!nom?.value.trim() || nom.value.trim().length < 2) {
+        locales.nom = 'Merci d’indiquer votre nom.';
+      }
+      if (!courriel?.value || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(courriel.value)) {
+        locales.courriel = 'Cette adresse e-mail ne semble pas valide.';
+      }
+      if (!texte?.value.trim() || texte.value.trim().length < 10) {
+        locales.message = 'Décrivez votre projet en quelques mots.';
+      }
+      if (!accord?.checked) {
+        locales.consentement = 'Votre accord est nécessaire pour traiter la demande.';
+      }
+
+      if (Object.keys(locales).length > 0) {
+        afficherErreurs(locales);
+        message('erreur', 'Quelques champs doivent être complétés avant l’envoi.');
+        return;
+      }
+
+      bouton?.setAttribute('aria-busy', 'true');
+      if (bouton) bouton.disabled = true;
+      if (libelle) libelle.textContent = 'Envoi en cours…';
+
+      try {
+        const reponse = await fetch(formulaire.action, {
+          method: 'POST',
+          body: new FormData(formulaire),
+          headers: { Accept: 'application/json', 'X-Requested-With': 'fetch' },
+        });
+        const donnees = await reponse.json().catch(() => null);
+
+        if (reponse.ok && donnees?.ok) {
+          formulaire.reset();
+          message('succes', donnees.message ?? 'Votre demande a bien été envoyée.');
+          if (libelle) libelle.textContent = 'Demande envoyée';
+          return;
+        }
+
+        if (donnees?.erreurs) {
+          afficherErreurs(donnees.erreurs as Record<string, string>);
+          message('erreur', 'Certains champs doivent être corrigés.');
+        } else {
+          message(
+            'erreur',
+            donnees?.message ??
+              'L’envoi a échoué. Merci de nous appeler ou de nous écrire directement.',
+          );
+        }
+      } catch {
+        message(
+          'erreur',
+          'La connexion a été interrompue. Merci de réessayer ou de nous contacter directement.',
+        );
+      } finally {
+        bouton?.removeAttribute('aria-busy');
+        if (bouton) bouton.disabled = false;
+        if (libelle && libelle.textContent === 'Envoi en cours…') {
+          libelle.textContent = 'Envoyer ma demande';
+        }
+      }
+    });
+
+    // Retour du formulaire sans JavaScript : l'état arrive en paramètre d'URL.
+    const etatUrl = new URLSearchParams(window.location.search).get('etat');
+    if (etatUrl === 'envoye' || etatUrl === 'enregistre') {
+      message('succes', 'Votre demande a bien été envoyée. Nous revenons vers vous rapidement.');
+    } else if (etatUrl) {
+      message(
+        'erreur',
+        'Votre demande n’a pas pu être transmise. Merci de nous appeler ou de nous écrire directement.',
+      );
+    }
+  }
+</script>

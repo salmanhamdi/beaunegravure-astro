@@ -1,0 +1,262 @@
+---
+import {
+  adresse,
+  email,
+  piedDePage,
+  reseaux,
+  site,
+  telephone,
+  zones,
+} from '@data/site';
+import logo from '@assets/images/brand/beaune-gravure-logo.svg';
+
+const annee = new Date().getFullYear();
+---
+
+<footer class="pied sur-nuit">
+  <div class="enveloppe--large">
+    <div class="pied__haut">
+      <div class="pied__marque">
+        <img src={logo.src} width="132" height="106" alt={site.nom} />
+        <p class="pied__accroche">
+          Atelier de gravure laser sur verre à {adresse.ville}, à quelques minutes de
+          Beaune. Verres, coffrets, plaques et objets personnalisés pour les
+          particuliers comme pour les professionnels.
+        </p>
+        <ul class="pied__reseaux">
+          <li>
+            <a href={reseaux.instagram} rel="noopener noreferrer" target="_blank">
+              <span class="visuellement-cache">Instagram de Beaune Gravure</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6" />
+                <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6" />
+                <circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" />
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a href={reseaux.googleMaps} rel="noopener noreferrer" target="_blank">
+              <span class="visuellement-cache">Localiser l’atelier sur Google Maps</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+                <path d="M12 21s7-6.4 7-11a7 7 0 1 0-14 0c0 4.6 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <nav class="pied__colonne" aria-labelledby="pied-savoir-faire">
+        <h2 class="pied__titre" id="pied-savoir-faire">Savoir-faire</h2>
+        <ul>
+          {piedDePage.savoirFaire.map((lien) => (
+            <li><a href={lien.href}>{lien.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="pied__colonne" aria-labelledby="pied-decouvrir">
+        <h2 class="pied__titre" id="pied-decouvrir">Découvrir</h2>
+        <ul>
+          {piedDePage.decouvrir.map((lien) => (
+            <li><a href={lien.href}>{lien.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="pied__colonne pied__contact">
+        <h2 class="pied__titre">L’atelier</h2>
+        <address>
+          <p>
+            {adresse.rue}<br />
+            {adresse.codePostal} {adresse.ville}<br />
+            {adresse.pays}
+          </p>
+          <p class="pied__coordonnees">
+            <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a>
+            <a href={`mailto:${email}`}>{email}</a>
+          </p>
+        </address>
+        <p class="pied__zone">
+          Zone d’intervention : {zones.slice(0, 5).join(', ')} et toute la
+          Bourgogne-Franche-Comté. Expédition possible selon les pièces.
+        </p>
+      </div>
+    </div>
+
+    <div class="pied__bas">
+      <p>© {annee} {site.nom}</p>
+      <ul class="pied__legal">
+        {piedDePage.legal.map((lien) => (
+          <li><a href={lien.href}>{lien.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pied {
+    padding-block: var(--e-2xl) var(--e-l);
+  }
+
+  .pied__haut {
+    display: grid;
+    gap: var(--e-xl);
+  }
+
+  @media (min-width: 48rem) {
+    .pied__haut {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .pied__haut {
+      grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+      gap: var(--e-l);
+    }
+  }
+
+  .pied__marque img {
+    inline-size: 8.25rem;
+    block-size: auto;
+    margin-block-end: var(--e-s);
+  }
+
+  .pied__accroche {
+    max-width: 40ch;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .pied__reseaux {
+    display: flex;
+    gap: var(--e-2xs);
+    margin-block-start: var(--e-m);
+    list-style: none;
+    padding: 0;
+  }
+
+  .pied__reseaux a {
+    display: grid;
+    place-items: center;
+    inline-size: 2.5rem;
+    block-size: 2.5rem;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-pilule);
+    color: var(--c-encre-douce);
+    transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .pied__reseaux a:hover {
+    border-color: var(--c-laiton);
+    color: var(--c-laiton);
+  }
+
+  .pied__titre {
+    margin-block-end: var(--e-s);
+    font-family: var(--f-texte);
+    font-size: var(--t--2);
+    font-weight: 600;
+    letter-spacing: var(--ls-large);
+    text-transform: uppercase;
+    color: var(--c-laiton);
+  }
+
+  .pied__colonne ul {
+    display: grid;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pied__colonne a {
+    display: inline-block;
+    min-block-size: 1.9rem;
+    padding-block: 0.4rem;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    text-decoration: none;
+  }
+
+  .pied__colonne a:hover {
+    color: var(--c-clair);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .pied__contact address {
+    font-style: normal;
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.7;
+  }
+
+  .pied__coordonnees {
+    display: grid;
+    gap: 0.15rem;
+    margin-block-start: var(--e-xs);
+  }
+
+  .pied__coordonnees a {
+    display: inline-block;
+    min-block-size: 2rem;
+    padding-block: 0.45rem;
+    color: var(--c-clair);
+    font-weight: 500;
+    text-decoration: none;
+    border-block-end: 1px solid var(--c-laiton);
+    justify-self: start;
+  }
+
+  .pied__coordonnees a:hover {
+    color: var(--c-laiton);
+  }
+
+  .pied__zone {
+    margin-block-start: var(--e-m);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.6;
+  }
+
+  .pied__bas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-s);
+    margin-block-start: var(--e-2xl);
+    padding-block-start: var(--e-m);
+    border-block-start: 1px solid var(--c-filet);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  .pied__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-m);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pied__legal a {
+    display: inline-block;
+    /* Cible tactile confortable en pied de page mobile. */
+    min-block-size: 1.75rem;
+    padding-block: 0.3rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .pied__legal a:hover {
+    color: var(--c-clair);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

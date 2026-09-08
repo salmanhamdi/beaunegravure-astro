@@ -1,0 +1,286 @@
+---
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import { adresse, email, legal, telephone } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+const chemin = '/politique-de-confidentialite/';
+const url = urlAbsolue(chemin);
+const titre = 'Politique de confidentialité | Beaune Gravure';
+const description =
+  'Traitement des données personnelles sur beaunegravure.fr : finalités, durée de conservation, destinataires, cookies et exercice de vos droits.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Politique de confidentialité', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+]);
+
+const donnees = [
+  {
+    label: 'Nom et prénom',
+    finalite: 'Vous identifier et personnaliser la réponse',
+    obligatoire: 'Oui',
+  },
+  {
+    label: 'Adresse e-mail',
+    finalite: 'Vous adresser la réponse et le devis',
+    obligatoire: 'Oui',
+  },
+  {
+    label: 'Description du projet',
+    finalite: 'Évaluer la faisabilité technique et chiffrer',
+    obligatoire: 'Oui',
+  },
+  {
+    label: 'Domaine ou société',
+    finalite: 'Adapter la proposition au contexte professionnel',
+    obligatoire: 'Non',
+  },
+  {
+    label: 'Téléphone',
+    finalite: 'Vous rappeler si la demande le nécessite',
+    obligatoire: 'Non',
+  },
+  {
+    label: 'Type de projet et quantité',
+    finalite: 'Orienter la demande vers le bon procédé',
+    obligatoire: 'Non',
+  },
+  {
+    label: 'Adresse IP et date d’envoi',
+    finalite: 'Limiter les envois automatisés et les abus',
+    obligatoire: 'Collecte automatique',
+  },
+];
+
+const dateMaj = new Date('2026-09-08');
+const dateLisible = new Intl.DateTimeFormat('fr-FR', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(dateMaj);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe--texte">
+      <FilAriane miettes={miettes} />
+      <h1>Politique de confidentialité</h1>
+      <p class="chapo">
+        Ce site collecte le minimum de données nécessaires pour répondre à une demande
+        de devis. Il n’utilise ni outil de mesure d’audience, ni régie publicitaire, ni
+        cookie de suivi.
+      </p>
+      <p class="maj">Dernière mise à jour : {dateLisible}</p>
+    </div>
+  </header>
+
+  <div class="section section--serree">
+    <div class="enveloppe--texte prose legal">
+      <h2>Responsable du traitement</h2>
+      <p>
+        Le responsable du traitement est <strong>{legal.raisonSociale}</strong>,
+        {' '}{adresse.rue}, {adresse.codePostal} {adresse.ville}, {adresse.pays}.
+        Contact&nbsp;: <a href={`mailto:${email}`}>{email}</a> —
+        <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a>.
+      </p>
+      {
+        !legal.directeurPublication && (
+          <p class="manquant">
+            Le nom du responsable légal reste à compléter avant la mise en ligne
+            publique du site.
+          </p>
+        )
+      }
+
+      <h2>Données collectées et finalités</h2>
+      <p>
+        Les seules données personnelles collectées sont celles que vous saisissez
+        volontairement dans le formulaire de demande de devis, auxquelles s’ajoutent
+        deux informations techniques destinées à limiter les abus.
+      </p>
+
+      <div class="tableau">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Donnée</th>
+              <th scope="col">Finalité</th>
+              <th scope="col">Obligatoire</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              donnees.map((ligne) => (
+                <tr>
+                  <th scope="row">{ligne.label}</th>
+                  <td>{ligne.finalite}</td>
+                  <td>{ligne.obligatoire}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Base légale</h2>
+      <p>
+        Le traitement repose sur votre <strong>consentement</strong> (article 6.1.a du
+        RGPD), recueilli par la case à cocher du formulaire, ainsi que sur l’exécution
+        de mesures précontractuelles prises à votre demande (article 6.1.b) lorsque
+        l’échange débouche sur un devis.
+      </p>
+      <p>
+        L’enregistrement de l’adresse IP repose sur l’intérêt légitime du responsable
+        de traitement (article 6.1.f) à protéger le formulaire contre les envois
+        automatisés.
+      </p>
+
+      <h2>Destinataires</h2>
+      <p>
+        Les données sont destinées au seul atelier {legal.raisonSociale}. Elles ne sont
+        ni vendues, ni louées, ni transmises à des tiers à des fins commerciales.
+      </p>
+      <p>
+        Elles transitent et sont stockées sur les serveurs de l’hébergeur du site,
+        {' '}<strong>{legal.hebergeur.nom}</strong>, agissant en qualité de sous-traitant
+        au sens du RGPD. Aucun transfert de données hors de l’Union européenne n’est
+        effectué à notre initiative.
+      </p>
+
+      <h2>Durée de conservation</h2>
+      <ul>
+        <li>
+          <strong>Demandes n’ayant pas donné lieu à un devis</strong> : 12 mois à
+          compter du dernier échange.
+        </li>
+        <li>
+          <strong>Demandes ayant donné lieu à un devis ou à une commande</strong> :
+          3 ans à compter de la fin de la relation commerciale, sans préjudice des
+          obligations comptables légales.
+        </li>
+        <li>
+          <strong>Données techniques anti-abus</strong> (adresse IP) : 1 heure pour la
+          limitation de débit, puis suppression.
+        </li>
+      </ul>
+
+      <h2>Cookies et mesure d’audience</h2>
+      <p>
+        <strong>Ce site ne dépose aucun cookie.</strong> Il n’utilise ni Google
+        Analytics, ni pixel publicitaire, ni outil de suivi comportemental. Aucune
+        bannière de consentement n’est donc nécessaire.
+      </p>
+      <p>
+        Les polices de caractères sont hébergées sur nos propres serveurs&nbsp;: aucune
+        requête n’est adressée à un service tiers lors de l’affichage des pages.
+      </p>
+      <p>
+        Les liens vers Google Maps et Instagram présents dans le pied de page sont de
+        simples liens hypertextes&nbsp;: aucune donnée ne leur est transmise tant que
+        vous ne les activez pas.
+      </p>
+
+      <h2>Sécurité</h2>
+      <p>
+        Le site est intégralement servi en HTTPS. Les demandes reçues sont enregistrées
+        dans un fichier journal protégé, accessible au seul responsable de traitement.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des
+        droits d’accès, de rectification, d’effacement, de limitation, d’opposition et
+        de portabilité de vos données, ainsi que du droit de retirer votre consentement
+        à tout moment.
+      </p>
+      <p>
+        Pour les exercer, écrivez à <a href={`mailto:${email}`}>{email}</a> en précisant
+        l’objet de votre demande. Une réponse vous sera apportée dans un délai maximal
+        d’un mois.
+      </p>
+      <p>
+        Si vous estimez, après nous avoir contactés, que vos droits ne sont pas
+        respectés, vous pouvez adresser une réclamation à la Commission nationale de
+        l’informatique et des libertés (CNIL) —
+        <a href="https://www.cnil.fr" rel="noopener noreferrer" target="_blank">cnil.fr</a>.
+      </p>
+
+      <h2>Modification de cette politique</h2>
+      <p>
+        Cette politique peut évoluer, notamment si de nouveaux outils sont ajoutés au
+        site. La date de dernière mise à jour figure en haut de cette page.
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block-end: var(--e-m);
+  }
+
+  .maj {
+    margin-block-start: var(--e-s);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+  }
+
+  .legal h2 {
+    margin-block-start: var(--e-xl);
+    font-size: var(--t-2);
+  }
+
+  .tableau {
+    overflow-x: auto;
+    margin-block: var(--e-m);
+  }
+
+  .tableau table {
+    inline-size: 100%;
+    min-inline-size: 34rem;
+    border-collapse: collapse;
+    font-size: var(--t--1);
+  }
+
+  .tableau th,
+  .tableau td {
+    padding: 0.7rem 0.9rem;
+    border-block-end: 1px solid var(--c-filet);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .tableau thead th {
+    border-block-end-color: var(--c-filet-fort);
+    color: var(--c-encre);
+    font-weight: 600;
+  }
+
+  .tableau tbody th {
+    color: var(--c-encre);
+    font-weight: 500;
+  }
+
+  .tableau td {
+    color: var(--c-encre-douce);
+  }
+
+  .manquant {
+    padding: var(--e-xs) var(--e-s);
+    border-inline-start: 2px solid var(--c-erreur);
+    color: var(--c-erreur);
+    font-style: italic;
+  }
+</style>
