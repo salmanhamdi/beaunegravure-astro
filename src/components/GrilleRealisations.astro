@@ -42,9 +42,10 @@ const sizes =
 
 <style>
   /*
-    Colonnes de type « mur d'images » : chaque photo garde son ratio natif, donc
-    aucune image n'est déformée ni recadrée arbitrairement. Le rendu est
-    volontairement irrégulier, comme une planche-contact d'atelier.
+    Grille régulière : les vignettes sont carrées (voir CarteRealisation), donc
+    les lignes s'alignent et les légendes se lisent sur une même ligne de base.
+    L'irrégularité précédente venait des formats de fichiers, pas d'un choix de
+    composition.
   */
   /*
     Deux colonnes dès le mobile : une colonne unique donnait une image par
@@ -73,10 +74,4 @@ const sizes =
     }
   }
 
-  /* Alignement en colonnes indépendantes pour éviter les lignes trop creuses. */
-  @supports (grid-template-rows: masonry) {
-    .grille-realisations {
-      grid-template-rows: masonry;
-    }
-  }
 </style>

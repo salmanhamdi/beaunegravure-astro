@@ -24,7 +24,10 @@ const categorie = CATEGORIES[realisation.categorie];
 ---
 
 <figure class="realisation">
-  <div class="realisation__cadre">
+  <div
+    class="realisation__cadre"
+    style={realisation.cadrage ? `--cadrage: ${realisation.cadrage};` : undefined}
+  >
     <Picture
       src={image}
       alt={realisation.alt}
@@ -56,7 +59,20 @@ const categorie = CATEGORIES[realisation.categorie];
     margin: 0;
   }
 
+  /*
+    Cadre carré, imposé par la mise en page et non par le fichier source.
+    Auparavant chaque vignette gardait le ratio natif de sa photographie : dans
+    une grille, une image en portrait à côté d'une image en 16/9 creusait
+    jusqu'à 260 px de vide sous ses voisines. La géométrie de la page ne doit
+    pas dépendre du format de prise de vue.
+
+    Le carré est le ratio qui abîme le moins un ensemble allant du 3/4 au 16/9 ;
+    les 74 photographies du catalogue ont été vérifiées une à une dans ce
+    recadrage. Les rares pièces décentrées portent un `cadrage` dans
+    `realisations.ts`.
+  */
   .realisation__cadre {
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: var(--r-l);
     background-color: var(--c-fond-creux);
@@ -64,7 +80,9 @@ const categorie = CATEGORIES[realisation.categorie];
 
   .realisation__cadre :global(img) {
     inline-size: 100%;
-    block-size: auto;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--cadrage, center);
     transition: transform var(--duree-longue) var(--courbe-sortie);
   }
 

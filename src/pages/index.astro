@@ -78,6 +78,7 @@ const imagesAccueil = [
   ...matieres.map((m) => m.id),
   ...selection.map((r) => r.id),
   'decoupe-bois-prenoms-cercles-personnalises',
+  ...projets.map((p) => p.visuel),
 ];
 const doublons = imagesAccueil.filter((id, i) => imagesAccueil.indexOf(id) !== i);
 if (doublons.length > 0) {
@@ -333,9 +334,27 @@ const schema = graphe([
         {
           projets.map((projet) => (
             <li class="projets__item revele">
+              {/*
+                Une photographie de pièce de l'atelier, pas un visuel de la
+                marque : sa légende dit ce qu'elle montre. Aucun élément
+                d'identité de Glassora ou de Spotitap n'entre ici.
+              */}
+              <figure class="projets__visuel">
+                <Picture
+                  src={imagesRealisations[projet.visuel]!}
+                  alt={projet.visuelAlt}
+                  widths={[420, 640, 900]}
+                  sizes="(min-width: 56rem) 44vw, 100vw"
+                  loading="lazy"
+                  quality={72}
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                />
+              </figure>
               <p class="projets__nature">{projet.nature}</p>
               <h3>{projet.nom}</h3>
               <p class="projets__accroche">{projet.accroche}</p>
+              <p class="projets__legende">{projet.visuelLegende}</p>
               <ul class="projets__reperes">
                 {projet.reperes.map((repere) => (
                   <li>{repere}</li>
@@ -366,11 +385,22 @@ const schema = graphe([
         savoir-faire commence avant l'outil.
       -->
       <div class="savoir__entete">
-        <div class="tete-section">
-          <div>
-            <p class="surtitre">Savoir-faire</p>
-            <h2>Des moyens, pas une identité.</h2>
-          </div>
+        <div class="savoir__intro">
+          <p class="surtitre">Savoir-faire</p>
+          <h2>Des moyens, pas une identité.</h2>
+          {/*
+            Les `{' '}` sont indispensables : Astro supprime le retour à la ligne
+            qui sépare un mot d'une balise ouvrante placée sur la ligne suivante.
+            Sans eux, la page affichait « desrestaurants », « desindustriels » et
+            « desdomaines ».
+          */}
+          <p class="savoir__clients">
+            Nous travaillons pour des <strong>entreprises et des marques</strong>,
+            des{' '}
+            <strong>restaurants, hôtels et commerces</strong>, des{' '}
+            <strong>industriels et bureaux d’études</strong>, des{' '}
+            <strong>domaines viticoles</strong> et des <strong>particuliers</strong>.
+          </p>
         </div>
 
         <figure class="savoir__visuel revele">
@@ -425,14 +455,21 @@ const schema = graphe([
         </ul>
       </div>
 
+      {/*
+        Les applications portaient un titre et rien d'autre : six lignes nues
+        qui se lisaient comme un tarif. Elles affichent désormais le même
+        repère d'usage que les autres familles — un contenu déjà présent dans
+        le frontmatter de chaque page, rien n'est inventé.
+      */}
       <div class="savoir__famille">
         <p class="savoir__etiquette">Applications</p>
-        <ul class="savoir__liste savoir__liste--compacte">
+        <ul class="savoir__liste">
           {
             applications.map((service) => (
               <li>
                 <a href={`/services/${service.id}/`}>
                   <span class="savoir__titre">{service.data.titre}</span>
+                  <span class="savoir__texte">{service.data.usages}</span>
                   <span class="lien-fleche" aria-hidden="true" />
                 </a>
               </li>
@@ -440,13 +477,6 @@ const schema = graphe([
           }
         </ul>
       </div>
-
-      <p class="savoir__clients">
-        Nous travaillons pour des <strong>entreprises et des marques</strong>, des
-        <strong>restaurants, hôtels et commerces</strong>, des
-        <strong>industriels et bureaux d’études</strong>, des
-        <strong>domaines viticoles</strong> et des <strong>particuliers</strong>.
-      </p>
     </div>
   </section>
 
@@ -679,10 +709,16 @@ const schema = graphe([
     font-weight: 600;
   }
 
+  /*
+    En dessous de 52rem, la séquence tenait sur deux ou trois lignes et les
+    filets de liaison se retrouvaient orphelins en fin de ligne, reliant les
+    étapes à rien. Sur petit écran, la chaîne devient donc une liste numérotée
+    en colonnes, sans filet : la séquence reste lisible, l'accident disparaît.
+  */
   .chaine-bandeau__liste {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--e-xs) 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--e-2xs) var(--e-m);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -693,11 +729,10 @@ const schema = graphe([
     display: flex;
     align-items: center;
     gap: var(--e-xs);
-    flex: 1 1 auto;
     color: var(--c-encre);
     font-family: var(--f-mono);
-    font-size: var(--t--1);
-    letter-spacing: 0.06em;
+    font-size: var(--t-0);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -708,12 +743,24 @@ const schema = graphe([
     color: var(--c-encre-muette);
   }
 
-  .chaine-bandeau__liste li:not(:last-child)::after {
-    content: '';
-    flex: 1;
-    block-size: 1px;
-    min-inline-size: var(--e-s);
-    background-color: var(--c-filet-fort);
+  @media (min-width: 52rem) {
+    .chaine-bandeau__liste {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0;
+    }
+
+    .chaine-bandeau__liste li {
+      flex: 1 1 auto;
+    }
+
+    .chaine-bandeau__liste li:not(:last-child)::after {
+      content: '';
+      flex: 1;
+      block-size: 1px;
+      min-inline-size: var(--e-s);
+      background-color: var(--c-filet-fort);
+    }
   }
 
   /* ========================= Ce que nous faisons ===================== */
@@ -776,10 +823,24 @@ const schema = graphe([
     }
   }
 
+  /*
+    Trois colonnes au maximum, jamais six. Sur une seule rangée, les vignettes
+    tombaient à 202 × 269 px à 1440 px — plus petites qu'à 1024 px — et la
+    section devenait un index au lieu d'une galerie. Ici la qualité de l'image
+    prime sur le nombre de colonnes.
+  */
   @media (min-width: 68rem) {
     .matieres__grille {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: var(--e-m);
+      gap: var(--e-l) var(--e-m);
+    }
+
+    /*
+      Format un peu plus large sur grand écran : à 450 px de côté, un cadre
+      3/4 donnerait des vignettes de 600 px de haut et deux rangées presque
+      aussi hautes que l'écran.
+    */
+    .matieres__media {
+      aspect-ratio: 4 / 5;
     }
   }
 
@@ -825,6 +886,12 @@ const schema = graphe([
 
   /* ====================== Appel à l'action intermédiaire ============== */
 
+  /*
+    Le bloc répartissait trois éléments sur toute la largeur : le centre restait
+    très vide et l'ensemble se lisait comme une barre d'information. La phrase
+    et son texte forment désormais un seul groupe à gauche, le bouton reste à
+    droite. La hauteur est inchangée.
+  */
   .relance__grille {
     display: grid;
     gap: var(--e-xs);
@@ -833,9 +900,23 @@ const schema = graphe([
 
   @media (min-width: 52rem) {
     .relance__grille {
-      grid-template-columns: minmax(0, auto) minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: var(--e-m) var(--e-l);
+      column-gap: var(--e-2xl);
+      row-gap: var(--e-3xs);
+    }
+
+    .relance__titre {
+      grid-column: 1;
+    }
+
+    .relance__texte {
+      grid-column: 1;
+    }
+
+    .relance__grille .bouton {
+      grid-column: 2;
+      grid-row: 1 / span 2;
     }
   }
 
@@ -847,32 +928,48 @@ const schema = graphe([
   }
 
   .relance__texte {
-    max-width: 40ch;
+    max-width: 52ch;
     color: var(--c-clair-doux);
   }
 
   /* =========================== Savoir-faire ========================== */
 
+  /*
+    L'en-tête est une vraie composition à deux colonnes : le titre et la phrase
+    de clientèle à gauche, l'image et sa légende à droite. Auparavant la colonne
+    de gauche ne portait que le titre, calé en bas : il restait environ 250 px
+    de vide en haut à gauche, qui se lisaient comme un défaut de grille.
+  */
   .savoir__entete {
     display: grid;
     gap: var(--e-l);
-    margin-block-end: var(--e-xl);
+    margin-block-end: var(--e-2xl);
   }
 
   @media (min-width: 56rem) {
     .savoir__entete {
       grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
-      align-items: end;
+      align-items: start;
       gap: var(--e-2xl);
     }
   }
 
-  .savoir__entete .tete-section {
-    margin-block-end: 0;
+  .savoir__intro h2 {
+    margin-block: var(--e-2xs) var(--e-m);
   }
 
   .savoir__visuel {
     margin: 0;
+  }
+
+  /*
+    Le `<picture>` reprend une hauteur automatique : la règle globale qui lui
+    donne 100 % sert aux cadres à ratio imposé, mais ici elle le faisait
+    déborder de la figure et la légende venait manger la marge qui la sépare
+    de l'étiquette « Conception ».
+  */
+  .savoir__visuel :global(picture) {
+    block-size: auto;
   }
 
   .savoir__visuel :global(img) {
@@ -882,7 +979,7 @@ const schema = graphe([
   }
 
   .savoir__visuel figcaption {
-    margin-block-start: var(--e-xs);
+    margin-block-start: var(--e-s);
     max-width: 46ch;
     color: var(--c-encre-muette);
     font-family: var(--f-mono);
@@ -945,25 +1042,10 @@ const schema = graphe([
     line-height: 1.55;
   }
 
-  .savoir__liste--compacte a {
-    padding-block: var(--e-s);
-  }
-
-  @media (min-width: 52rem) {
-    .savoir__liste--compacte a {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-  }
-
-  .savoir__liste--compacte .savoir__titre {
-    font-size: var(--t-1);
-  }
-
   .savoir__clients {
-    margin-block-start: var(--e-xl);
-    max-width: 62ch;
+    max-width: 46ch;
     color: var(--c-encre-douce);
-    font-size: var(--t-1);
+    font-size: var(--t-0);
     line-height: 1.6;
   }
 
@@ -1050,6 +1132,33 @@ const schema = graphe([
     border: 1px solid var(--c-filet);
     background-color: var(--c-blanc);
     transition: border-color var(--duree) var(--courbe);
+  }
+
+  /*
+    Cadre 3/2 imposé, comme partout ailleurs : le format du fichier ne décide
+    pas de la hauteur de la carte.
+  */
+  .projets__visuel {
+    inline-size: 100%;
+    margin: 0 0 var(--e-s);
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    background-color: var(--c-fond-creux);
+  }
+
+  .projets__visuel :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .projets__legende {
+    margin-block-start: var(--e-2xs);
+    max-width: 44ch;
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    line-height: 1.55;
   }
 
   .projets__item:hover {

@@ -73,6 +73,12 @@ export interface Realisation {
   service?: string;
   /** Mise en avant sur la page d'accueil. */
   vedette?: boolean;
+  /**
+   * Point d'ancrage du recadrage, quand le centre de l'image n'est pas le
+   * centre du sujet. Les vignettes sont carrées : une pièce placée en bord de
+   * cadre serait rognée sans cet ajustement. Valeur CSS `object-position`.
+   */
+  cadrage?: string;
 }
 
 const DONNEES: Omit<Realisation, 'id'>[] = [
@@ -205,6 +211,9 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Coffret en bois personnalisé en couleur pour un mariage',
     categorie: 'bois',
     service: '/services/impression-uv/',
+    // Photographie en portrait : le recadrage carré est remonté pour conserver
+    // la date imprimée en haut du coffret.
+    cadrage: 'center 22%',
   },
   {
     fichier: 'impression-uv-bois-planches-decoratives.webp',
@@ -567,6 +576,9 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Plaque professionnelle extérieure gravée, posée sur une façade',
     categorie: 'plaques',
     service: '/services/plaques-professionnelles/',
+    // La plaque est décalée à droite dans le cadre : un recadrage centré en
+    // couperait le texte gravé.
+    cadrage: '72% center',
   },
   {
     fichier: 'decoupe-plexiglass-plaque-numero-porte.webp',

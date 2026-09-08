@@ -25,6 +25,18 @@ export interface Projet {
   url: string;
   domaine: string;
   libelleLien: string;
+  /**
+   * Identifiant d'une réalisation de l'atelier illustrant le savoir-faire que
+   * le projet mobilise.
+   *
+   * Ce n'est PAS une photographie du produit de la marque : l'atelier ne
+   * dispose pas de visuel Glassora ni Spotitap, et le site n'en invente pas.
+   * La légende dit explicitement ce que la photographie montre, pour qu'aucun
+   * visiteur ne puisse la prendre pour le catalogue de la marque.
+   */
+  visuel: string;
+  visuelAlt: string;
+  visuelLegende: string;
 }
 
 export const projets: Projet[] = [
@@ -45,6 +57,11 @@ export const projets: Projet[] = [
     url: 'https://glassora.fr/',
     domaine: 'glassora.fr',
     libelleLien: 'Découvrir Glassora',
+    visuel: 'verre-vin-grave-mariage-personnalise',
+    visuelAlt:
+      'Verre à vin gravé d’un prénom, d’une date et d’un décor floral fin',
+    visuelLegende:
+      'Verre personnalisé gravé dans notre atelier — le savoir-faire sur lequel Glassora a été bâtie.',
   },
   {
     slug: 'spotitap',
@@ -63,5 +80,10 @@ export const projets: Projet[] = [
     url: 'https://spotitap.com/',
     domaine: 'spotitap.com',
     libelleLien: 'Découvrir Spotitap',
+    visuel: 'plaque-metal-qr-code-donnees-variables',
+    visuelAlt:
+      'Plaque métallique gravée portant des références et un code lisible par machine',
+    visuelLegende:
+      'Plaque gravée à données variables, avec code lisible — les mêmes procédés que ceux des plaques Spotitap.',
   },
 ];

@@ -128,7 +128,7 @@ const horodatage = Math.floor(Date.now() / 1000);
       <input id="consentement" name="consentement" type="checkbox" value="1" required />
       <span>
         J’accepte que ces informations soient utilisées pour répondre à ma demande,
-        conformément à la
+        conformément à la{' '}
         <a href="/politique-de-confidentialite/">politique de confidentialité</a>.
         <span class="requis">*</span>
       </span>
@@ -142,7 +142,7 @@ const horodatage = Math.floor(Date.now() / 1000);
     </button>
     <p class="formulaire__note">
       Réponse sous quelques jours ouvrés. Pour un besoin urgent&nbsp;:
-      <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a>
+      <a href={`tel:${telephone.e164}`}>{telephone.affichage}</a>{' '}
       ou <a href={`mailto:${email}`}>{email}</a>.
     </p>
   </div>
