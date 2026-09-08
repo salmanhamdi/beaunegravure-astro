@@ -73,7 +73,8 @@ jobs:
           FTP_HOST: ${{ secrets.HOSTINGER_HOST }}
           FTP_USER: ${{ secrets.HOSTINGER_USERNAME }}
           FTP_PASS: ${{ secrets.HOSTINGER_PASSWORD }}
-          FTP_PATH: ${{ secrets.HOSTINGER_PATH }}
+          FTP_PATH: ${{ secrets.HOSTINGER_TARGET }}
+          FTP_PORT: ${{ secrets.HOSTINGER_PORT }}
         run: |
           set -euo pipefail
 
@@ -88,7 +89,7 @@ jobs:
 
           # TLS obligatoire, certificat vérifié : les identifiants ne doivent
           # jamais transiter en clair.
-          lftp -u "$FTP_USER,$FTP_PASS" "$FTP_HOST" <<FTP
+          lftp -u "$FTP_USER,$FTP_PASS" -p "${FTP_PORT:-21}" "$FTP_HOST" <<FTP
             set ftp:ssl-force yes
             set ftp:ssl-protect-data yes
             set ssl:verify-certificate yes

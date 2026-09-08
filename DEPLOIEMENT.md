@@ -175,7 +175,8 @@ se déclenche que manuellement, depuis l'onglet *Actions*.
 | `HOSTINGER_HOST` | Serveur FTP indiqué dans hPanel |
 | `HOSTINGER_USERNAME` | Utilisateur FTP |
 | `HOSTINGER_PASSWORD` | Mot de passe FTP |
-| `HOSTINGER_PATH` | Chemin cible, généralement `public_html` ou `.` |
+| `HOSTINGER_TARGET` | Chemin cible, généralement `public_html` ou `.` |
+| `HOSTINGER_PORT` | Port FTP, généralement `21` |
 
 ### Utilisation
 
