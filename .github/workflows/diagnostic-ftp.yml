@@ -43,11 +43,11 @@ jobs:
             echo "===== / ====="
             cls -l /
 
-            echo "===== /domains ====="
-            cls -l /domains/
+            echo "===== repertoire de connexion (cwd) ====="
+            cls -l .
 
-            echo "===== /home ====="
-            cls -l /home/
+            echo "===== /public_html ====="
+            cls -l /public_html/
 
             bye
           FTP
