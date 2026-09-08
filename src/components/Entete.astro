@@ -480,7 +480,15 @@ function estActif(href: string): boolean {
     }
   }
 
-  @media (min-width: 64rem) {
+  /*
+    Seuil de bascule vers la navigation de bureau. Mesuré : la barre complète
+    (marque, navigation, téléphone, bouton de devis) demande 1092 px. À 64rem
+    (1024 px) elle débordait donc de 68 px et provoquait un défilement
+    horizontal sur les écrans de tablette en paysage. Le seuil est porté à
+    70rem (1120 px), qui laisse une marge réelle.
+    Toute modification ici doit être reportée sur le `matchMedia` du script.
+  */
+  @media (min-width: 70rem) {
     .entete__nav {
       display: block;
     }
@@ -545,7 +553,7 @@ function estActif(href: string): boolean {
     });
 
     // Le passage en affichage bureau doit toujours rendre le défilement.
-    const bureau = window.matchMedia('(min-width: 64rem)');
+    const bureau = window.matchMedia('(min-width: 70rem)');
     bureau.addEventListener('change', (evenement) => {
       if (evenement.matches) definirEtat(false);
     });

@@ -42,6 +42,18 @@ svg {
   max-width: 100%;
 }
 
+/*
+  `astro:assets` enveloppe chaque image dans un `<picture>`. Sans hauteur, ce
+  conteneur intermédiaire empêche le `block-size: 100%` des images de se
+  résoudre : l'image conserve alors ses proportions natives et laisse un vide
+  sous elle dans les cadres au ratio imposé. Le `<picture>` épouse donc la
+  boîte qui le contient ; là où celle-ci n'a pas de hauteur propre, la règle
+  se résout en `auto` et ne change rien.
+*/
+picture {
+  block-size: 100%;
+}
+
 img {
   height: auto;
   /* Teinte d'attente neutre : évite le flash blanc sur les fonds sombres. */
