@@ -91,7 +91,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Pied de verre à vin gravé avec le logo manuscrit d’un domaine viticole de Bourgogne',
     categorie: 'verre',
     service: '/services/verres-graves/',
-    vedette: true,
   },
   {
     fichier: 'flutes-champagne-gravees-mariage.webp',
@@ -99,7 +98,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Deux flûtes à champagne gravées avec des prénoms, une date et un décor floral fin',
     categorie: 'verre',
     service: '/services/verres-graves/',
-    vedette: true,
   },
   {
     fichier: 'verre-vin-grave-logo-domaine-patrick-guillot.webp',
@@ -107,7 +105,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Verre à vin gravé avec le logo d’un domaine viticole, tenu devant un feuillage',
     categorie: 'verre',
     service: '/services/verres-graves/',
-    vedette: true,
   },
   {
     fichier: 'verre-vin-grave-mariage-personnalise.webp',
@@ -122,7 +119,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Verre gravé en série pour une maison de vins effervescents bourguignonne',
     categorie: 'verre',
     service: '/services/verres-graves/',
-    vedette: true,
   },
   {
     fichier: 'trophee-verre-grave-personnalise.webp',
@@ -160,7 +156,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Caisses de vin en bois gravées avec des noms d’appellations de Bourgogne',
     categorie: 'bois',
     service: '/services/caisses-bois-gravees/',
-    vedette: true,
   },
   {
     fichier: 'caisse-vin-bois-gravee-domaine-bruno-colin.webp',
@@ -245,7 +240,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Planche en bois gravée au laser avec le nom d’un grand cru de la Côte de Beaune',
     categorie: 'bois',
     service: '/services/gravure-laser/',
-    vedette: true,
   },
   {
     fichier: 'decoupe-bois-prenoms-cercles-personnalises.webp',
@@ -267,6 +261,7 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Série de médailles en bois découpées et gravées pour un événement sportif',
     categorie: 'bois',
     service: '/services/decoupe-laser/',
+    vedette: true,
   },
   {
     fichier: 'trophees-bois-graves-evenement-entreprise.webp',
@@ -297,7 +292,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Couteau de sommelier personnalisé présenté dans son coffret',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
-    vedette: true,
   },
   {
     fichier: 'coffret-sommelier-couteau-personnalise.webp',
@@ -333,6 +327,7 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Série de couteaux pliants personnalisés avec un logo sur le manche en bois',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
+    vedette: true,
   },
   {
     fichier: 'couteaux-coffrets-viticoles-personnalises.webp',
@@ -354,6 +349,7 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Stylo professionnel noir marqué au laser avec un logo',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
+    vedette: true,
   },
   {
     fichier: 'stylos-bois-graves-cadeaux-entreprise.webp',
@@ -431,6 +427,7 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Étui rouge en cuir gravé avec un motif floral détaillé',
     categorie: 'objets',
     service: '/services/gravure-laser/',
+    vedette: true,
   },
   {
     fichier: 'coupe-trophee-plaque-gravee.webp',
@@ -614,6 +611,7 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Médaillons ronds en plexiglass transparent découpés et gravés avec des messages',
     categorie: 'decoupe',
     service: '/services/decoupe-laser/',
+    vedette: true,
   },
 ];
 
@@ -658,3 +656,10 @@ export const categoriesOrdonnees = (
   ...CATEGORIES[slug],
   total: parCategorie(slug).length,
 }));
+
+/** Récupère des réalisations dans un ordre choisi explicitement. */
+export function parIds(...ids: string[]): Realisation[] {
+  return ids
+    .map((id) => realisations.find((r) => r.id === id))
+    .filter((r): r is Realisation => Boolean(r));
+}

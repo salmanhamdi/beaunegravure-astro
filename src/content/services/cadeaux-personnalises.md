@@ -5,7 +5,8 @@ seoTitle: "Cadeaux personnalisés et objets gravés en Bourgogne"
 description: "Objets gravés et cadeaux personnalisés en Bourgogne : couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets. À l’unité comme en série."
 surtitre: "Objets et attentions"
 chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets : nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
-ordre: 4
+ordre: 8
+famille: "application"
 galerie: "objets"
 visuel: "cadeau-sommelier-personnalise-coffret"
 points:
@@ -14,7 +15,6 @@ points:
   - "Coffrets et objets en bois"
   - "Cadeaux clients et collaborateurs en série"
 usages: "Cadeaux d’entreprise, remerciements clients, mariages, anniversaires, départs, remises de prix et attentions personnalisées."
-vedette: false
 faq:
   - question: "Puis-je faire graver un objet que j’apporte ?"
     reponse: "Oui, dans la plupart des cas. Nous vérifions d’abord la matière, la forme et la valeur de l’objet. Pour une pièce sentimentale ou coûteuse, nous vous expliquons le risque avant d’intervenir et proposons un essai quand c’est possible."

@@ -298,7 +298,7 @@ const schema = graphe([
   .billet__couverture {
     overflow: hidden;
     border-radius: var(--r-l);
-    background-color: var(--c-papier-creux);
+    background-color: var(--c-fond-creux);
   }
 
   .billet__couverture :global(img) {
@@ -330,7 +330,7 @@ const schema = graphe([
 
   .sommaire__titre {
     margin-block-end: var(--e-2xs);
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
     font-size: var(--t--2);
     font-weight: 600;
     letter-spacing: var(--ls-large);
@@ -364,12 +364,12 @@ const schema = graphe([
 
   .sommaire a::before {
     content: counter(item, decimal-leading-zero) ' ';
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
   }
 
   .sommaire a:hover,
   .apparentes a:hover {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   /* ---------- Encadrés ---------- */
@@ -377,8 +377,8 @@ const schema = graphe([
   .retenir {
     margin-block-end: var(--e-l);
     padding: var(--e-m);
-    border-inline-start: 2px solid var(--c-laiton);
-    background-color: var(--c-papier-creux);
+    border-inline-start: 2px solid var(--c-filet-fort);
+    background-color: var(--c-fond-creux);
     border-radius: 0 var(--r-l) var(--r-l) 0;
   }
 
@@ -390,7 +390,7 @@ const schema = graphe([
     font-weight: 600;
     letter-spacing: var(--ls-large);
     text-transform: uppercase;
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
   }
 
   .retenir ul {
@@ -466,7 +466,7 @@ const schema = graphe([
   }
 
   .pagination__lien span {
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
     font-size: var(--t--2);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -479,7 +479,7 @@ const schema = graphe([
   }
 
   .pagination__lien:hover strong {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   .pagination__lien--suivant {

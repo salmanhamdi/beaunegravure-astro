@@ -89,9 +89,9 @@ export const donneesManquantes = [
 
 export const site = {
   nom: 'Beaune Gravure',
-  baseline: 'Gravure laser sur verre en Bourgogne',
+  baseline: 'Studio de création, personnalisation et fabrication',
   descriptionCourte:
-    'Atelier de gravure laser à Ladoix-Serrigny, près de Beaune. Verres à vin, flûtes, logos de domaines, mariages et séries professionnelles.',
+    'Studio de création, de personnalisation et de fabrication près de Beaune. De l’idée au fichier, du fichier à la matière : gravure et découpe laser, impression UV, création graphique.',
   langue: 'fr-FR',
   locale: 'fr_FR',
   anneeCreation: 2019,
@@ -124,8 +124,9 @@ export const navigation: LienNav[] = [
     href: '/services/',
     label: 'Savoir-faire',
     enfants: [
-      { href: '/services/verres-graves/', label: 'Verres et flûtes gravés' },
+      { href: '/services/creation-graphique/', label: 'Création graphique' },
       { href: '/services/gravure-laser/', label: 'Gravure laser' },
+      { href: '/services/verres-graves/', label: 'Gravure sur verre' },
       { href: '/services/caisses-bois-gravees/', label: 'Caisses et coffrets bois' },
       { href: '/services/cadeaux-personnalises/', label: 'Cadeaux personnalisés' },
       { href: '/services/plaques-professionnelles/', label: 'Plaques professionnelles' },
@@ -136,7 +137,8 @@ export const navigation: LienNav[] = [
     ],
   },
   { href: '/realisations/', label: 'Réalisations' },
-  { href: '/a-propos/', label: 'L’atelier', court: 'Atelier' },
+  { href: '/projets/', label: 'Projets' },
+  { href: '/a-propos/', label: 'Le studio', court: 'Studio' },
   { href: '/blog/', label: 'Journal' },
 ];
 
@@ -148,16 +150,17 @@ export const ctaPrincipal = {
 
 export const piedDePage = {
   savoirFaire: [
-    { href: '/services/verres-graves/', label: 'Verres et flûtes gravés' },
+    { href: '/services/creation-graphique/', label: 'Création graphique' },
     { href: '/services/gravure-laser/', label: 'Gravure laser' },
-    { href: '/services/caisses-bois-gravees/', label: 'Caisses et coffrets bois' },
-    { href: '/services/cadeaux-personnalises/', label: 'Cadeaux personnalisés' },
+    { href: '/services/decoupe-laser/', label: 'Découpe laser' },
+    { href: '/services/impression-uv/', label: 'Impression UV' },
     { href: '/services/plaques-professionnelles/', label: 'Plaques professionnelles' },
   ],
   decouvrir: [
     { href: '/realisations/', label: 'Réalisations' },
-    { href: '/a-propos/', label: 'L’atelier' },
-    { href: '/blog/', label: 'Journal de l’atelier' },
+    { href: '/projets/', label: 'Nos projets' },
+    { href: '/a-propos/', label: 'Le studio' },
+    { href: '/blog/', label: 'Journal' },
     { href: '/contact/', label: 'Demander un devis' },
   ],
   legal: [

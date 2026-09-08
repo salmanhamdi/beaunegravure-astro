@@ -1,88 +1,86 @@
 /*
   Beaune Gravure — jetons de design.
 
-  Direction : le papier clair est le sol dominant, la photographie porte la
-  couleur. Le laiton patiné remplace l'or ; le lie-de-vin n'intervient qu'en
-  ponctuation. Aucun dégradé décoratif, aucune ombre portée diffuse.
+  Direction retenue : « atelier blanc ».
+
+  Le site est un espace neutre et architectural. Aucune couleur décorative :
+  la couleur vient exclusivement de la photographie, c'est-à-dire de la
+  matière. Une pièce en cuir rouge, une plaque en laiton et un composant inox
+  peuvent ainsi cohabiter sans que l'identité du site ne bascule.
+
+  Le seul pigment du système est le rouge déjà présent dans le logo. Il est
+  employé de façon fonctionnelle et rare — état actif, focus, repère — jamais
+  en aplat décoratif.
+
+  Ce choix distingue aussi la maison mère de ses deux marques :
+  Glassora occupe l'ivoire et l'or, Spotitap le turquoise.
 */
 
 :root {
-  /* ---------- Couleurs ---------- */
+  /* ---------- Sols clairs ---------- */
+  --c-blanc: #ffffff;
+  --c-fond: #f7f7f6;
+  --c-fond-creux: #ededec;
 
-  /* Sols clairs */
-  --c-papier: #f6f3ee;
-  --c-papier-creux: #ece7df;
-  --c-papier-vif: #fdfcfa;
+  /* ---------- Sols sombres ---------- */
+  --c-graphite: #17171a;
+  --c-graphite-profond: #0e0e10;
+  --c-graphite-doux: #212126;
 
-  /* Sols sombres */
-  --c-nuit: #14110f;
-  --c-nuit-doux: #1e1a17;
-  --c-nuit-creux: #0d0b0a;
+  /* ---------- Encres sur fond clair ---------- */
+  --c-encre: #101010;
+  --c-encre-douce: #55555a;
+  --c-encre-muette: #6a6a70;
 
-  /* Encres */
-  --c-encre: #15120f;
-  --c-encre-douce: #4c453d;
-  --c-encre-muette: #6b645a;
+  /* ---------- Encres sur fond sombre ---------- */
+  --c-clair: #f2f2f1;
+  --c-clair-doux: #a8a8ad;
+  --c-clair-muet: #8e8e94;
 
-  /* Encres sur fond sombre */
-  --c-clair: #f6f3ee;
-  --c-clair-doux: #c3bcb2;
-  --c-clair-muet: #8d857b;
+  /* ---------- Signal : unique pigment, hérité du logo ---------- */
+  --c-signal: #b81524;
+  --c-signal-clair: #ff5a5f;
 
-  /*
-    Accent : laiton patiné — la lumière du laser sur la matière.
-    --c-laiton est la valeur employée pour le TEXTE sur fond clair : elle est
-    volontairement assombrie pour rester au-dessus de 4,5:1 sur les deux fonds clairs.
-    --c-laiton-vif sert de remplissage (texte sombre par-dessus) et de couleur
-    de texte sur les fonds sombres.
-  */
-  --c-laiton: #855e1e;
-  --c-laiton-vif: #c49a52;
-  --c-laiton-pale: #e5d5b8;
+  /* ---------- États ---------- */
+  --c-erreur: #a81020;
+  --c-succes: #1f6b46;
 
-  /* Verre : teinte froide minérale, pour les filets et les surfaces */
-  --c-verre: #cfd8d4;
-  --c-verre-profond: #5d6b66;
-
-  /* Lie-de-vin : ponctuation rare, jamais en aplat large */
-  --c-lie: #6b2333;
-
-  /* États */
-  --c-erreur: #9a2b1f;
-  --c-succes: #2f6b4f;
-
-  /* Filets */
-  --c-filet: color-mix(in srgb, var(--c-encre) 14%, transparent);
+  /* ---------- Filets ---------- */
+  --c-filet: color-mix(in srgb, var(--c-encre) 13%, transparent);
   --c-filet-fort: color-mix(in srgb, var(--c-encre) 26%, transparent);
-  --c-filet-clair: color-mix(in srgb, var(--c-clair) 18%, transparent);
+  --c-filet-clair: color-mix(in srgb, var(--c-clair) 16%, transparent);
 
   /* ---------- Typographie ---------- */
 
-  --f-titre: 'Newsreader', 'Iowan Old Style', georgia, 'Times New Roman', serif;
-  --f-texte: 'Plex Sans', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+  --f-texte: 'Archivo', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
+  --f-titre: var(--f-texte);
+  --f-mono: 'Plex Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', consolas, monospace;
 
   /* Échelle fluide, base 16 px → 1440 px */
-  --t--2: clamp(0.72rem, 0.70rem + 0.09vw, 0.78rem);
-  --t--1: clamp(0.82rem, 0.79rem + 0.14vw, 0.90rem);
+  --t--2: clamp(0.7rem, 0.68rem + 0.09vw, 0.76rem);
+  --t--1: clamp(0.82rem, 0.79rem + 0.14vw, 0.9rem);
   --t-0: clamp(0.98rem, 0.95rem + 0.16vw, 1.06rem);
-  --t-1: clamp(1.12rem, 1.05rem + 0.32vw, 1.28rem);
-  --t-2: clamp(1.32rem, 1.18rem + 0.62vw, 1.66rem);
-  --t-3: clamp(1.58rem, 1.33rem + 1.10vw, 2.24rem);
-  --t-4: clamp(1.92rem, 1.47rem + 1.98vw, 3.06rem);
-  --t-5: clamp(2.32rem, 1.57rem + 3.30vw, 4.20rem);
-  --t-6: clamp(2.72rem, 1.52rem + 5.30vw, 5.80rem);
+  --t-1: clamp(1.1rem, 1.03rem + 0.32vw, 1.26rem);
+  --t-2: clamp(1.3rem, 1.14rem + 0.7vw, 1.68rem);
+  --t-3: clamp(1.6rem, 1.3rem + 1.3vw, 2.4rem);
+  --t-4: clamp(2rem, 1.45rem + 2.4vw, 3.4rem);
+  --t-5: clamp(2.5rem, 1.5rem + 4.4vw, 5rem);
+  --t-6: clamp(3rem, 1.4rem + 7vw, 7rem);
 
-  --lh-serre: 1.02;
-  --lh-titre: 1.1;
-  --lh-moyen: 1.35;
-  --lh-texte: 1.65;
+  --lh-serre: 0.96;
+  --lh-titre: 1.04;
+  --lh-moyen: 1.3;
+  --lh-texte: 1.62;
 
-  --ls-titre: -0.025em;
-  --ls-serre: -0.04em;
-  --ls-large: 0.16em;
+  /* Une grotesque supporte un serrage franc aux grandes tailles. */
+  --ls-titre: -0.03em;
+  --ls-serre: -0.045em;
+  --ls-large: 0.14em;
+
+  --gr-titre: 600;
+  --gr-fort: 700;
 
   /* ---------- Rythme ---------- */
-
   --e-3xs: 0.25rem;
   --e-2xs: 0.5rem;
   --e-xs: 0.75rem;
@@ -90,39 +88,34 @@
   --e-m: 1.5rem;
   --e-l: 2.25rem;
   --e-xl: 3.5rem;
-  --e-2xl: clamp(4rem, 3rem + 5vw, 7rem);
-  --e-3xl: clamp(5.5rem, 4rem + 7vw, 10rem);
+  --e-2xl: clamp(4rem, 3rem + 5vw, 7.5rem);
+  --e-3xl: clamp(5.5rem, 4rem + 7vw, 11rem);
 
   /* ---------- Trame ---------- */
-
   --gouttiere: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);
   --largeur-contenu: 1280px;
-  --largeur-large: 1520px;
+  --largeur-large: 1560px;
   --largeur-texte: 68ch;
 
-  /* ---------- Formes ---------- */
-
-  --r-s: 2px;
-  --r-m: 4px;
-  --r-l: 8px;
+  /* ---------- Formes : angles francs, registre atelier ---------- */
+  --r-s: 0;
+  --r-m: 2px;
+  --r-l: 3px;
   --r-pilule: 999px;
 
-  /* ---------- Élévation — discrète, jamais diffuse ---------- */
-
+  /* ---------- Élévation, très discrète ---------- */
   --ombre-s: 0 1px 2px color-mix(in srgb, var(--c-encre) 8%, transparent);
-  --ombre-m: 0 12px 28px -18px color-mix(in srgb, var(--c-encre) 45%, transparent);
-  --ombre-l: 0 28px 60px -32px color-mix(in srgb, var(--c-encre) 55%, transparent);
+  --ombre-m: 0 14px 30px -20px color-mix(in srgb, var(--c-encre) 40%, transparent);
+  --ombre-l: 0 30px 64px -34px color-mix(in srgb, var(--c-encre) 48%, transparent);
 
   /* ---------- Mouvement ---------- */
-
-  --duree-courte: 160ms;
-  --duree: 280ms;
-  --duree-longue: 520ms;
+  --duree-courte: 150ms;
+  --duree: 260ms;
+  --duree-longue: 560ms;
   --courbe: cubic-bezier(0.22, 0.61, 0.36, 1);
   --courbe-sortie: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---------- Divers ---------- */
-
   --entete-hauteur: 4.5rem;
   --z-entete: 100;
   --z-menu: 200;
@@ -133,22 +126,22 @@
 
 @media (min-width: 60rem) {
   :root {
-    --entete-hauteur: 5.25rem;
+    --entete-hauteur: 5rem;
   }
 }
 
-/* Sections sombres : on inverse les rôles sans redéfinir la palette. */
+/* Sections sombres : inversion des rôles, sans redéfinir la palette. */
 .sur-nuit {
-  --c-papier: var(--c-nuit);
-  --c-papier-creux: var(--c-nuit-creux);
-  --c-papier-vif: var(--c-nuit-doux);
+  --c-fond: var(--c-graphite);
+  --c-fond-creux: var(--c-graphite-profond);
+  --c-blanc: var(--c-graphite-doux);
   --c-encre: var(--c-clair);
   --c-encre-douce: var(--c-clair-doux);
   --c-encre-muette: var(--c-clair-muet);
   --c-filet: var(--c-filet-clair);
-  --c-filet-fort: color-mix(in srgb, var(--c-clair) 32%, transparent);
-  --c-laiton: var(--c-laiton-vif);
+  --c-filet-fort: color-mix(in srgb, var(--c-clair) 30%, transparent);
+  --c-signal: var(--c-signal-clair);
 
-  background-color: var(--c-nuit);
+  background-color: var(--c-graphite);
   color: var(--c-clair);
 }

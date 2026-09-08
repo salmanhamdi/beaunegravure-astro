@@ -16,7 +16,7 @@ function estActif(href: string): boolean {
       <Monogramme taille={38} class="entete__logo" />
       <span class="entete__nom">
         <strong>Beaune Gravure</strong>
-        <small>Gravure laser sur verre · Bourgogne</small>
+        <small>Création · Personnalisation · Fabrication</small>
       </span>
     </a>
 
@@ -118,7 +118,7 @@ function estActif(href: string): boolean {
     </ul>
 
     <div class="menu-mobile__pied">
-      <a class="bouton bouton--laiton" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
+      <a class="bouton bouton--inverse" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
       <a class="menu-mobile__tel" href={`tel:${telephone.e164}`}>
         Appeler l’atelier · {telephone.affichage}
       </a>
@@ -131,7 +131,7 @@ function estActif(href: string): boolean {
     position: sticky;
     top: 0;
     z-index: var(--z-entete);
-    background-color: color-mix(in srgb, var(--c-papier) 88%, transparent);
+    background-color: color-mix(in srgb, var(--c-fond) 88%, transparent);
     border-block-end: 1px solid var(--c-filet);
     backdrop-filter: blur(12px) saturate(140%);
   }
@@ -241,7 +241,7 @@ function estActif(href: string): boolean {
     padding: var(--e-2xs);
     border: 1px solid var(--c-filet);
     border-radius: var(--r-l);
-    background-color: var(--c-papier-vif);
+    background-color: var(--c-blanc);
     box-shadow: var(--ombre-l);
     opacity: 0;
     visibility: hidden;
@@ -281,7 +281,7 @@ function estActif(href: string): boolean {
 
   .sous-menu a:hover,
   .sous-menu a[aria-current='page'] {
-    background-color: var(--c-papier-creux);
+    background-color: var(--c-fond-creux);
     color: var(--c-encre);
   }
 
@@ -304,7 +304,7 @@ function estActif(href: string): boolean {
     inline-size: 2.75rem;
     block-size: 2.75rem;
     border: 1px solid var(--c-filet-fort);
-    border-radius: var(--r-pilule);
+    border-radius: var(--r-m);
     color: var(--c-encre);
     text-decoration: none;
   }
@@ -319,7 +319,7 @@ function estActif(href: string): boolean {
   }
 
   .entete__tel:hover {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   .entete__cta {
@@ -336,7 +336,7 @@ function estActif(href: string): boolean {
     inline-size: 2.75rem;
     block-size: 2.75rem;
     border: 1px solid var(--c-filet-fort);
-    border-radius: var(--r-pilule);
+    border-radius: var(--r-m);
     color: var(--c-encre);
   }
 
@@ -389,7 +389,7 @@ function estActif(href: string): boolean {
     z-index: var(--z-menu);
     overflow-y: auto;
     overscroll-behavior: contain;
-    background-color: var(--c-papier);
+    background-color: var(--c-fond);
     animation: menu-entree var(--duree) var(--courbe-sortie);
   }
 
@@ -426,7 +426,7 @@ function estActif(href: string): boolean {
   }
 
   .menu-mobile__liste > li > a[aria-current='page'] {
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
   }
 
   .menu-mobile__sous {
@@ -446,7 +446,7 @@ function estActif(href: string): boolean {
   }
 
   .menu-mobile__sous a:hover {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   .menu-mobile__pied {

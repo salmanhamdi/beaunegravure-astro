@@ -1,7 +1,7 @@
 # Beaune Gravure — site Astro
 
-Site vitrine de **Beaune Gravure**, atelier de gravure laser sur verre à
-Ladoix-Serrigny, près de Beaune (Côte-d'Or).
+Site de **Beaune Gravure**, studio de création, de personnalisation et de
+fabrication installé à Ladoix-Serrigny, près de Beaune (Côte-d'Or).
 
 Reconstruction complète en [Astro](https://astro.build), **static-first** :
 aucune base de données, aucun runtime serveur, aucune dépendance WordPress.
@@ -18,7 +18,9 @@ aucune base de données, aucun runtime serveur, aucune dépendance WordPress.
 - [Architecture](#architecture)
 - [Contenu](#contenu)
 - [Images](#images)
+- [Direction artistique](#direction-artistique)
 - [Typographie](#typographie)
+- [Écosystème](#écosystème)
 - [Formulaire de devis](#formulaire-de-devis)
 - [Environnements et indexation](#environnements-et-indexation)
 - [Déploiement](#déploiement)
@@ -73,9 +75,9 @@ src/
 │   └── brand/              logo, monogramme, favicon
 ├── components/           Composants Astro, aucun framework tiers
 ├── content/              Contenu éditorial (Content Collections)
-│   ├── services/           9 fichiers Markdown, un par savoir-faire
+│   ├── services/           10 fichiers Markdown, un par savoir-faire
 │   └── blog/               9 articles Markdown
-├── data/                 Données typées : site, réalisations, catégories
+├── data/                 Données typées : site, réalisations, projets, catégories
 ├── layouts/              Gabarit unique
 ├── pages/                Routes
 ├── styles/               Jetons, fondations, composants partagés
@@ -142,16 +144,53 @@ de synthèse et les doublons de l'ancien site ont été écartés : voir la cons
 
 ---
 
+## Direction artistique
+
+Direction « atelier blanc » : sol neutre, encre profonde, **aucune couleur
+décorative**. La couleur vient exclusivement de la photographie, donc de la
+matière — ce qui permet à une pièce en cuir rouge, une plaque en laiton et un
+composant inox de cohabiter sans que l'identité du site ne bascule.
+
+Le seul pigment du système est le rouge déjà présent dans le logo. Il n'apparaît
+que sur six déclarations CSS, toutes fonctionnelles : focus clavier, anneau de
+focus des champs, astérisque des champs obligatoires, case à cocher.
+
+Ce choix distingue aussi la maison mère de ses deux marques : Glassora occupe
+l'ivoire et l'or, Spotitap le turquoise.
+
 ## Typographie
 
 Deux familles, auto-hébergées, **sous-ensemble latin uniquement** :
 
-- **Newsreader** (variable) — titres et accentuations éditoriales ;
-- **IBM Plex Sans** (variable) — texte courant et interface.
+- **Archivo** (variable) — titres et texte courant. Une seule grotesque
+  d'ingénierie : le contraste se fait par la graisse et l'échelle, pas par un
+  second dessin ;
+- **IBM Plex Mono** — sur-titres, numéros, dimensions, références matière. Le
+  monospace évoque la fiche technique et le fichier de fabrication, qui sont le
+  quotidien de l'atelier.
 
-Trois fichiers `woff2` au total (~168 Ko), déclarés dans
-`src/components/Polices.astro`, dont deux préchargés. Aucune requête vers un
+Aucune serif : c'est le registre de Glassora, marque sœur. La maison mère s'en
+distingue.
+
+Deux fichiers `woff2`, environ 50 Ko au total, déclarés dans
+`src/components/Polices.astro` et tous deux préchargés. Aucune requête vers un
 serveur tiers : c'est aussi ce qui permet de se passer de bandeau cookies.
+
+---
+
+## Écosystème
+
+Beaune Gravure est la maison mère de deux marques distinctes, décrites dans
+`src/data/projets.ts` et présentées sur `/projets/` :
+
+- **[Glassora](https://glassora.fr/)** — marque de verrerie personnalisée, avec
+  boutique et configurateur en ligne ;
+- **[Spotitap](https://spotitap.com/)** — gamme de plaques et cartes NFC, avec
+  son application et son CRM.
+
+Les deux gardent leur identité propre. Le site ne les présente jamais comme des
+services de Beaune Gravure, mais comme la preuve que l'atelier sait mener un
+produit jusqu'au marché.
 
 ---
 

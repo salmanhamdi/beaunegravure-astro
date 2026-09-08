@@ -14,13 +14,13 @@ import machine from '@assets/images/atelier/contact-hero-trotec-speedy-400.jpg';
 
 const chemin = '/a-propos/';
 const url = urlAbsolue(chemin);
-const titre = 'L’atelier Beaune Gravure | Gravure laser en Bourgogne';
+const titre = 'Le studio Beaune Gravure | Création et fabrication';
 const description =
-  'Atelier artisanal de gravure laser près de Beaune : vingt ans de pratique et trois technologies laser, pour les particuliers comme pour les professionnels.';
+  'Studio de création et de fabrication près de Beaune : vingt ans de pratique, quatre moyens de production, et deux marques développées en interne.';
 
 const miettes = [
   { nom: 'Accueil', href: '/' },
-  { nom: 'L’atelier', href: chemin },
+  { nom: 'Le studio', href: chemin },
 ];
 
 const schema = graphe([
@@ -62,12 +62,13 @@ const engagements = [
   <header class="section section--serree entete-page">
     <div class="enveloppe">
       <FilAriane miettes={miettes} />
-      <p class="surtitre">L’atelier</p>
-      <h1>Un atelier, une machine, et le temps de bien faire.</h1>
+      <p class="surtitre">Le studio</p>
+      <h1>Un studio, un atelier, et le temps de bien faire.</h1>
       <p class="chapo">
-        Beaune Gravure est un atelier artisanal de gravure et de découpe laser installé
-        à {adresse.ville}, en Côte-d’Or. Il travaille pour les particuliers comme pour
-        les professionnels, sur des pièces uniques comme sur des séries.
+        Beaune Gravure conçoit, personnalise et fabrique. Le studio prépare les
+        fichiers&nbsp;; l’atelier, installé à {adresse.ville} en Côte-d’Or, produit les
+        pièces — à l’unité comme en série, pour les particuliers comme pour les
+        professionnels.
       </p>
     </div>
   </header>
@@ -253,7 +254,7 @@ const engagements = [
   .mosaique__petit {
     overflow: hidden;
     border-radius: var(--r-l);
-    background-color: var(--c-papier-creux);
+    background-color: var(--c-fond-creux);
   }
 
   .mosaique__grand :global(img),
@@ -296,7 +297,7 @@ const engagements = [
   .histoire__media {
     overflow: hidden;
     border-radius: var(--r-l);
-    background-color: var(--c-papier-creux);
+    background-color: var(--c-fond-creux);
   }
 
   .histoire__texte h2 {
@@ -332,7 +333,7 @@ const engagements = [
     font-family: var(--f-titre);
     font-size: var(--t-2);
     font-style: italic;
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
     line-height: 1;
   }
 

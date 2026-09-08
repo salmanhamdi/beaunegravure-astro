@@ -10,7 +10,7 @@
 
   .bouton {
     --bouton-fond: var(--c-encre);
-    --bouton-texte: var(--c-papier);
+    --bouton-texte: var(--c-fond);
     --bouton-bord: var(--c-encre);
 
     display: inline-flex;
@@ -21,7 +21,7 @@
     padding-inline: var(--e-m);
     padding-block: var(--e-xs);
     border: 1px solid var(--bouton-bord);
-    border-radius: var(--r-pilule);
+    border-radius: var(--r-m);
     background-color: var(--bouton-fond);
     color: var(--bouton-texte);
     font-size: var(--t--1);
@@ -36,9 +36,9 @@
   }
 
   .bouton:hover {
-    --bouton-fond: var(--c-laiton);
-    --bouton-bord: var(--c-laiton);
-    --bouton-texte: var(--c-papier);
+    --bouton-fond: var(--c-graphite-doux);
+    --bouton-bord: var(--c-graphite-doux);
+    --bouton-texte: var(--c-clair);
   }
 
   .bouton:active {
@@ -54,19 +54,20 @@
   .bouton--fantome:hover {
     --bouton-fond: transparent;
     --bouton-texte: var(--c-encre);
-    --bouton-bord: var(--c-laiton);
+    --bouton-bord: var(--c-encre);
   }
 
-  .bouton--laiton {
-    --bouton-fond: var(--c-laiton-vif);
-    --bouton-bord: var(--c-laiton-vif);
-    --bouton-texte: var(--c-nuit);
+  /* Bouton inversé, pour les sections sombres. */
+  .bouton--inverse {
+    --bouton-fond: var(--c-clair);
+    --bouton-bord: var(--c-clair);
+    --bouton-texte: var(--c-graphite);
   }
 
-  .bouton--laiton:hover {
-    --bouton-fond: var(--c-laiton);
-    --bouton-bord: var(--c-laiton);
-    --bouton-texte: var(--c-papier);
+  .bouton--inverse:hover {
+    --bouton-fond: transparent;
+    --bouton-bord: var(--c-clair);
+    --bouton-texte: var(--c-clair);
   }
 
   .bouton[aria-disabled='true'],
@@ -99,7 +100,7 @@
     content: '';
     inline-size: 1.35em;
     block-size: 1px;
-    background-color: var(--c-laiton);
+    background-color: var(--c-encre);
     transition: inline-size var(--duree) var(--courbe-sortie);
   }
 
@@ -117,11 +118,11 @@
     padding: 0.35em 0.85em;
     border: 1px solid var(--c-filet);
     border-radius: var(--r-pilule);
-    background-color: color-mix(in srgb, var(--c-papier-vif) 70%, transparent);
+    background-color: color-mix(in srgb, var(--c-blanc) 70%, transparent);
     color: var(--c-encre-douce);
+    font-family: var(--f-mono);
     font-size: var(--t--2);
-    font-weight: 500;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.04em;
     line-height: 1.3;
     text-transform: uppercase;
   }
@@ -149,8 +150,9 @@
   /* ================= Fil d'Ariane ================= */
 
   .fil-ariane {
+    font-family: var(--f-mono);
     font-size: var(--t--2);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
   }
 
@@ -176,7 +178,7 @@
   }
 
   .fil-ariane a:hover {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   .fil-ariane [aria-current='page'] {
@@ -192,7 +194,7 @@
     padding: var(--e-m);
     border: 1px solid var(--c-filet);
     border-radius: var(--r-l);
-    background-color: var(--c-papier-vif);
+    background-color: var(--c-blanc);
     transition: border-color var(--duree) var(--courbe),
       transform var(--duree) var(--courbe);
   }
@@ -302,7 +304,7 @@
     padding: 0.75rem 1rem;
     border: 1px solid var(--c-filet-fort);
     border-radius: var(--r-m);
-    background-color: var(--c-papier-vif);
+    background-color: var(--c-blanc);
     color: var(--c-encre);
     font-size: var(--t-0);
     transition: border-color var(--duree-courte) var(--courbe),
@@ -324,8 +326,8 @@
   .champ textarea:focus-visible,
   .champ select:focus-visible {
     outline: none;
-    border-color: var(--c-laiton);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-laiton) 22%, transparent);
+    border-color: var(--c-signal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-signal) 22%, transparent);
   }
 
   .champ[data-invalide='true'] input,

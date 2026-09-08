@@ -20,7 +20,7 @@ html {
 
 body {
   min-height: 100svh;
-  background-color: var(--c-papier);
+  background-color: var(--c-fond);
   color: var(--c-encre);
   font-family: var(--f-texte);
   font-size: var(--t-0);
@@ -69,7 +69,7 @@ h2,
 h3,
 h4 {
   font-family: var(--f-titre);
-  font-weight: 400;
+  font-weight: var(--gr-titre);
   line-height: var(--lh-titre);
   letter-spacing: var(--ls-titre);
   text-wrap: balance;
@@ -116,13 +116,13 @@ a:hover {
 /* ---------- Focus ---------- */
 
 :focus-visible {
-  outline: 2px solid var(--c-laiton);
+  outline: 2px solid var(--c-signal);
   outline-offset: 3px;
   border-radius: var(--r-s);
 }
 
 .sur-nuit :focus-visible {
-  outline-color: var(--c-laiton-vif);
+  outline-color: var(--c-signal-clair);
 }
 
 /* ---------- Listes de contenu ---------- */
@@ -153,7 +153,7 @@ ol[class] {
   left: var(--e-2xs);
   z-index: calc(var(--z-modale) + 1);
   padding: var(--e-xs) var(--e-s);
-  background: var(--c-nuit);
+  background: var(--c-graphite);
   color: var(--c-clair);
   border-radius: var(--r-m);
   font-size: var(--t--1);
@@ -204,7 +204,7 @@ ol[class] {
 }
 
 .section--creuse {
-  background-color: var(--c-papier-creux);
+  background-color: var(--c-fond-creux);
 }
 
 /* ---------- Éléments éditoriaux communs ---------- */
@@ -214,21 +214,21 @@ ol[class] {
   align-items: center;
   gap: var(--e-xs);
   margin-block-end: var(--e-s);
-  color: var(--c-laiton);
-  font-family: var(--f-texte);
+  color: var(--c-encre-muette);
+  font-family: var(--f-mono);
   font-size: var(--t--2);
-  font-weight: 600;
-  letter-spacing: var(--ls-large);
+  font-weight: 400;
+  letter-spacing: 0.08em;
   line-height: 1.4;
   text-transform: uppercase;
 }
 
 .surtitre::before {
   content: '';
-  inline-size: clamp(1.5rem, 3vw, 2.75rem);
+  inline-size: clamp(1.25rem, 2.4vw, 2.25rem);
   block-size: 1px;
   flex: none;
-  background-color: currentColor;
+  background-color: var(--c-filet-fort);
 }
 
 .chapo {
@@ -272,7 +272,7 @@ ol[class] {
 
 .prose a {
   color: var(--c-encre);
-  text-decoration-color: var(--c-laiton);
+  text-decoration-color: var(--c-encre);
   text-decoration-thickness: 1.5px;
 }
 
@@ -284,10 +284,11 @@ ol[class] {
 .prose blockquote {
   margin-block: var(--e-l);
   padding-inline-start: var(--e-m);
-  border-inline-start: 2px solid var(--c-laiton);
-  font-family: var(--f-titre);
+  border-inline-start: 2px solid var(--c-encre);
   font-size: var(--t-2);
+  font-weight: 500;
   line-height: 1.35;
+  letter-spacing: -0.015em;
   color: var(--c-encre);
 }
 

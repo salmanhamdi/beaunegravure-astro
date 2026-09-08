@@ -6,6 +6,7 @@ description: "Gravure laser de précision à Beaune sur verre, bois, cuir, méta
 surtitre: "Le procédé"
 chapo: "Trois technologies laser cohabitent dans l’atelier : le CO₂ pour le bois et les matières organiques, l’UV pour le verre et les surfaces délicates, le fibre pour les métaux. Chaque support impose son réglage — c’est ce choix qui fait la différence entre un marquage correct et un marquage juste."
 ordre: 2
+famille: "fabrication"
 galerie: "bois"
 visuel: "gravure-laser-bois-corton-grand-cru-beaune-gravure"
 points:
@@ -14,7 +15,6 @@ points:
   - "Fibre 1064 nm · métaux et traçabilité · 30 × 30 cm"
   - "Essai systématique sur matière inconnue"
 usages: "Verres, coffrets, plaques, cadeaux, objets professionnels, caisses bois, signalétique et pièces techniques."
-vedette: false
 faq:
   - question: "La gravure laser est-elle durable ?"
     reponse: "Le marquage est créé dans la matière elle-même, pas déposé dessus. Il ne peut donc pas se décoller. Sa résistance finale dépend ensuite du support, de sa finition et de son exposition."

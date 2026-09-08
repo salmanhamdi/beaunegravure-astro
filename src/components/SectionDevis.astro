@@ -28,7 +28,7 @@ const lienDevis = projet ? `/contact/?projet=${encodeURIComponent(projet)}` : '/
     <div class="devis__action">
       <p class="chapo">{texte}</p>
       <div class="boutons">
-        <a class="bouton bouton--laiton" href={lienDevis}>Demander un devis</a>
+        <a class="bouton bouton--inverse" href={lienDevis}>Demander un devis</a>
         <a class="bouton bouton--fantome" href={`tel:${telephone.e164}`}>
           {telephone.affichage}
         </a>

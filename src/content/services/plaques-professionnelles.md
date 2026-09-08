@@ -5,7 +5,8 @@ seoTitle: "Plaques professionnelles gravées à Beaune | Sur mesure"
 description: "Plaques professionnelles gravées à Beaune pour cabinets, commerces, restaurants, hôtels et artisans. Laiton, inox, plexiglass, bois et acrylique bicouche."
 surtitre: "Identité de façade"
 chapo: "Une plaque professionnelle est souvent le premier contact physique avec votre activité. Elle doit être lisible, durable et cohérente avec votre image — pas seulement porter votre nom."
-ordre: 5
+ordre: 6
+famille: "application"
 galerie: "plaques"
 visuel: "plaques-professionnelles-gravees-multi-finitions"
 points:

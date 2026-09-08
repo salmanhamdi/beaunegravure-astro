@@ -8,6 +8,7 @@ import {
   telephone,
   zones,
 } from '@data/site';
+import { projets } from '@data/projets';
 import logo from '@assets/images/brand/beaune-gravure-logo.svg';
 
 const annee = new Date().getFullYear();
@@ -19,9 +20,9 @@ const annee = new Date().getFullYear();
       <div class="pied__marque">
         <img src={logo.src} width="132" height="106" alt={site.nom} />
         <p class="pied__accroche">
-          Atelier de gravure laser sur verre à {adresse.ville}, à quelques minutes de
-          Beaune. Verres, coffrets, plaques et objets personnalisés pour les
-          particuliers comme pour les professionnels.
+          Studio de création, de personnalisation et de fabrication à {adresse.ville},
+          à quelques minutes de Beaune. Du dessin à l’objet fini, sur métal, bois,
+          verre, plexiglass, cuir et supports personnalisés.
         </p>
         <ul class="pied__reseaux">
           <li>
@@ -61,6 +62,21 @@ const annee = new Date().getFullYear();
           {piedDePage.decouvrir.map((lien) => (
             <li><a href={lien.href}>{lien.label}</a></li>
           ))}
+        </ul>
+      </nav>
+
+      <nav class="pied__colonne" aria-labelledby="pied-projets">
+        <h2 class="pied__titre" id="pied-projets">Nos projets</h2>
+        <ul>
+          {projets.map((projet) => (
+            <li>
+              <a href={projet.url} rel="noopener" target="_blank">
+                {projet.nom}
+                <span class="visuellement-cache"> (nouvel onglet)</span>
+              </a>
+            </li>
+          ))}
+          <li><a href="/projets/">Comment ils sont nés</a></li>
         </ul>
       </nav>
 
@@ -113,7 +129,7 @@ const annee = new Date().getFullYear();
 
   @media (min-width: 68rem) {
     .pied__haut {
-      grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr));
       gap: var(--e-l);
     }
   }
@@ -145,14 +161,14 @@ const annee = new Date().getFullYear();
     inline-size: 2.5rem;
     block-size: 2.5rem;
     border: 1px solid var(--c-filet);
-    border-radius: var(--r-pilule);
+    border-radius: var(--r-m);
     color: var(--c-encre-douce);
     transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
   }
 
   .pied__reseaux a:hover {
-    border-color: var(--c-laiton);
-    color: var(--c-laiton);
+    border-color: var(--c-encre);
+    color: var(--c-encre);
   }
 
   .pied__titre {
@@ -162,7 +178,7 @@ const annee = new Date().getFullYear();
     font-weight: 600;
     letter-spacing: var(--ls-large);
     text-transform: uppercase;
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
   }
 
   .pied__colonne ul {
@@ -208,12 +224,12 @@ const annee = new Date().getFullYear();
     color: var(--c-clair);
     font-weight: 500;
     text-decoration: none;
-    border-block-end: 1px solid var(--c-laiton);
+    border-block-end: 1px solid var(--c-filet-fort);
     justify-self: start;
   }
 
   .pied__coordonnees a:hover {
-    color: var(--c-laiton);
+    color: var(--c-encre);
   }
 
   .pied__zone {

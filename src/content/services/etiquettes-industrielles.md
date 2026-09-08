@@ -5,7 +5,8 @@ seoTitle: "Étiquettes industrielles et marquage laser de traçabilité"
 description: "Marquage laser de traçabilité à Beaune : numéros de série, QR codes, DataMatrix et plaques techniques sur inox, aluminium et plastiques industriels."
 surtitre: "Industrie et traçabilité"
 chapo: "Identifier durablement une machine, un poste, un outil ou une pièce. Le marquage laser fibre inscrit numéros de série, codes et références directement dans le métal — sans encre, sans étiquette qui se décolle."
-ordre: 6
+ordre: 9
+famille: "application"
 galerie: "metal"
 visuel: "pieces-inox-marquage-numero-serie"
 points:

@@ -4,63 +4,50 @@
  *
  * Choix typographique
  * -------------------
- * Titres : **Newsreader**, serif éditoriale à contraste marqué, dessinée pour
- * la lecture longue. Son italique est un vrai dessin, pas une inclinaison :
- * c'est ce qui porte les accentuations du site. Registre atelier et revue
- * spécialisée, pas magazine de mode.
+ * Une seule famille de texte, **Archivo**, en axe de graisse variable. C'est
+ * une grotesque d'ingénierie, dessinée pour la signalétique et le texte long :
+ * elle porte les grands titres comme les paragraphes sans changer de registre.
+ * Le contraste se fait par la graisse et l'échelle, pas par un second dessin.
  *
- * Texte : **IBM Plex Sans**, grotesque humaniste au caractère technique
- * assumé. Elle fait écho à la précision de la machine sans devenir froide,
- * et évite les grotesques neutres devenues le réglage par défaut du web.
+ * **IBM Plex Mono** intervient uniquement sur les éléments techniques :
+ * sur-titres, numéros d'étape, dimensions, références matière. Le monospace a
+ * ici une raison d'être — il évoque la fiche technique et le fichier de
+ * fabrication, qui sont le quotidien de l'atelier.
+ *
+ * Aucune serif : la serif italique est le registre de Glassora, marque sœur.
+ * La maison mère doit s'en distinguer.
  *
  * Livraison
  * ---------
- * Seul le sous-ensemble latin est publié : le français n'a besoin d'aucun
- * autre jeu de caractères, alors que les paquets @fontsource embarquent par
- * défaut le cyrillique, le grec et le vietnamien (environ 200 Ko inutiles).
- *
- * Trois fichiers, tous en axe de graisse variable :
- *   - Newsreader normal   → titres
- *   - Newsreader italique → accentuations et numéros d'étape
- *   - IBM Plex Sans       → texte courant et interface
- *
- * Les deux fichiers nécessaires au premier rendu sont préchargés.
+ * Sous-ensemble latin uniquement, deux fichiers, environ 50 Ko au total.
+ * Les deux sont préchargés : ils servent tous les deux au premier rendu.
  */
-import titres from '@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2?url';
-import titresItalique from '@fontsource-variable/newsreader/files/newsreader-latin-wght-italic.woff2?url';
-import texte from '@fontsource-variable/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2?url';
+import texte from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import mono from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url';
 
 /** Plage latine suffisante pour le français, œ et € compris. */
 const LATIN =
   'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
 ---
 
-<link rel="preload" as="font" type="font/woff2" href={titres} crossorigin="anonymous" />
 <link rel="preload" as="font" type="font/woff2" href={texte} crossorigin="anonymous" />
+<link rel="preload" as="font" type="font/woff2" href={mono} crossorigin="anonymous" />
 
 <style is:inline set:html={`
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Archivo';
   font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url(${titres}) format('woff2-variations');
-  unicode-range: ${LATIN};
-}
-@font-face {
-  font-family: 'Newsreader';
-  font-style: italic;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url(${titresItalique}) format('woff2-variations');
-  unicode-range: ${LATIN};
-}
-@font-face {
-  font-family: 'Plex Sans';
-  font-style: normal;
-  font-weight: 100 700;
+  font-weight: 100 900;
   font-display: swap;
   src: url(${texte}) format('woff2-variations');
+  unicode-range: ${LATIN};
+}
+@font-face {
+  font-family: 'Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(${mono}) format('woff2');
   unicode-range: ${LATIN};
 }
 `} />

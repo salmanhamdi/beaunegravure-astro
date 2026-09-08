@@ -1,0 +1,260 @@
+---
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { projets } from '@data/projets';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+const chemin = '/projets/';
+const url = urlAbsolue(chemin);
+const titre = 'Nos projets : Glassora et Spotitap | Beaune Gravure';
+const description =
+  'Glassora et Spotitap sont deux marques conçues et fabriquées par Beaune Gravure : une maison de verrerie gravée et une gamme de plaques NFC connectées.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Projets', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+  // Les deux marques sont déclarées comme des marques distinctes, dont
+  // Beaune Gravure est à l'origine. Elles ne sont pas des services.
+  ...projets.map((projet) => ({
+    '@type': 'Brand',
+    '@id': `${url}#${projet.slug}`,
+    name: projet.nom,
+    description: projet.description,
+    url: projet.url,
+    parentOrganization: { '@id': urlAbsolue('/#organization') },
+  })),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Projets</p>
+      <h1>Un studio. Des savoir-faire. Des projets.</h1>
+      <p class="chapo">
+        Une partie de notre travail consiste à répondre à des commandes. Une autre
+        consiste à concevoir nos propres produits, à les fabriquer et à les mener
+        jusqu’au marché. Deux marques en sont issues.
+      </p>
+    </div>
+  </header>
+
+  <div class="section section--serree">
+    <div class="enveloppe">
+      {
+        projets.map((projet, index) => (
+          <article class="projet revele" id={projet.slug}>
+            <div class="projet__index" aria-hidden="true">
+              {String(index + 1).padStart(2, '0')}
+            </div>
+
+            <div class="projet__corps">
+              <p class="projet__nature">{projet.nature}</p>
+              <h2>{projet.nom}</h2>
+              <p class="projet__accroche">{projet.accroche}</p>
+
+              <div class="projet__texte">
+                <p>{projet.description}</p>
+                <p class="projet__apport">
+                  <span class="projet__apport-etiquette">Ce que l’atelier y apporte</span>
+                  {projet.apport}
+                </p>
+              </div>
+
+              <ul class="projet__reperes">
+                {projet.reperes.map((repere) => (
+                  <li>{repere}</li>
+                ))}
+              </ul>
+
+              <a class="bouton" href={projet.url} rel="noopener" target="_blank">
+                {projet.libelleLien}
+                <span class="visuellement-cache"> — {projet.domaine}, nouvel onglet</span>
+              </a>
+              <p class="projet__domaine">{projet.domaine}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="section sur-nuit pourquoi">
+    <div class="enveloppe pourquoi__grille">
+      <div>
+        <p class="surtitre">Pourquoi cela vous concerne</p>
+        <h2>Mener un produit jusqu’au bout, ça s’apprend en le faisant.</h2>
+      </div>
+      <div class="pourquoi__texte">
+        <p>
+          Concevoir une gamme, choisir des fournisseurs, tenir une qualité constante sur
+          des centaines de pièces, gérer un service après-vente : ce sont des contraintes
+          que l’on ne rencontre pas en exécutant des commandes une par une.
+        </p>
+        <p>
+          C’est cette expérience que nous remettons dans vos projets — qu’il s’agisse de
+          dix pièces ou d’une gamme complète à imaginer.
+        </p>
+        <a class="lien-fleche" href="/services/creation-graphique/">
+          Notre travail de conception
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <SectionDevis
+    surtitre="Un produit à développer ?"
+    titre="Parlons-en avant que le premier fichier ne soit dessiné."
+    texte="Conception, choix des matières, prototype, série : plus la discussion démarre tôt, moins le projet coûte cher à corriger."
+  />
+</Base>
+
+<style>
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 20ch;
+  }
+
+  /* ------------------------------ Projet ------------------------------ */
+
+  .projet {
+    display: grid;
+    gap: var(--e-s);
+    padding-block: var(--e-xl);
+    border-block-start: 1px solid var(--c-filet-fort);
+  }
+
+  .projet:last-child {
+    border-block-end: 1px solid var(--c-filet-fort);
+  }
+
+  @media (min-width: 56rem) {
+    .projet {
+      grid-template-columns: minmax(0, 6rem) minmax(0, 1fr);
+      gap: var(--e-xl);
+    }
+  }
+
+  .projet__index {
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--1);
+  }
+
+  .projet__corps {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    max-width: 62rem;
+  }
+
+  .projet__nature {
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .projet h2 {
+    margin-block: var(--e-2xs) var(--e-xs);
+    font-size: var(--t-4);
+  }
+
+  .projet__accroche {
+    max-width: 46ch;
+    color: var(--c-encre);
+    font-size: var(--t-2);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+  }
+
+  .projet__texte {
+    display: grid;
+    gap: var(--e-s);
+    margin-block: var(--e-m);
+    max-width: 62ch;
+    color: var(--c-encre-douce);
+  }
+
+  .projet__apport {
+    padding-inline-start: var(--e-m);
+    border-inline-start: 2px solid var(--c-encre);
+  }
+
+  .projet__apport-etiquette {
+    display: block;
+    margin-block-end: var(--e-3xs);
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .projet__reperes {
+    inline-size: 100%;
+    max-width: 42rem;
+    margin-block-end: var(--e-m);
+    list-style: none;
+    padding: 0;
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .projet__reperes li {
+    padding-block: var(--e-xs);
+    border-block-end: 1px solid var(--c-filet);
+    color: var(--c-encre-douce);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+  }
+
+  .projet__domaine {
+    margin-block-start: var(--e-2xs);
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+  }
+
+  /* ----------------------------- Pourquoi ----------------------------- */
+
+  .pourquoi__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .pourquoi__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .pourquoi h2 {
+    max-width: 18ch;
+    font-size: var(--t-3);
+  }
+
+  .pourquoi__texte {
+    display: grid;
+    gap: var(--e-s);
+    justify-items: start;
+    max-width: 56ch;
+    color: var(--c-encre-douce);
+  }
+</style>

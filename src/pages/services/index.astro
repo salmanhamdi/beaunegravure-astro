@@ -14,9 +14,9 @@ const services = (await getCollection('services')).sort(
 
 const chemin = '/services/';
 const url = urlAbsolue(chemin);
-const titre = 'Savoir-faire : gravure, découpe et marquage | Beaune Gravure';
+const titre = 'Savoir-faire : création, gravure, découpe, impression';
 const description =
-  'Les savoir-faire de l’atelier Beaune Gravure : gravure sur verre, gravure laser, caisses bois, cadeaux personnalisés, plaques, marquage industriel et signalétique.';
+  'Les savoir-faire du studio Beaune Gravure : création graphique, gravure et découpe laser, impression UV, plaques, marquage industriel et objets personnalisés.';
 
 const miettes = [
   { nom: 'Accueil', href: '/' },
@@ -35,11 +35,12 @@ const schema = graphe([
     <div class="enveloppe">
       <FilAriane miettes={miettes} />
       <p class="surtitre">Savoir-faire</p>
-      <h1>Ce que l’atelier sait faire, et jusqu’où.</h1>
+      <h1>Ce que nous savons faire, et jusqu’où.</h1>
       <p class="chapo">
-        La gravure sur verre est le cœur du métier. Autour d’elle, l’atelier travaille le
-        bois, le métal, le plexiglass et la couleur, avec un principe constant&nbsp;:
-        chaque support impose son réglage, et certains supports ne conviennent pas.
+        La conception vient d’abord&nbsp;: un fichier mal préparé ne se rattrape pas à la
+        machine. Viennent ensuite les moyens de fabrication, puis les applications
+        qu’ils permettent. Et le principe qui vaut partout&nbsp;: chaque support impose
+        son réglage, et certains ne conviennent pas.
       </p>
     </div>
   </header>
@@ -62,7 +63,6 @@ const schema = graphe([
                     formats={['avif']}
                     fallbackFormat="webp"
                   />
-                  {service.data.vedette && <span class="etiquette services__badge">Savoir-faire principal</span>}
                 </div>
                 <div class="services__copie">
                   <h2>{service.data.titre}</h2>
@@ -130,7 +130,7 @@ const schema = graphe([
     aspect-ratio: 4 / 3;
     overflow: hidden;
     border-radius: var(--r-l);
-    background-color: var(--c-papier-creux);
+    background-color: var(--c-fond-creux);
   }
 
   .services__media :global(img) {
@@ -144,13 +144,6 @@ const schema = graphe([
     .services__item a:hover .services__media :global(img) {
       transform: scale(1.04);
     }
-  }
-
-  .services__badge {
-    position: absolute;
-    inset-block-start: var(--e-xs);
-    inset-inline-start: var(--e-xs);
-    background-color: var(--c-papier-vif);
   }
 
   .services__copie {
@@ -188,7 +181,7 @@ const schema = graphe([
 
   .services__points li:not(:last-child)::after {
     content: ' ·';
-    color: var(--c-laiton);
+    color: var(--c-encre-muette);
   }
 
   .services__copie .lien-fleche {

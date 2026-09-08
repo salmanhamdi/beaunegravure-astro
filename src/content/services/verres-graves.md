@@ -3,9 +3,10 @@ titre: "Verres et flûtes gravés"
 h1: "Gravure laser sur verre à Beaune et en Bourgogne"
 seoTitle: "Gravure sur verre à Beaune | Verres et flûtes gravés"
 description: "Gravure laser sur verre à Beaune : verres à vin, verres de dégustation, flûtes à champagne, logos de domaines, mariages et séries professionnelles."
-surtitre: "Le cœur du métier"
-chapo: "Verres à vin, verres de dégustation, flûtes à champagne : la gravure laser dépose sur le verre un marquage satiné, permanent, qui ne s’efface ni au lavage ni à l’usage. C’est le savoir-faire principal de l’atelier, au service des domaines de la Côte de Beaune, des restaurants, des entreprises et des grandes occasions."
-ordre: 1
+surtitre: "Une spécialité de l’atelier"
+chapo: "Le verre est l’une des matières les plus exigeantes que nous travaillons : courbe, fragile, sans droit à l’erreur. La gravure laser y dépose un marquage satiné et permanent, qui ne s’efface ni au lavage ni à l’usage. Pour les projets de verrerie personnalisée menés de bout en bout, nous avons développé une marque dédiée, Glassora."
+ordre: 5
+famille: "application"
 galerie: "verre"
 visuel: "verre-grave-machine-laser-logo-entreprise"
 points:
@@ -14,7 +15,6 @@ points:
   - "Traits de jauge et marquages techniques"
   - "De la pièce unique à la série répétable"
 usages: "Domaines viticoles, caveaux, restaurants, hôtels, maisons de vin, entreprises, mariages et cadeaux personnalisés."
-vedette: true
 faq:
   - question: "La gravure sur verre résiste-t-elle au lave-vaisselle ?"
     reponse: "Oui. La gravure laser n’ajoute aucune matière sur le verre : elle transforme sa surface. Le marquage ne peut donc ni se décoller ni s’effacer au lavage, contrairement à une impression ou à un adhésif."
@@ -83,3 +83,9 @@ Le bon à tirer sert précisément à figer ces repères. Il montre la taille r�
 Toutes les verreries ne réagissent pas de la même façon. La composition, l’épaisseur, le traitement de surface et les tensions internes varient d’un fabricant à l’autre, et parfois d’un lot à l’autre.
 
 Pour cette raison, nous demandons systématiquement le **modèle exact**, une photo, les dimensions et la quantité. Pour les pièces fournies par le client, les verres fins ou les séries importantes, un essai préalable évite les mauvaises surprises.
+
+## Un projet de verrerie complet ?
+
+Pour les projets centrés sur la verrerie personnalisée — choisir un modèle, composer sa gravure, visualiser le rendu avant production — nous avons développé une marque dédiée : **[Glassora](/projets/)**, avec sa sélection de verres, son configurateur en ligne et sa boutique.
+
+Pour un projet mixte, où le verre s’accompagne de coffrets, de plaques ou d’objets, l’atelier coordonne l’ensemble.

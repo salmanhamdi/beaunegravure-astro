@@ -5,7 +5,8 @@ seoTitle: "Découpe laser bois et plexiglass sur mesure à Beaune"
 description: "Découpe laser à Beaune sur bois, plexiglass, acrylique et matières compatibles : lettres, formes, médaillons, présentoirs et pièces sur mesure."
 surtitre: "Formes sur mesure"
 chapo: "Des contours nets, répétables à l’identique, obtenus sans outil coupant. La découpe laser réalise lettres, formes, médaillons et pièces d’assemblage à partir de votre fichier ou d’un dessin préparé par l’atelier."
-ordre: 7
+ordre: 3
+famille: "fabrication"
 galerie: "decoupe"
 visuel: "medaillons-plexiglass-decoupes-graves"
 points:

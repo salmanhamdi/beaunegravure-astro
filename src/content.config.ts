@@ -17,6 +17,11 @@ const services = defineCollection({
     chapo: z.string(),
     /** Ordre d'affichage dans le hub et la navigation. */
     ordre: z.number().int(),
+    /**
+     * Nature du savoir-faire : ce qui se conçoit, ce qui se fabrique,
+     * ce qui en résulte. Structure la page des savoir-faire.
+     */
+    famille: z.enum(['creation', 'fabrication', 'application']),
     /** Catégorie du catalogue de réalisations utilisée pour la galerie. */
     galerie: z.enum(['verre', 'bois', 'objets', 'metal', 'plaques', 'decoupe']),
     /** Identifiant de la réalisation servant de visuel principal. */
@@ -28,8 +33,6 @@ const services = defineCollection({
     faq: z
       .array(z.object({ question: z.string(), reponse: z.string() }))
       .default([]),
-    /** Mise en avant sur la page d'accueil. */
-    vedette: z.boolean().default(false),
   }),
 });
 

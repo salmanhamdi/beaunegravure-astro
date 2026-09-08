@@ -5,7 +5,8 @@ seoTitle: "Impression UV couleur sur bois et objets à Beaune"
 description: "Impression UV couleur à Beaune sur bois, coffrets, plaques et objets rigides. Visuels photographiques et logos polychromes, en complément de la gravure."
 surtitre: "La couleur"
 chapo: "Quand un projet demande de la couleur, un dégradé ou un rendu photographique, la gravure atteint sa limite. L’impression UV dépose l’encre directement sur le support et la fixe instantanément — sur bois, coffrets, plaques et objets rigides."
-ordre: 8
+ordre: 4
+famille: "fabrication"
 galerie: "bois"
 visuel: "impression-uv-coffret-bois-mariage-personnalise"
 points:
