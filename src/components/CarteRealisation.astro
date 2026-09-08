@@ -10,6 +10,8 @@ interface Props {
   prioritaire?: boolean;
   /** Masque la légende, pour les grilles purement visuelles. */
   sansLegende?: boolean;
+  /** Largeurs candidates, à élargir quand la vignette est mise en scène. */
+  largeurs?: number[];
 }
 
 const {
@@ -17,6 +19,7 @@ const {
   sizes = '(min-width: 68rem) 30vw, (min-width: 40rem) 45vw, 92vw',
   prioritaire = false,
   sansLegende = false,
+  largeurs = [400, 640, 900],
 } = Astro.props;
 
 const image = imageDe(realisation);
@@ -31,7 +34,7 @@ const categorie = CATEGORIES[realisation.categorie];
     <Picture
       src={image}
       alt={realisation.alt}
-      widths={[400, 640, 900]}
+      widths={largeurs}
       sizes={sizes}
       loading={prioritaire ? 'eager' : 'lazy'}
       fetchpriority={prioritaire ? 'high' : 'auto'}

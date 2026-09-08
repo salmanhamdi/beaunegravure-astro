@@ -9,6 +9,11 @@ interface Props {
   /** Nombre d'images chargées en priorité (celles au-dessus de la ligne de flottaison). */
   prioritaires?: number;
   sansLegende?: boolean;
+  /**
+   * Met la première pièce en scène sur quatre cellules. Réservé à la page
+   * d'accueil : sur les pages de catalogue, toutes les pièces se valent.
+   */
+  vedette?: boolean;
 }
 
 const {
@@ -16,6 +21,7 @@ const {
   colonnes = 3,
   prioritaires = 0,
   sansLegende = false,
+  vedette = false,
 } = Astro.props;
 
 /* La grille tient deux colonnes dès le mobile : les largeurs en tiennent compte. */
@@ -25,14 +31,18 @@ const sizes =
     : colonnes === 2
       ? '46vw'
       : '(min-width: 68rem) 31vw, 46vw';
+
+/* La pièce mise en scène occupe deux colonnes : elle demande une image plus large. */
+const sizesVedette = '(min-width: 68rem) 63vw, 94vw';
 ---
 
-<div class="grille-realisations" data-colonnes={colonnes}>
+<div class="grille-realisations" data-colonnes={colonnes} data-vedette={vedette || undefined}>
   {
     realisations.map((realisation, index) => (
       <CarteRealisation
         realisation={realisation}
-        sizes={sizes}
+        sizes={vedette && index === 0 ? sizesVedette : sizes}
+        largeurs={vedette && index === 0 ? [640, 900, 1200] : undefined}
         prioritaire={index < prioritaires}
         sansLegende={sansLegende}
       />
@@ -61,6 +71,45 @@ const sizes =
   @media (min-width: 40rem) {
     .grille-realisations {
       gap: var(--e-m);
+    }
+  }
+
+  /*
+    Pièce mise en scène. Sur mobile elle traverse les deux colonnes ; à partir
+    de trois colonnes elle occupe un carré de deux cellules sur deux, et les
+    cinq autres pièces remplissent exactement les cellules restantes — la
+    grille reste pleine, sans trou.
+  */
+  /* `:global` est nécessaire : la vignette est le composant enfant, qui porte
+     sa propre portée de style. */
+  .grille-realisations[data-vedette] > :global(:first-child) {
+    grid-column: span 2;
+  }
+
+  @media (min-width: 68rem) {
+    .grille-realisations[data-vedette][data-colonnes='3'] > :global(:first-child) {
+      grid-row: span 2;
+    }
+  }
+
+  /*
+    Tant que la grille n'a que deux colonnes, la pièce mise en scène occupe
+    toute la largeur : un carré y deviendrait un bloc d'un écran et quart à
+    1024 px. Elle prend donc un format paysage, et ne redevient carrée qu'à
+    partir de trois colonnes, où elle occupe deux cellules sur deux.
+    Sélecteur global : la vignette est le composant enfant.
+  */
+  :global(.grille-realisations[data-vedette] > .realisation:first-child .realisation__cadre) {
+    aspect-ratio: 3 / 2;
+  }
+
+  @media (min-width: 68rem) {
+    :global(
+      .grille-realisations[data-vedette][data-colonnes='3']
+        > .realisation:first-child
+        .realisation__cadre
+    ) {
+      aspect-ratio: 1 / 1;
     }
   }
 

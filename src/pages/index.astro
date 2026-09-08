@@ -38,12 +38,15 @@ const articles = (await getCollection('blog'))
   d'entreprise, découpe sur mesure, identité de marque.
 */
 const selection = parIds(
-  'gobelets-isothermes-personnalises-laser',
+  // La première pièce est mise en scène en grand : c'est celle qui prouve le
+  // mieux la compétence graphique — une identité de commerce entière, dessinée
+  // puis portée sur un objet.
+  'badge-professionnel-grave-personnalise',
   'plaque-professionnelle-avocat-exterieure-beaune-gravure',
   'impression-uv-coffret-bois-mariage-personnalise',
   'cles-usb-bois-personnalisees-gravure',
   'decoupe-plexiglass-plaque-numero-porte',
-  'badge-professionnel-grave-personnalise',
+  'gobelets-isothermes-personnalises-laser',
 );
 
 /*
@@ -69,6 +72,9 @@ const matieres = [
 /* Le fichier devient une pièce : l'image de la section Savoir-faire. */
 const visuelSavoir = imagesRealisations['decoupe-bois-prenoms-cercles-personnalises']!;
 
+/* Le geste de fabrication : la seule image de la page qui touche les deux bords. */
+const visuelAtelier = imagesRealisations['marquage-laser-fibre-outils-serie']!;
+
 /*
   Garde-fou de la règle « une image = une occurrence ». Une erreur ici arrête le
   build : impossible de réintroduire un doublon sans s'en apercevoir.
@@ -78,6 +84,7 @@ const imagesAccueil = [
   ...matieres.map((m) => m.id),
   ...selection.map((r) => r.id),
   'decoupe-bois-prenoms-cercles-personnalises',
+  'marquage-laser-fibre-outils-serie',
   ...projets.map((p) => p.visuel),
 ];
 const doublons = imagesAccueil.filter((id, i) => imagesAccueil.indexOf(id) !== i);
@@ -186,19 +193,34 @@ const schema = graphe([
     </div>
   </section>
 
+  <!--
+    ============================== Manifeste ==============================
+    Premier moment pleine largeur de la page. La phrase n'est pas nouvelle :
+    c'est celle qui distinguait déjà l'atelier, mais elle était composée en
+    16 px gris dans une colonne de droite. Elle passe à l'échelle qu'elle
+    mérite. Aucun contenu ajouté, un contenu déplacé et redimensionné.
+  -->
+  <section class="section section--serree manifeste sur-nuit">
+    <div class="enveloppe--large">
+      <p class="manifeste__phrase revele">
+        La plupart des ateliers exécutent un fichier.
+        <strong>Nous le dessinons aussi.</strong>
+      </p>
+      <p class="manifeste__suite">
+        C’est cette continuité entre conception et fabrication qui fait la différence
+        sur le résultat final.
+      </p>
+    </div>
+  </section>
+
   <!-- ========================= Ce que nous faisons ===================== -->
   <section class="section trois">
     <div class="enveloppe">
-      <div class="tete-section tete-section--duo">
+      <div class="tete-section">
         <div>
           <p class="surtitre">Ce que nous faisons</p>
           <h2>Trois métiers, un seul interlocuteur.</h2>
         </div>
-        <p class="chapo">
-          La plupart des ateliers exécutent un fichier. Nous le dessinons aussi. C’est
-          cette continuité entre conception et fabrication qui fait la différence sur le
-          résultat final.
-        </p>
       </div>
 
       <div class="trois__grille">
@@ -241,7 +263,7 @@ const schema = graphe([
       <div class="tete-section tete-section--duo">
         <div>
           <p class="surtitre">Les matières</p>
-          <h2>Aucune matière ne nous définit.</h2>
+          <h2 class="titre-fort">Aucune matière<br />ne nous définit.</h2>
         </div>
         <p class="chapo">
           Chaque support réagit différemment au faisceau. C’est en connaissant ces
@@ -278,18 +300,30 @@ const schema = graphe([
   <!-- =========================== Réalisations ========================== -->
   <section class="section realisations">
     <div class="enveloppe--large">
-      <div class="tete-section tete-section--duo">
-        <div>
-          <p class="surtitre">Réalisations</p>
-          <h2>Des pièces réellement sorties de l’atelier.</h2>
+      <!--
+        En-tête volontairement différent des autres : le titre occupe toute la
+        largeur au lieu d'être suivi d'un chapô en colonne de droite. Six
+        sections partageaient exactement la même composition ; la page en
+        paraissait modelée sur un gabarit.
+      -->
+      <div class="realisations__entete">
+        <p class="surtitre">Réalisations</p>
+        <h2 class="titre-fort">Des pièces réellement<br />sorties de l’atelier.</h2>
+        <div class="realisations__pied">
+          <p class="realisations__note">
+            Toutes les photographies de ce site montrent des pièces que nous avons
+            produites. Aucun visuel de catalogue, aucune image de synthèse.
+          </p>
+          <p class="realisations__compte" aria-hidden="true">{realisations.length}</p>
         </div>
-        <p class="chapo">
-          Toutes les photographies de ce site montrent des pièces que nous avons
-          produites. Aucun visuel de catalogue, aucune image de synthèse.
-        </p>
       </div>
 
-      <GrilleRealisations realisations={selection} colonnes={3} />
+      {/*
+        Hiérarchie : la première pièce est mise en scène sur quatre cellules,
+        les cinq autres suivent la grille régulière. L'asymétrie est décidée
+        ici, pas subie par le format des fichiers — la vignette reste carrée.
+      */}
+      <GrilleRealisations realisations={selection} colonnes={3} vedette />
 
       <p class="suite">
         <a class="bouton bouton--fantome" href="/realisations/">
@@ -479,6 +513,31 @@ const schema = graphe([
       </div>
     </div>
   </section>
+
+  <!--
+    ========================== Bandeau de fabrication ====================
+    Seul moment de la page où une image touche les deux bords. Il introduit
+    la chaîne « du dessin à l'objet » par la seule chose que la page ne
+    montrait nulle part : le geste de fabrication. La photographie n'était
+    utilisée sur aucune autre page d'accueil.
+  -->
+  <figure class="bandeau-atelier sur-nuit">
+    <Picture
+      src={visuelAtelier}
+      alt="Main d’un opérateur au-dessus d’une série d’outils en acier alignés dans la machine de marquage"
+      widths={[768, 1200, 1600]}
+      sizes="100vw"
+      loading="lazy"
+      quality={70}
+      formats={['avif']}
+      fallbackFormat="webp"
+    />
+    <figcaption class="bandeau-atelier__legende">
+      <span class="bandeau-atelier__marqueur">Atelier</span>
+      Marquage d’une série d’outils : le réglage se fait sur la première pièce, le
+      contrôle sur toutes les autres.
+    </figcaption>
+  </figure>
 
   <!-- ========================= Du dessin à l'objet ===================== -->
   <section class="section sur-nuit chaine">
@@ -761,6 +820,88 @@ const schema = graphe([
       min-inline-size: var(--e-s);
       background-color: var(--c-filet-fort);
     }
+  }
+
+  /* ============================== Manifeste =========================== */
+
+  /*
+    Une seule phrase, très grande, sur fond sombre, sans image. C'est la
+    respiration de la première moitié de page : après le héros et le bandeau
+    de méthode, le regard s'arrête. La phrase existait déjà, en petit corps.
+  */
+  .manifeste__phrase {
+    max-width: 22ch;
+    color: var(--c-clair-doux);
+    font-size: var(--t-5);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .manifeste__phrase strong {
+    display: block;
+    color: var(--c-clair);
+    font-weight: 600;
+  }
+
+  .manifeste__suite {
+    margin-block-start: var(--e-l);
+    max-width: 48ch;
+    color: var(--c-clair-muet);
+    font-size: var(--t-0);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 64rem) {
+    .manifeste__suite {
+      margin-inline-start: auto;
+      max-width: 34ch;
+      text-align: end;
+    }
+  }
+
+  /* ====================== Bandeau de fabrication ====================== */
+
+  /*
+    `sur-nuit` sur la figure : sans lui, la légende héritait des jetons clairs
+    et le marqueur « Atelier », composé en encre, devenait invisible sur le
+    fond sombre.
+  */
+  .bandeau-atelier {
+    position: relative;
+    margin: 0;
+  }
+
+  .bandeau-atelier :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    object-position: center 42%;
+  }
+
+  @media (min-width: 52rem) {
+    .bandeau-atelier :global(img) {
+      aspect-ratio: 21 / 9;
+    }
+  }
+
+  .bandeau-atelier__legende {
+    padding: var(--e-s) var(--gouttiere) var(--e-m);
+    max-width: 64ch;
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    line-height: 1.6;
+  }
+
+  .bandeau-atelier__marqueur {
+    display: block;
+    margin-block-end: var(--e-3xs);
+    color: var(--c-encre);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   /* ========================= Ce que nous faisons ===================== */
@@ -1056,6 +1197,60 @@ const schema = graphe([
 
   /* =========================== Réalisations ========================== */
 
+  /*
+    Troisième volume typographique de la page. Neuf titres de section
+    partageaient exactement le même corps : la page parlait sur une seule
+    note. Les deux sections pivots — les matières et les réalisations —
+    passent au cran au-dessus.
+  */
+  .titre-fort {
+    font-size: var(--t-5);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+
+  .realisations__entete {
+    margin-block-end: var(--e-xl);
+  }
+
+  .realisations__entete h2 {
+    margin-block-end: var(--e-l);
+  }
+
+  .realisations__pied {
+    display: grid;
+    gap: var(--e-s);
+    padding-block-start: var(--e-s);
+    border-block-start: 1px solid var(--c-filet-fort);
+  }
+
+  @media (min-width: 52rem) {
+    .realisations__pied {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: var(--e-xl);
+    }
+  }
+
+  .realisations__note {
+    max-width: 58ch;
+    color: var(--c-encre-douce);
+  }
+
+  /* Le compteur est décoratif : le même chiffre est lu dans le bouton. */
+  .realisations__compte {
+    color: var(--c-filet-fort);
+    font-family: var(--f-mono);
+    font-size: var(--t-4);
+    line-height: 1;
+  }
+
+  @media (min-width: 52rem) {
+    .realisations__compte {
+      font-size: var(--t-5);
+    }
+  }
+
   .suite {
     margin-block-start: var(--e-xl);
     text-align: center;
@@ -1150,6 +1345,15 @@ const schema = graphe([
     inline-size: 100%;
     block-size: 100%;
     object-fit: cover;
+    transition: transform var(--duree-longue) var(--courbe-sortie);
+  }
+
+  /* Rapprochement très léger au survol, comme sur les autres vignettes. */
+  @media (hover: hover) {
+    .projets__item:hover .projets__visuel :global(img),
+    .projets__item:focus-within .projets__visuel :global(img) {
+      transform: scale(1.03);
+    }
   }
 
   .projets__legende {
