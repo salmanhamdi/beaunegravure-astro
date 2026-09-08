@@ -15,6 +15,13 @@ points:
   - "Armoiries et blasons gravés"
   - "Séries pour domaines et négociants"
 usages: "Domaines viticoles, maisons de vin, négociants, caveaux, cadeaux d’entreprise et coffrets d’événement."
+reperes:
+  facteurs:
+    - "Le format de la caisse ou du coffret"
+    - "La surface gravée ou imprimée"
+    - "La quantité"
+    - "Gravure seule, impression couleur, ou les deux"
+  note: "Le prix dépend surtout de la surface travaillée et de la quantité : une série amortit le réglage sur l’ensemble des pièces."
 faq:
   - question: "Pouvez-vous graver des caisses que nous utilisons déjà ?"
     reponse: "Oui, c’est même le cas le plus fréquent. Envoyez une photo, les dimensions et l’essence de bois. Certaines caisses comportent des agrafes, des rainures ou un vernis qui influencent le positionnement et le rendu : nous le vérifions avant de valider."

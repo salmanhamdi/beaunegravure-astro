@@ -116,9 +116,18 @@ const horodatage = Math.floor(Date.now() / 1000);
       aria-describedby="aide-message erreur-message"
       placeholder="Support, modèle de verre, visuel à graver, dimensions, délai souhaité…"
     ></textarea>
+    {/*
+      Le formulaire n'accepte pas de pièce jointe. Les deux chemins indiqués ici
+      sont réellement praticables : l'adresse est publiée sur tout le site, et
+      le courriel de notification porte un `Reply-To` à l'adresse du visiteur —
+      une réponse de l'atelier lui parvient donc directement, et il peut y
+      joindre ses fichiers. Aucun accusé de réception automatique n'est envoyé :
+      la formulation ne doit pas en promettre un.
+    */}
     <span class="champ__aide" id="aide-message">
-      Plus votre demande est précise, plus notre réponse le sera. Vous pourrez nous
-      envoyer votre fichier par e-mail après notre premier retour.
+      Plus votre demande est précise, plus notre réponse le sera. Logo, croquis ou
+      photo&nbsp;: envoyez-les à <strong>{email}</strong>, ou en réponse à notre
+      premier retour.
     </span>
     <span class="champ__erreur" id="erreur-message" data-erreur="message"></span>
   </p>

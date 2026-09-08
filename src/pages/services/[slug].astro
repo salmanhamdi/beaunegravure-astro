@@ -126,6 +126,41 @@ const schema = graphe([
 
     <Faq entrees={data.faq.map((f) => ({ question: f.question, reponse: f.reponse }))} />
 
+    {/*
+      Dernière étape avant la demande de devis : ce qui détermine le prix et le
+      délai. Aucun montant, aucune durée — l'atelier chiffre au projet. Le bloc
+      est placé ici, après la démonstration et les questions fréquentes, parce
+      qu'un appel à l'action ne convertit que si la question précédente a reçu
+      sa réponse.
+    */}
+    <section class="section section--serree reperes">
+      <div class="enveloppe">
+        <p class="surtitre">Avant de demander un devis</p>
+        <h2 class="reperes__titre">Ce qui détermine le prix et le délai.</h2>
+
+        <div class="reperes__grille">
+          <ul class="reperes__liste">
+            {data.reperes.facteurs.map((facteur) => <li>{facteur}</li>)}
+          </ul>
+
+          <div class="reperes__texte">
+            <p>{data.reperes.note}</p>
+            <p class="reperes__chiffrage">
+              Chaque projet est chiffré sur mesure : décrivez le vôtre, nous revenons
+              vers vous avec un prix et un délai fermes.
+            </p>
+            {
+              data.reperes.lien && (
+                <a class="lien-fleche" href={data.reperes.lien.href}>
+                  {data.reperes.lien.libelle}
+                </a>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section section--serree">
       <div class="enveloppe">
         <p class="surtitre">Autres savoir-faire</p>
@@ -286,6 +321,58 @@ const schema = graphe([
   .suite {
     margin-block-start: var(--e-xl);
     text-align: center;
+  }
+
+  /* ---------- Prix et délai ---------- */
+
+  .reperes {
+    background-color: var(--c-fond-creux);
+  }
+
+  .reperes__titre {
+    margin-block-end: var(--e-l);
+    max-width: 22ch;
+    font-size: var(--t-3);
+  }
+
+  .reperes__grille {
+    display: grid;
+    gap: var(--e-l);
+  }
+
+  @media (min-width: 52rem) {
+    .reperes__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .reperes__liste {
+    list-style: none;
+    padding: 0;
+    border-block-start: 1px solid var(--c-filet-fort);
+  }
+
+  .reperes__liste li {
+    padding-block: var(--e-xs);
+    border-block-end: 1px solid var(--c-filet);
+    color: var(--c-encre);
+    font-size: var(--t-0);
+  }
+
+  .reperes__texte {
+    display: grid;
+    gap: var(--e-s);
+    justify-items: start;
+    align-content: start;
+    max-width: 46ch;
+    color: var(--c-encre-douce);
+    line-height: 1.65;
+  }
+
+  .reperes__chiffrage {
+    color: var(--c-encre);
+    font-weight: 500;
   }
 
   /* ---------- Autres savoir-faire ---------- */

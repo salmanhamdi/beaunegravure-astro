@@ -15,6 +15,13 @@ points:
   - "Bois, plaques, coffrets et objets compatibles"
   - "Combinable avec la gravure laser"
 usages: "Coffrets d’événement, caisses de vin, plaques, objets promotionnels, supports de comptoir et packaging personnalisé."
+reperes:
+  facteurs:
+    - "La surface imprimée"
+    - "Le nombre de passages, et la sous-couche blanche si le support est foncé"
+    - "Le format et l’épaisseur du support"
+    - "La quantité"
+  note: "L’impression se chiffre à la surface et au nombre de passages. Sur un bois foncé, une sous-couche blanche est souvent nécessaire pour que les couleurs restent franches : c’est un passage de plus."
 faq:
   - question: "Quelle est la différence avec la gravure ?"
     reponse: "La gravure transforme la matière et donne un rendu monochrome, intégré au support. L’impression UV dépose une encre en couleur sur la surface. La gravure gagne en durabilité et en noblesse ; l’impression gagne en couleur et en détail photographique."

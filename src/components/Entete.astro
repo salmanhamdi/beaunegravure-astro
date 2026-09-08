@@ -83,7 +83,14 @@ function estActif(href: string): boolean {
         </svg>
         <span class="entete__tel-texte">{telephone.affichage}</span>
       </a>
-      <a class="bouton entete__cta" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
+      {/*
+        Le libellé complet est réservé aux écrans qui peuvent l'accueillir ;
+        en dessous, « Devis » suffit et reste sans ambiguïté à côté du menu.
+      */}
+      <a class="bouton entete__cta" href={ctaPrincipal.href}>
+        <span class="entete__cta-court">Devis</span>
+        <span class="entete__cta-long">{ctaPrincipal.label}</span>
+      </a>
       <button
         class="entete__bascule"
         type="button"
@@ -100,6 +107,16 @@ function estActif(href: string): boolean {
 
 <div class="menu-mobile" id="menu-mobile" hidden data-menu-mobile>
   <nav class="menu-mobile__contenu enveloppe" aria-label="Navigation mobile">
+    {/*
+      Le numéro de téléphone ouvre le menu : il est donc placé en tête, avant
+      les onze liens de savoir-faire. Il se trouvait auparavant en dernière
+      position, ce qui en faisait le contact le moins accessible du site alors
+      que c'est le plus direct.
+    */}
+    <a class="menu-mobile__tel" href={`tel:${telephone.e164}`}>
+      Appeler l’atelier · {telephone.affichage}
+    </a>
+
     <ul class="menu-mobile__liste">
       <li>
         <a href="/" aria-current={chemin === '/' ? 'page' : undefined}>Accueil</a>
@@ -126,9 +143,6 @@ function estActif(href: string): boolean {
 
     <div class="menu-mobile__pied">
       <a class="bouton bouton--inverse" href={ctaPrincipal.href}>{ctaPrincipal.label}</a>
-      <a class="menu-mobile__tel" href={`tel:${telephone.e164}`}>
-        Appeler l’atelier · {telephone.affichage}
-      </a>
     </div>
   </nav>
 </div>
@@ -302,11 +316,14 @@ function estActif(href: string): boolean {
   }
 
   /*
-    Sur mobile, le téléphone reste accessible sous forme de bouton rond :
-    c'est le canal de contact le plus direct pour un artisan local.
+    Sur mobile, la barre ne porte que deux commandes : le devis et le menu.
+    L'icône téléphone occupait auparavant cette place et le devis était relégué
+    en avant-dernière position du menu — l'appel à l'action principal n'était
+    donc jamais visible sans ouvrir le menu. Le téléphone reste à un geste : il
+    ouvre désormais le menu mobile.
   */
   .entete__tel {
-    display: grid;
+    display: none;
     place-items: center;
     inline-size: 2.75rem;
     block-size: 2.75rem;
@@ -329,10 +346,30 @@ function estActif(href: string): boolean {
     color: var(--c-encre);
   }
 
+  /*
+    Le devis est visible dès le plus petit écran. Le libellé se raccourcit sous
+    26rem pour tenir à côté de la marque sans que la barre ne devienne une
+    rangée de boutons.
+  */
   .entete__cta {
-    display: none;
+    display: inline-flex;
     min-block-size: 2.75rem;
     padding-inline: var(--e-s);
+    white-space: nowrap;
+  }
+
+  .entete__cta-long {
+    display: none;
+  }
+
+  @media (min-width: 26rem) {
+    .entete__cta-court {
+      display: none;
+    }
+
+    .entete__cta-long {
+      display: inline;
+    }
   }
 
   /* ---------- Bascule mobile ---------- */
@@ -466,19 +503,23 @@ function estActif(href: string): boolean {
     inline-size: 100%;
   }
 
+  /* Placé en tête du menu : il doit se lire comme une action, pas comme un lien. */
   .menu-mobile__tel {
-    color: var(--c-encre-douce);
-    font-size: var(--t--1);
-    font-weight: 500;
+    display: flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+    margin-block-end: var(--e-m);
+    padding-block-end: var(--e-s);
+    border-block-end: 1px solid var(--c-filet);
+    color: var(--c-encre);
+    font-size: var(--t-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
   }
 
   /* ---------- Points de rupture ---------- */
 
-  @media (min-width: 30rem) {
-    .entete__cta {
-      display: inline-flex;
-    }
-  }
 
   /*
     Seuil de bascule vers la navigation de bureau. Mesuré : la barre complète

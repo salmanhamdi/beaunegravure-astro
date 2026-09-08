@@ -15,6 +15,16 @@ points:
   - "Coffrets et objets en bois"
   - "Cadeaux clients et collaborateurs en série"
 usages: "Cadeaux d’entreprise, remerciements clients, mariages, anniversaires, départs, remises de prix et attentions personnalisées."
+reperes:
+  facteurs:
+    - "L’objet retenu"
+    - "La quantité"
+    - "Une personnalisation identique, ou un prénom différent sur chaque pièce"
+    - "L’emballage et la présentation"
+  note: "Une série identique et une personnalisation prénom par prénom ne se chiffrent pas de la même façon : la seconde demande une liste vérifiée et un contrôle pièce à pièce."
+  lien:
+    href: "/blog/combien-coute-gravure-laser-personnalisee-beaune/"
+    libelle: "Ce qui entre dans le prix d’une gravure"
 faq:
   - question: "Puis-je faire graver un objet que j’apporte ?"
     reponse: "Oui, dans la plupart des cas. Nous vérifions d’abord la matière, la forme et la valeur de l’objet. Pour une pièce sentimentale ou coûteuse, nous vous expliquons le risque avant d’intervenir et proposons un essai quand c’est possible."

@@ -15,6 +15,16 @@ points:
   - "Inox, laiton, plexiglass, bois et acrylique bicouche"
   - "Plaques avis Google et QR code"
 usages: "Cabinets libéraux, commerces, restaurants, hôtels, chambres d’hôtes, artisans, domaines viticoles et collectivités."
+reperes:
+  facteurs:
+    - "La matière et sa finition"
+    - "Le format et le nombre de plaques"
+    - "Le mode de pose, en intérieur ou en extérieur"
+    - "Gravure ou impression couleur"
+  note: "Une plaque se choisit d’abord pour tenir à l’endroit où elle sera posée. Nous préférons en parler avant de chiffrer."
+  lien:
+    href: "/a-propos/"
+    libelle: "Découvrir le studio"
 faq:
   - question: "Quelle matière choisir pour l’extérieur ?"
     reponse: "Pour une pose en façade, l’inox et le laiton restent les valeurs sûres : ils supportent la pluie, le gel et les UV. Le plexiglass tient également bien s’il est de qualité et correctement fixé. Le bois est à réserver aux poses abritées."

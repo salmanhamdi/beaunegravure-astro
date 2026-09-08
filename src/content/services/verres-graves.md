@@ -15,6 +15,16 @@ points:
   - "Traits de jauge et marquages techniques"
   - "De la pièce unique à la série répétable"
 usages: "Domaines viticoles, caveaux, restaurants, hôtels, maisons de vin, entreprises, mariages et cadeaux personnalisés."
+reperes:
+  facteurs:
+    - "La quantité"
+    - "Le modèle de verre, fourni par vos soins ou par l’atelier"
+    - "La taille et la finesse du décor"
+    - "Un marquage sur une face ou sur deux"
+  note: "Chaque modèle de verre demande son propre réglage, à cause de la courbure. C’est le premier exemplaire qui coûte le plus, pas les suivants."
+  lien:
+    href: "/blog/combien-coute-gravure-laser-personnalisee-beaune/"
+    libelle: "Ce qui entre dans le prix d’une gravure"
 faq:
   - question: "La gravure sur verre résiste-t-elle au lave-vaisselle ?"
     reponse: "Oui. La gravure laser n’ajoute aucune matière sur le verre : elle transforme sa surface. Le marquage ne peut donc ni se décoller ni s’effacer au lavage, contrairement à une impression ou à un adhésif."

@@ -15,6 +15,16 @@ points:
   - "Lettres, formes et pièces d’assemblage"
   - "Nous ne découpons pas le métal"
 usages: "Lettres découpées, présentoirs, médaillons, badges, gabarits, décors d’événement et éléments de signalétique."
+reperes:
+  facteurs:
+    - "La matière et son épaisseur"
+    - "La longueur totale de coupe, donc la complexité du tracé"
+    - "Le nombre de pièces et leur imbrication dans la plaque"
+    - "La finition attendue sur les chants"
+  note: "La découpe se chiffre surtout au temps de coupe : une forme simple répétée revient bien moins cher qu’un contour très découpé."
+  lien:
+    href: "/blog/combien-coute-gravure-laser-personnalisee-beaune/"
+    libelle: "Ce qui entre dans le prix d’une gravure"
 faq:
   - question: "Découpez-vous le métal ?"
     reponse: "Non. Notre découpe laser est réservée aux matières non métalliques : bois, plexiglass, acrylique, cuir, feutre, carton. Nous marquons et gravons le métal, mais nous ne le découpons pas."

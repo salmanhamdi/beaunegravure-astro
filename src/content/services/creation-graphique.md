@@ -15,6 +15,16 @@ points:
   - "Mise au format et calage sur la pièce"
   - "Bon à tirer avant production"
 usages: "Logos d’entreprise, monogrammes, blasons, motifs décoratifs, séries à données variables, identités de domaine et de commerce."
+reperes:
+  facteurs:
+    - "L’état du fichier reçu : un tracé vectoriel propre ne demande aucune reconstruction"
+    - "Le nombre de déclinaisons à préparer"
+    - "La complexité du motif à redessiner"
+    - "La présence de données variables"
+  note: "La préparation graphique se chiffre à part de la fabrication, parce qu’elle se fait une fois et resservira à chaque réédition. C’est elle qui décide du résultat : autant savoir qui la réalise."
+  lien:
+    href: "/a-propos/"
+    libelle: "Découvrir le studio"
 faq:
   - question: "Je n’ai qu’un logo en JPEG basse définition. Est-ce exploitable ?"
     reponse: "Souvent oui, mais pas tel quel. Nous le redessinons en vectoriel à partir de votre image : le tracé est reconstruit proprement, ce qui permet ensuite de l’agrandir, de l’affiner et de l’adapter à n’importe quelle matière. C’est un travail de préparation que nous chiffrons séparément."

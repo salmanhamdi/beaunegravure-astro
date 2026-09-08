@@ -15,6 +15,17 @@ points:
   - "Fibre 1064 nm · métaux et traçabilité · 30 × 30 cm"
   - "Essai systématique sur matière inconnue"
 usages: "Verres, coffrets, plaques, cadeaux, objets professionnels, caisses bois, signalétique et pièces techniques."
+reperes:
+  facteurs:
+    - "La quantité, et si les pièces sont identiques ou toutes différentes"
+    - "Le support et sa réaction au faisceau"
+    - "La taille et la finesse du marquage"
+    - "Le nombre de faces à marquer"
+    - "L’état du fichier fourni"
+  note: "Sur une série identique, le temps de réglage se répartit sur l’ensemble des pièces — ce qui n’est plus vrai dès que chaque exemplaire diffère."
+  lien:
+    href: "/blog/combien-coute-gravure-laser-personnalisee-beaune/"
+    libelle: "Ce qui entre dans le prix d’une gravure"
 faq:
   - question: "La gravure laser est-elle durable ?"
     reponse: "Le marquage est créé dans la matière elle-même, pas déposé dessus. Il ne peut donc pas se décoller. Sa résistance finale dépend ensuite du support, de sa finition et de son exposition."

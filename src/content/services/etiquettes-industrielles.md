@@ -15,6 +15,16 @@ points:
   - "Données variables sur série"
   - "Inox, aluminium anodisé, laiton et plastiques techniques"
 usages: "Ateliers, industriels, équipementiers, collectivités, machines, armoires électriques, outillage et parcs d’équipements."
+reperes:
+  facteurs:
+    - "La matière et la tenue attendue dans le temps"
+    - "Le nombre de références différentes"
+    - "La présence de données variables : numéros, codes, QR"
+    - "Le format et le mode de fixation"
+  note: "Une série d’étiquettes se chiffre au nombre de références autant qu’au nombre de pièces : c’est la préparation des données qui prend le temps."
+  lien:
+    href: "/a-propos/"
+    libelle: "Découvrir le studio"
 faq:
   - question: "Le marquage résiste-t-il aux solvants et à l’abrasion ?"
     reponse: "Le marquage laser fibre transforme la surface du métal, il ne dépose rien. Il résiste donc aux solvants, aux huiles de coupe et au nettoyage industriel. Sur pièce très sollicitée mécaniquement, nous conseillons un recuit ou une gravure en creux plutôt qu’un simple marquage de surface."

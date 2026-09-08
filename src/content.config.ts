@@ -33,6 +33,23 @@ const services = defineCollection({
     faq: z
       .array(z.object({ question: z.string(), reponse: z.string() }))
       .default([]),
+    /**
+     * Ce qui détermine le prix et le délai, juste avant la demande de devis.
+     *
+     * Le champ est obligatoire : c'est la dernière question que se pose un
+     * prospect, et aucune page ne doit y échapper. Il ne contient volontairement
+     * AUCUN montant ni AUCUNE durée — l'atelier chiffre au projet, et un chiffre
+     * inventé serait pire que pas de chiffre. Seuls les facteurs sont listés.
+     *
+     * `lien` est facultatif et diffère d'une page à l'autre : l'article de fond
+     * sur le prix là où il éclaire vraiment, la page du studio là où la question
+     * suivante est « à qui ai-je affaire ? ». Aucune page ne porte les deux.
+     */
+    reperes: z.object({
+      facteurs: z.array(z.string()).min(3).max(6),
+      note: z.string(),
+      lien: z.object({ href: z.string(), libelle: z.string() }).optional(),
+    }),
   }),
 });
 

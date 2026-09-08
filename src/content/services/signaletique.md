@@ -15,6 +15,16 @@ points:
   - "Lettres et formes découpées"
   - "Séries cohérentes sur un même site"
 usages: "Hôtels, chambres d’hôtes, gîtes, commerces, cabinets, ateliers, entreprises, collectivités et bâtiments professionnels."
+reperes:
+  facteurs:
+    - "Le nombre de plaques de l’ensemble"
+    - "La matière et la finition retenues"
+    - "Le mode de fixation"
+    - "L’harmonisation avec une signalétique déjà en place"
+  note: "Une signalétique se pense par ensemble, pas plaque par plaque : c’est ce qui garantit qu’elle restera cohérente le jour où vous en ajouterez une."
+  lien:
+    href: "/a-propos/"
+    libelle: "Découvrir le studio"
 faq:
   - question: "Pouvez-vous réaliser une série cohérente pour tout un bâtiment ?"
     reponse: "Oui, c’est même la demande la plus fréquente. Nous établissons un gabarit commun — matière, format, typographie, hauteur de pose — puis déclinons chaque plaque. La cohérence de la série compte davantage que la beauté d’une plaque isolée."
