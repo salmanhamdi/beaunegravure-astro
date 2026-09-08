@@ -37,15 +37,17 @@ jobs:
             set net:timeout 30
             set cmd:fail-exit no
 
-            echo "===== RACINE DE CONNEXION ====="
+            echo "===== PWD ====="
             pwd
-            cls -l
 
-            echo "===== ./domains ====="
-            cls -l domains/
+            echo "===== / ====="
+            cls -l /
 
-            echo "===== ./public_html (10 premieres entrees) ====="
-            cls public_html/
+            echo "===== /domains ====="
+            cls -l /domains/
+
+            echo "===== /home ====="
+            cls -l /home/
 
             bye
           FTP
