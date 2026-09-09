@@ -4,6 +4,7 @@ import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import SectionDevis from '@components/SectionDevis.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
+import HeroScene from '@components/HeroScene.astro';
 import { realisationsVedettes } from '@data/realisations';
 import { adresse, site } from '@data/site';
 import { urlAbsolue } from '@utils/env';
@@ -11,6 +12,7 @@ import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 import portrait from '@assets/images/atelier/about-faire-simple-faire-juste.jpg';
 import poste from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
 import machine from '@assets/images/atelier/contact-hero-trotec-speedy-400.jpg';
+import posteCreation from '@assets/images/atelier/hero-studio-poste-creation-beaune-gravure.jpg';
 
 const chemin = '/a-propos/';
 const url = urlAbsolue(chemin);
@@ -59,19 +61,35 @@ const engagements = [
 ---
 
 <Base titre={titre} description={description} chemin={chemin} schema={schema}>
-  <header class="section section--serree entete-page">
-    <div class="enveloppe">
-      <FilAriane miettes={miettes} />
-      <p class="surtitre">Le studio</p>
-      <h1>Un studio, un atelier, et le temps de bien faire.</h1>
-      <p class="chapo">
-        Beaune Gravure conçoit, personnalise et fabrique. Le studio prépare les
-        fichiers&nbsp;; l’atelier, installé à {adresse.ville} en Côte-d’Or, produit les
-        pièces — à l’unité comme en série, pour les particuliers comme pour les
-        professionnels.
-      </p>
-    </div>
-  </header>
+  {/*
+    Même scène d'ouverture que la page d'accueil, et littéralement le même
+    composant : la photographie tient toute la largeur, le texte se pose dans
+    la clarté du mur, à gauche. Les trois preuves reprennent les trois
+    engagements énoncés plus bas dans la page — rien n'est affirmé ici qui ne
+    le soit déjà ailleurs.
+
+    La phrase « et le temps de bien faire » quitte le titre pour ouvrir le
+    chapô : un héros de cette échelle demande un titre court, et aucun mot
+    n'est perdu.
+  */}
+  <HeroScene
+    image={posteCreation}
+    alt="Le poste de création du studio : un logiciel de dessin vectoriel affiche un projet de gravure en cours, devant le mur des pièces déjà réalisées"
+    surtitre={`${adresse.ville} · Côte-d’Or`}
+    lignesTitre={['Un studio,', 'un atelier.']}
+    chapo={`Et le temps de bien faire. Le studio prépare les fichiers ; l’atelier, installé à ${adresse.ville} en Côte-d’Or, produit les pièces — à l’unité comme en série, pour les particuliers comme pour les professionnels.`}
+    actions={[
+      { texte: 'Voir les réalisations', href: '/realisations/' },
+      { texte: 'Demander un devis', href: '/contact/', fantome: true },
+    ]}
+    preuves={[
+      { icone: 'franchise', titre: 'Dire ce qui est faisable', detail: 'Annoncé avant, pas après' },
+      { icone: 'interlocuteur', titre: 'Un seul interlocuteur', detail: 'Du fichier à la pièce contrôlée' },
+      { icone: 'validation', titre: 'Rien sans bon à tirer', detail: 'Aucune série sans validation' },
+    ]}
+  >
+    <FilAriane slot="fil" miettes={miettes} />
+  </HeroScene>
 
   <section class="section section--serree">
     <div class="enveloppe--large mosaique">
@@ -81,8 +99,7 @@ const engagements = [
           alt="Poste de marquage laser de l’atelier, avec son ordinateur de préparation, un pied à coulisse et des lunettes de protection"
           widths={[480, 768, 1024, 1440]}
           sizes="(min-width: 56rem) 62vw, 92vw"
-          loading="eager"
-          fetchpriority="high"
+          loading="lazy"
           quality={74}
           formats={['avif']}
           fallbackFormat="webp"
