@@ -13,6 +13,7 @@ import portrait from '@assets/images/atelier/about-faire-simple-faire-juste.jpg'
 import poste from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
 import machine from '@assets/images/atelier/contact-hero-trotec-speedy-400.jpg';
 import posteCreation from '@assets/images/atelier/hero-studio-poste-creation-beaune-gravure.jpg';
+import teteLaser from '@assets/images/atelier/tete-laser-fibre-plateau-gradue.jpg';
 
 const chemin = '/a-propos/';
 const url = urlAbsolue(chemin);
@@ -110,9 +111,27 @@ const engagements = [
           src={machine}
           alt="Machine de gravure laser CO₂ Trotec Speedy 400 installée dans l’atelier"
           widths={[320, 480, 720]}
-          sizes="(min-width: 56rem) 32vw, 92vw"
+          sizes="(min-width: 56rem) 24vw, 92vw"
           loading="lazy"
           quality={70}
+          formats={['avif']}
+          fallbackFormat="webp"
+        />
+      </div>
+      {/*
+        La tuile étroite est au format 3/4 : une photographie en portrait s'y
+        inscrit sans être rognée, ce que la précédente image en paysage
+        subissait. Le détail de tête, lui, montre le geste que les deux autres
+        vues d'ensemble ne donnent pas à voir.
+      */}
+      <div class="mosaique__petit">
+        <Picture
+          src={teteLaser}
+          alt="Tête de marquage laser fibre au-dessus du plateau gradué, avec son avertissement de classe 2"
+          widths={[320, 480, 720, 941]}
+          sizes="(min-width: 56rem) 24vw, 92vw"
+          loading="lazy"
+          quality={72}
           formats={['avif']}
           fallbackFormat="webp"
         />
@@ -263,7 +282,7 @@ const engagements = [
 
   @media (min-width: 56rem) {
     .mosaique {
-      grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
     }
   }
 
@@ -274,6 +293,19 @@ const engagements = [
     background-color: var(--c-fond-creux);
   }
 
+  /*
+    En pile, les trois tuiles sont cadrées plutôt que laissées à leur
+    proportion native : sans cela une photographie en portrait occupait trois
+    fois la hauteur des deux autres.
+  */
+  .mosaique__grand {
+    aspect-ratio: 16 / 9;
+  }
+
+  .mosaique__petit {
+    aspect-ratio: 4 / 3;
+  }
+
   .mosaique__grand :global(img),
   .mosaique__petit :global(img) {
     inline-size: 100%;
@@ -282,8 +314,12 @@ const engagements = [
   }
 
   @media (min-width: 56rem) {
+    /*
+      La grande vue épouse la hauteur de la rangée, fixée par les deux tuiles
+      en 3/4 : trois images de hauteur égale, sans letterbox.
+    */
     .mosaique__grand {
-      aspect-ratio: 16 / 9;
+      aspect-ratio: auto;
     }
 
     .mosaique__petit {

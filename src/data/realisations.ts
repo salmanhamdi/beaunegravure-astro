@@ -141,6 +141,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     vedette: true,
   },
   {
+    fichier: 'verre-bleu-marquage-laser-rotatif.webp',
+    titre: 'Marquage sur verre teinté',
+    alt: 'Pièce cylindrique en verre teinté bleu en cours de marquage sur l’axe rotatif du laser',
+    categorie: 'verre',
+    service: '/services/verres-graves/',
+  },
+  {
     fichier: 'verre-vin-grave-logo-domaine-muzard.webp',
     titre: 'Logo de domaine sur pied de verre',
     alt: 'Pied de verre à vin gravé avec le logo manuscrit d’un domaine viticole de Bourgogne',
@@ -591,6 +598,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
 
   /* ------------------------ Plaques et signalétique ----------------------- */
   {
+    fichier: 'plaques-plexiglass-bicouche-reperes-couleur.webp',
+    titre: 'Repères en plexiglass bicouche',
+    alt: 'Plaques et jetons en plexiglass bicouche gravés de repères et de numéros, en cinq couleurs',
+    categorie: 'plaques',
+    service: '/services/plaques-professionnelles/',
+  },
+  {
     fichier: 'plaques-professionnelles-gravees-multi-finitions.webp',
     titre: 'Signalétique multi-finitions',
     alt: 'Ensemble de plaques de signalétique gravées présentées en plusieurs finitions',
@@ -621,6 +635,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Plaque numéro de porte découpée dans du plexiglass noir',
     categorie: 'plaques',
     service: '/services/signaletique/',
+  },
+  {
+    fichier: 'plaque-nfc-menu-avis-google-spotitap.webp',
+    titre: 'Plaque NFC menu et avis',
+    alt: 'Plaque ronde NFC réunissant menu en ligne, avis Google et accès Wi-Fi, tenue dans une main',
+    categorie: 'plaques',
+    service: '/services/plaques-professionnelles/',
   },
   {
     fichier: 'badge-professionnel-grave-personnalise.webp',
