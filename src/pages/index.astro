@@ -84,7 +84,6 @@ const imagesAccueil = [
   ...selection.map((r) => r.id),
   'decoupe-bois-prenoms-cercles-personnalises',
   'marquage-laser-fibre-outils-serie',
-  ...projets.map((p) => p.visuel),
 ];
 const doublons = imagesAccueil.filter((id, i) => imagesAccueil.indexOf(id) !== i);
 if (doublons.length > 0) {
@@ -367,15 +366,15 @@ const schema = graphe([
           projets.map((projet) => (
             <li class="projets__item revele">
               {/*
-                Une photographie de pièce de l'atelier, pas un visuel de la
-                marque : sa légende dit ce qu'elle montre. Aucun élément
-                d'identité de Glassora ou de Spotitap n'entre ici.
+                Chaque projet montre désormais son propre produit, photographié
+                à l'atelier. Le cadre est carré : en 3/2, le socle gravé
+                « spotitap » sortait du cadre, et c'est lui qui porte la marque.
               */}
               <figure class="projets__visuel">
                 <Picture
-                  src={imagesRealisations[projet.visuel]!}
+                  src={projet.visuel}
                   alt={projet.visuelAlt}
-                  widths={[420, 640, 900]}
+                  widths={[420, 640, 900, 1086]}
                   sizes="(min-width: 56rem) 44vw, 100vw"
                   loading="lazy"
                   quality={72}
@@ -1262,14 +1261,19 @@ const schema = graphe([
   .projets__visuel {
     inline-size: 100%;
     margin: 0 0 var(--e-s);
-    aspect-ratio: 3 / 2;
     overflow: hidden;
     background-color: var(--c-fond-creux);
   }
 
+  /* Le ratio est porté par l'image : voir la note de projets.astro. */
+  .projets__visuel :global(picture) {
+    display: contents;
+  }
+
   .projets__visuel :global(img) {
     inline-size: 100%;
-    block-size: 100%;
+    block-size: auto;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     transition: transform var(--duree-longue) var(--courbe-sortie);
   }

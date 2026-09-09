@@ -4,7 +4,6 @@ import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import SectionDevis from '@components/SectionDevis.astro';
 import { projets } from '@data/projets';
-import { imagesRealisations } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 
@@ -90,9 +89,9 @@ const schema = graphe([
 
               <figure class="projet__preuve">
                 <Picture
-                  src={imagesRealisations[projet.visuel]!}
+                  src={projet.visuel}
                   alt={projet.visuelAlt}
-                  widths={[400, 640, 900]}
+                  widths={[400, 640, 900, 1086]}
                   sizes="(min-width: 56rem) 34rem, 92vw"
                   quality={72}
                   formats={['avif']}
@@ -288,18 +287,22 @@ const schema = graphe([
     margin-block-end: var(--e-l);
   }
 
+  /*
+    Le ratio est porté par l'image, pas par le <picture> : sur un <picture>,
+    « aspect-ratio » ne gouverne pas la hauteur de l'image qu'il contient, et
+    le cadre reprenait la proportion native du fichier.
+  */
   .projet__preuve :global(picture) {
-    display: block;
-    aspect-ratio: 3 / 2;
-    overflow: hidden;
-    border-radius: var(--r-l);
-    background-color: var(--c-fond-creux);
+    display: contents;
   }
 
   .projet__preuve :global(img) {
     inline-size: 100%;
-    block-size: 100%;
+    block-size: auto;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    border-radius: var(--r-l);
+    background-color: var(--c-fond-creux);
   }
 
   .projet__preuve figcaption {
