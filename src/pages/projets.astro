@@ -278,16 +278,28 @@ const schema = graphe([
     content: counter(etape, decimal-leading-zero) ' · ';
   }
 
+  /* Cadre imposé, comme partout ailleurs sur le site : ce sont les mêmes deux
+     photographies que sur la page d'accueil, et elles y sont déjà cadrées en
+     3/2. Les dimensions natives ne doivent pas décider de la mise en page —
+     celle de Glassora est en portrait et occuperait sinon 725 px de haut. */
   .projet__preuve {
     inline-size: 100%;
     max-width: 34rem;
     margin-block-end: var(--e-l);
   }
 
+  .projet__preuve :global(picture) {
+    display: block;
+    aspect-ratio: 3 / 2;
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background-color: var(--c-fond-creux);
+  }
+
   .projet__preuve :global(img) {
     inline-size: 100%;
-    block-size: auto;
-    border-radius: var(--r-l);
+    block-size: 100%;
+    object-fit: cover;
   }
 
   .projet__preuve figcaption {
