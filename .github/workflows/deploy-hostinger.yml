@@ -92,7 +92,15 @@ jobs:
           fi
 
       - name: Installer lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        # Le runner GitHub embarque des dépôts tiers — dont celui de Google
+        # Chrome — qui tombent régulièrement en « Hash Sum mismatch ». Avec un
+        # « && », cet échec sans rapport avec le projet empêchait purement et
+        # simplement le déploiement. lftp vient de l'archive Ubuntu : la mise à
+        # jour des index peut échouer partiellement sans conséquence, alors que
+        # l'installation, elle, reste bloquante.
+        run: |
+          sudo apt-get update || echo 'Index apt partiellement indisponibles : on poursuit.'
+          sudo apt-get install -y lftp
 
       - name: Téléverser
         env:
