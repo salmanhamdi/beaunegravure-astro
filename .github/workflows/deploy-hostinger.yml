@@ -107,24 +107,80 @@ jobs:
           # certificat mutualisé qui ne porte pas le nom du serveur FTP du
           # compte. Un certificat auto-signé ou d'une autorité inconnue est
           # donc toujours rejeté.
+          #
+          # Ces réglages sont partagés mot pour mot par les deux passes : les
+          # définir une seule fois garantit qu'ils ne peuvent pas diverger.
+          REGLAGES='
+          set ftp:ssl-force yes
+          set ftp:ssl-protect-data yes
+          set ssl:verify-certificate yes
+          set ssl:check-hostname no
+          set ftp:passive-mode yes
+          set net:timeout 60
+          set net:max-retries 10
+          set net:reconnect-interval-base 5
+          set net:reconnect-interval-multiplier 1
+          set mirror:parallel-transfer-count 2
+          set cmd:fail-exit yes
+          '
+
+          # Le transfert se fait en DEUX PASSES, pour une seule raison : les
+          # fichiers de « _astro/ » portent dans leur nom l'empreinte de leur
+          # contenu. Deux fichiers de même nom ont donc, par construction, le
+          # même contenu — et un contenu modifié produit un nom différent, donc
+          # un fichier absent à distance, donc transféré.
+          #
+          # Comparer leurs horodatages n'a par conséquent aucun sens ici : la
+          # machine d'intégration continue repart vierge à chaque exécution, ses
+          # fichiers sont toujours « plus récents » que les copies distantes, et
+          # lftp retransférait ainsi 45 Mo d'images identiques à chaque
+          # déploiement. « --ignore-time » lui fait comparer les tailles seules,
+          # ce qui est exactement le bon critère POUR CE RÉPERTOIRE et pour lui
+          # seul.
+          #
+          # Tout le reste du site — pages HTML, CSS, PHP — garde des noms
+          # stables et un contenu variable : la comparaison par horodatage y
+          # reste indispensable, et la passe 2 ne change donc rien au
+          # comportement d'origine.
+
+          # Un « _astro/ » vide ou absent signalerait un build cassé. Comme la
+          # passe 1 porte « --delete », la laisser s'exécuter effacerait alors
+          # toutes les images du site : on s'arrête net.
+          if [ ! -d dist/_astro ] || [ -z "$(ls -A dist/_astro)" ]; then
+            echo "dist/_astro est absent ou vide : build anormal, arrêt." >&2
+            exit 1
+          fi
+
+          # « $CIBLE » vaut « / » : la concaténation directe donnerait
+          # « //_astro/ ». On retire donc la barre finale avant de composer le
+          # sous-chemin. La passe 2, elle, garde mot pour mot la cible
+          # d'origine, dont le fonctionnement est établi.
+          BASE="${CIBLE%/}"
+
+          echo "Passe 1/2 — _astro/ : $(find dist/_astro -type f | wc -l) fichiers, comparaison par taille"
           lftp -u "$FTP_USER,$FTP_PASS" -p "${FTP_PORT:-21}" "$FTP_HOST" <<FTP
-            set ftp:ssl-force yes
-            set ftp:ssl-protect-data yes
-            set ssl:verify-certificate yes
-            set ssl:check-hostname no
-            set ftp:passive-mode yes
-            set net:timeout 60
-            set net:max-retries 10
-            set net:reconnect-interval-base 5
-            set net:reconnect-interval-multiplier 1
-            set mirror:parallel-transfer-count 2
-            set cmd:fail-exit yes
-            mirror --reverse --delete --parallel=2 --verbose \
-              --exclude-glob api/config.php \
-              --exclude-glob api/.data/ \
-              --exclude-glob public_html/ \
-              dist/ "$CIBLE/"
-            bye
+          $REGLAGES
+          mirror --reverse --delete --parallel=2 --verbose \
+            --ignore-time \
+            dist/_astro/ "$BASE/_astro/"
+          bye
+          FTP
+
+          # Passe 2 : le comportement d'origine, à l'exclusion de « _astro/ »
+          # que la passe 1 vient de synchroniser. Une exclusion protège aussi
+          # bien de la suppression que du transfert — c'est déjà ce qui met
+          # « api/config.php », « api/.data/ » et « public_html/ » à l'abri du
+          # « --delete » depuis le premier jour.
+          echo "Passe 2/2 — reste du site, comparaison par horodatage (inchangée)"
+          lftp -u "$FTP_USER,$FTP_PASS" -p "${FTP_PORT:-21}" "$FTP_HOST" <<FTP
+          $REGLAGES
+          mirror --reverse --delete --parallel=2 --verbose \
+            --exclude-glob _astro/ \
+            --exclude-glob api/config.php \
+            --exclude-glob api/.data/ \
+            --exclude-glob public_html/ \
+            dist/ "$CIBLE/"
+          bye
           FTP
 
       - name: Rappel
