@@ -9,11 +9,15 @@
  *
  * Le site est statique : ce fichier est le seul point d'entrée dynamique.
  *
- * Configuration : copier config.example.php en config.php sur le serveur.
- * config.php n'est jamais versionné.
+ * Configuration : copier config.example.php sur le serveur, de préférence en
+ * `bg-config/contact.php` HORS de la racine web — c'est le seul endroit où le
+ * mot de passe d'application SMTP doit être écrit. `api/config.php` reste
+ * accepté en repli. Aucun des deux n'est versionné ni déployé.
  */
 
 declare(strict_types=1);
+
+use PHPMailer\PHPMailer\PHPMailer;
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -31,10 +35,61 @@ $config = [
     'max_par_heure'    => 5,
     'delai_minimal'    => 3,      // secondes entre l'affichage et l'envoi
     'repertoire_data'  => __DIR__ . '/.data',
+
+    // Envoi SMTP authentifié. Tant que `smtp_motdepasse` est vide, l'envoi
+    // passe par mail() comme auparavant : c'est le mode de préparation, qui
+    // permet de déployer ce fichier sans rien changer au comportement.
+    // Dès que le mot de passe est renseigné sur le serveur, le SMTP devient
+    // OBLIGATOIRE et il n'y a plus aucun repli vers mail().
+    'smtp_hote'        => 'smtp.gmail.com',
+    'smtp_port'        => 587,
+    'smtp_chiffrement' => 'tls',                      // « tls » = STARTTLS
+    'smtp_utilisateur' => 'contact@beaunegravure.fr', // compte authentifié
+    'smtp_motdepasse'  => '',                         // JAMAIS ici : serveur
+    'smtp_delai'       => 10,                         // secondes
 ];
 
-$fichierConfig = __DIR__ . '/config.php';
-if (is_readable($fichierConfig)) {
+/**
+ * Localise une configuration serveur placée hors de la racine web.
+ *
+ * Le chemin absolu diffère d'un compte d'hébergement à l'autre, et la
+ * préproduction n'a pas la même racine que la production : on remonte donc
+ * l'arborescence à la recherche d'un `bg-config/contact.php`.
+ *
+ * GARDE-FOU : tout candidat situé À L'INTÉRIEUR de la racine web est ignoré,
+ * même s'il existe. Sans cette règle, un répertoire créé par mégarde dans
+ * `public_html` serait retenu — et lisible par n'importe quel navigateur.
+ */
+function configurationHorsRacineWeb(): ?string
+{
+    $racineWeb = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''));
+    $dossier = __DIR__;
+
+    for ($niveau = 0; $niveau < 6; $niveau++) {
+        $parent = dirname($dossier);
+        if ($parent === $dossier) {
+            break; // racine du système de fichiers
+        }
+        $dossier = $parent;
+
+        if ($racineWeb !== false && $racineWeb !== '' && str_starts_with($dossier, $racineWeb)) {
+            continue;
+        }
+
+        $candidat = $dossier . '/bg-config/contact.php';
+        if (is_readable($candidat)) {
+            return $candidat;
+        }
+    }
+
+    return null;
+}
+
+// Du plus faible au plus fort : la dernière source lue l'emporte.
+foreach ([__DIR__ . '/config.php', configurationHorsRacineWeb()] as $fichierConfig) {
+    if ($fichierConfig === null || !is_readable($fichierConfig)) {
+        continue;
+    }
     /** @var array<string,mixed> $surcharge */
     $surcharge = require $fichierConfig;
     if (is_array($surcharge)) {
@@ -117,6 +172,168 @@ function assurerRepertoire(string $chemin): bool
     );
     @file_put_contents($chemin . '/index.html', '');
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// Envoi du courriel
+// ---------------------------------------------------------------------------
+
+/**
+ * Consigne le motif technique d'un échec d'envoi.
+ *
+ * Trois champs, et rien d'autre : la demande correspondante se retrouve dans
+ * le journal des demandes par son horodatage. Aucune donnée personnelle n'est
+ * donc dupliquée ici, et aucun secret ne doit pouvoir y parvenir.
+ */
+function journaliserErreur(array $config, string $code, string $motif): void
+{
+    $repertoire = (string) $config['repertoire_data'];
+    if (!assurerRepertoire($repertoire)) {
+        return;
+    }
+
+    // Ceinture et bretelles : si le mot de passe venait à apparaître dans le
+    // message rapporté par la bibliothèque, il n'atteindra pas le disque.
+    $secret = (string) ($config['smtp_motdepasse'] ?? '');
+    if ($secret !== '') {
+        $motif = str_replace($secret, '***', $motif);
+    }
+
+    $ligne = json_encode(
+        [
+            'date'  => gmdate('c'),
+            'code'  => $code,
+            'motif' => mb_substr(trim(preg_replace('/\s+/', ' ', $motif) ?? ''), 0, 300),
+        ],
+        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+    );
+
+    if ($ligne !== false) {
+        @file_put_contents(
+            $repertoire . '/erreurs-' . gmdate('Y-m') . '.jsonl',
+            $ligne . "\n",
+            FILE_APPEND | LOCK_EX
+        );
+    }
+}
+
+/**
+ * Envoi historique par la fonction mail() de l'hébergement.
+ *
+ * Ne subsiste que pour le mode de préparation : tant qu'aucun mot de passe
+ * SMTP n'est configuré, le comportement du formulaire reste exactement celui
+ * d'avant la bascule.
+ */
+function envoyerParMail(
+    array $config,
+    string $sujet,
+    string $corps,
+    string $nomProspect,
+    string $courrielProspect
+): bool {
+    $entetes = [
+        'From: ' . sprintf('=?UTF-8?B?%s?= <%s>', base64_encode((string) $config['nom_expediteur']), $config['expediteur']),
+        'Reply-To: ' . sprintf('=?UTF-8?B?%s?= <%s>', base64_encode($nomProspect), $courrielProspect),
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: 8bit',
+        'X-Mailer: beaunegravure.fr',
+    ];
+
+    return @mail(
+        (string) $config['destinataire'],
+        '=?UTF-8?B?' . base64_encode($sujet) . '?=',
+        $corps,
+        implode("\r\n", $entetes),
+        '-f' . $config['expediteur']
+    );
+}
+
+/**
+ * Envoie la notification à l'atelier.
+ *
+ * DÈS QUE `smtp_motdepasse` EST RENSEIGNÉ, LE SMTP EST OBLIGATOIRE : un échec
+ * n'est jamais rattrapé par mail(). Le message partirait alors sans
+ * authentification, serait rejeté par la politique DMARC du domaine, et le
+ * visiteur lirait « envoyé » — c'est-à-dire exactement le défaut que cette
+ * bascule corrige. En cas d'échec, la demande est déjà sur disque et la
+ * réponse le dit honnêtement.
+ */
+function envoyerCourriel(
+    array $config,
+    string $sujet,
+    string $corps,
+    string $nomProspect,
+    string $courrielProspect
+): bool {
+    $motDePasse = (string) ($config['smtp_motdepasse'] ?? '');
+
+    if ($motDePasse === '') {
+        return envoyerParMail($config, $sujet, $corps, $nomProspect, $courrielProspect);
+    }
+
+    // Chargée ici, et non en tête de fichier : sans configuration SMTP, la
+    // bibliothèque n'est jamais lue. Un fichier manquant ne doit pas produire
+    // une erreur fatale — la demande est déjà écrite, elle ne doit pas être
+    // perdue de vue pour autant.
+    $bibliotheque = __DIR__ . '/lib/PHPMailer';
+    foreach (['Exception.php', 'PHPMailer.php', 'SMTP.php'] as $fichier) {
+        if (!is_readable($bibliotheque . '/' . $fichier)) {
+            journaliserErreur($config, 'phpmailer_absent', 'Fichier introuvable : ' . $fichier);
+            return false;
+        }
+        require_once $bibliotheque . '/' . $fichier;
+    }
+
+    $message = new PHPMailer(true);
+
+    try {
+        $message->isSMTP();
+        $message->Host = (string) $config['smtp_hote'];
+        $message->Port = (int) $config['smtp_port'];
+        $message->SMTPAuth = true;
+        $message->Username = (string) $config['smtp_utilisateur'];
+        $message->Password = $motDePasse;
+        // « ssl » = TLS implicite (465), « tls » = STARTTLS (587).
+        $message->SMTPSecure = ((string) $config['smtp_chiffrement'] === 'ssl') ? 'ssl' : 'tls';
+        $message->Timeout = (int) $config['smtp_delai'];
+
+        // JAMAIS autre chose que zéro. Au-delà, la bibliothèque écrit le
+        // dialogue SMTP sur la sortie standard : la réponse JSON serait
+        // corrompue et les identifiants encodés apparaîtraient dans la page.
+        $message->SMTPDebug = 0;
+
+        $message->CharSet = 'UTF-8';
+        // Le corps contient des accents et peut porter de longues lignes :
+        // l'encodage imprimable évite les deux écueils.
+        $message->Encoding = 'quoted-printable';
+        $message->XMailer = 'beaunegravure.fr';
+
+        // L'expéditeur reste site@ : c'est un alias du compte authentifié.
+        // Google impose l'enveloppe du compte, ce qui ramène au passage les
+        // avis de non-remise dans une boîte réellement relevée.
+        $message->setFrom((string) $config['expediteur'], (string) $config['nom_expediteur']);
+        $message->addAddress((string) $config['destinataire']);
+        // Le « Répondre » de l'atelier doit écrire au prospect, pas au site.
+        $message->addReplyTo($courrielProspect, $nomProspect);
+
+        $message->isHTML(false);
+        $message->Subject = $sujet;
+        $message->Body = $corps;
+
+        $succes = $message->send();
+        if (!$succes) {
+            // Les exceptions sont actives, ce cas ne devrait pas survenir —
+            // mais un échec sans exception ne doit pas rester muet.
+            journaliserErreur($config, 'smtp', $message->ErrorInfo);
+        }
+
+        return $succes;
+    } catch (Throwable $erreur) {
+        $motif = $message->ErrorInfo !== '' ? $message->ErrorInfo : $erreur->getMessage();
+        journaliserErreur($config, 'smtp', $motif);
+        return false;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -270,23 +487,7 @@ $corps = implode("\n", [
     'Reçue le ' . gmdate('d/m/Y H:i') . ' UTC · IP ' . $ip,
 ]);
 
-$entetes = [
-    'From: ' . sprintf('=?UTF-8?B?%s?= <%s>', base64_encode((string) $config['nom_expediteur']), $config['expediteur']),
-    'Reply-To: ' . sprintf('=?UTF-8?B?%s?= <%s>', base64_encode($nom), $courriel),
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: 8bit',
-    'X-Mailer: beaunegravure.fr',
-];
-
-$sujetEncode = '=?UTF-8?B?' . base64_encode($sujet) . '?=';
-$envoye = @mail(
-    (string) $config['destinataire'],
-    $sujetEncode,
-    $corps,
-    implode("\r\n", $entetes),
-    '-f' . $config['expediteur']
-);
+$envoye = envoyerCourriel($config, $sujet, $corps, $nom, $courriel);
 
 // ---------------------------------------------------------------------------
 // Réponse
