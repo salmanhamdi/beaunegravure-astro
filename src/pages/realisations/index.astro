@@ -3,9 +3,9 @@ import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
 import SectionDevis from '@components/SectionDevis.astro';
-import { categoriesOrdonnees, realisations } from '@data/realisations';
+import { categoriesOrdonnees, imagesDeclarees, realisations } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
-import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+import { filAriane, graphe, listeImages, organisation, pageWeb } from '@utils/schema';
 
 const chemin = '/realisations/';
 const url = urlAbsolue(chemin);
@@ -22,6 +22,14 @@ const schema = graphe([
   organisation('/og/beaune-gravure-partage.jpg'),
   pageWeb({ url, titre, description }),
   filAriane(miettes),
+  // La page EST la liste complète des pièces photographiées : la déclarer comme
+  // telle décrit ce que le visiteur voit, sans rien ajouter d'artificiel.
+  listeImages({
+    url,
+    nom: `Réalisations de l’atelier Beaune Gravure`,
+    description,
+    images: await imagesDeclarees(realisations),
+  }),
 ]);
 ---
 
@@ -41,7 +49,10 @@ const schema = graphe([
       </p>
 
       <nav class="filtres" aria-label="Catégories de réalisations">
-        <span class="filtres__actif" aria-current="page">Tout voir</span>
+        <span class="filtres__actif" aria-current="page">
+          Toutes les réalisations
+          <span aria-hidden="true"> ({realisations.length})</span>
+        </span>
         {
           categoriesOrdonnees.map((categorie) => (
             <a href={`/realisations/${categorie.slug}/`}>

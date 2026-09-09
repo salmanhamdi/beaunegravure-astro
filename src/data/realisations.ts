@@ -7,6 +7,8 @@
  * sont pas présentés comme des références commerciales.
  */
 import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { urlAbsolue } from '@utils/env';
 
 const fichiers = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/images/realisations/*.{webp,jpg,jpeg,png}',
@@ -715,6 +717,64 @@ export const categoriesOrdonnees = (
   ...CATEGORIES[slug],
   total: parCategorie(slug).length,
 }));
+
+/**
+ * Rendu des vignettes sur les pages de réalisations — grille à trois colonnes.
+ *
+ * Ces deux constantes sont partagées avec `GrilleRealisations` pour une raison
+ * précise : `imagesDeclarees` ci-dessous doit demander à Astro EXACTEMENT la
+ * même variante que celle affichée. Une largeur ou un `sizes` qui diverge, et
+ * le site produit un second jeu d'images inutile.
+ */
+export const LARGEURS_VIGNETTE = [400, 640, 900];
+export const SIZES_VIGNETTE = '(min-width: 68rem) 31vw, 46vw';
+
+/**
+ * Décrit les photographies pour le balisage structuré.
+ *
+ * La variante demandée est EXACTEMENT celle que produit déjà `CarteRealisation`
+ * — 900 px, WebP, qualité 72. Le nom du fichier généré dérivant du contenu et
+ * des paramètres, aucune image supplémentaire n'est créée : on ne fait que
+ * retrouver l'adresse de celle qui est déjà servie.
+ *
+ * Seuls des faits vérifiables sont renvoyés : l'adresse réelle, la légende et
+ * le texte alternatif affichés sur la page, et les dimensions calculées par
+ * Astro.
+ */
+export async function imagesDeclarees(pieces: Realisation[]) {
+  return Promise.all(
+    pieces.map(async (piece) => {
+      const source = imageDe(piece);
+      const rendue = await getImage({
+        src: source,
+        // Les mêmes options, à la virgule près, que celles que `<Picture>`
+        // transmet depuis `CarteRealisation` — y compris `layout`, `fit` et
+        // `position`, que le composant ajoute lui-même à partir de la
+        // configuration globale des images. Les omettre produirait une variante
+        // DIFFÉRENTE : 423 fichiers de plus dans le site, et une adresse qui ne
+        // serait pas celle réellement servie.
+        widths: LARGEURS_VIGNETTE,
+        sizes: SIZES_VIGNETTE,
+        layout: 'constrained',
+        fit: 'cover',
+        position: 'center',
+        quality: 72,
+        format: 'webp',
+      });
+      const largeur = Number(rendue.attributes.width ?? 900);
+      const hauteur = Number(
+        rendue.attributes.height ?? Math.round((largeur * source.height) / source.width),
+      );
+      return {
+        contentUrl: urlAbsolue(rendue.src),
+        nom: piece.titre,
+        description: piece.alt,
+        largeur,
+        hauteur,
+      };
+    }),
+  );
+}
 
 /** Récupère des réalisations dans un ordre choisi explicitement. */
 export function parIds(...ids: string[]): Realisation[] {

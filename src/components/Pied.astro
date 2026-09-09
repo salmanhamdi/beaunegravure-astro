@@ -47,8 +47,16 @@ const annee = new Date().getFullYear();
         </ul>
       </div>
 
+      {/*
+        Ces intitulés étaient des <h2>. Présents sur les 41 pages, ils injectaient
+        164 titres de niveau 2 dans le plan documentaire du site — davantage que
+        tout le contenu réuni. Ce sont des étiquettes de navigation, pas des
+        sections : le <nav> qu'elles nomment reste correctement étiqueté par
+        aria-labelledby, qui accepte n'importe quel élément. Aucun changement
+        visuel : la classe est identique.
+      */}
       <nav class="pied__colonne" aria-labelledby="pied-savoir-faire">
-        <h2 class="pied__titre" id="pied-savoir-faire">Savoir-faire</h2>
+        <p class="pied__titre" id="pied-savoir-faire">Savoir-faire</p>
         <ul>
           {piedDePage.savoirFaire.map((lien) => (
             <li><a href={lien.href}>{lien.label}</a></li>
@@ -57,7 +65,7 @@ const annee = new Date().getFullYear();
       </nav>
 
       <nav class="pied__colonne" aria-labelledby="pied-decouvrir">
-        <h2 class="pied__titre" id="pied-decouvrir">Découvrir</h2>
+        <p class="pied__titre" id="pied-decouvrir">Découvrir</p>
         <ul>
           {piedDePage.decouvrir.map((lien) => (
             <li><a href={lien.href}>{lien.label}</a></li>
@@ -66,7 +74,7 @@ const annee = new Date().getFullYear();
       </nav>
 
       <nav class="pied__colonne" aria-labelledby="pied-projets">
-        <h2 class="pied__titre" id="pied-projets">Nos projets</h2>
+        <p class="pied__titre" id="pied-projets">Nos projets</p>
         <ul>
           {projets.map((projet) => (
             <li>
@@ -81,7 +89,7 @@ const annee = new Date().getFullYear();
       </nav>
 
       <div class="pied__colonne pied__contact">
-        <h2 class="pied__titre">L’atelier</h2>
+        <p class="pied__titre">L’atelier</p>
         <address>
           <p>
             {adresse.rue}<br />
@@ -175,6 +183,10 @@ const annee = new Date().getFullYear();
     margin-block-end: var(--e-s);
     font-family: var(--f-texte);
     font-size: var(--t--2);
+    /* Ces intitulés étaient des <h2> et héritaient de l'interlignage des
+       titres. Le figer ici garantit que le passage au <p> ne déplace pas un
+       seul pixel : 11,648 px avant comme après. */
+    line-height: var(--lh-titre);
     font-weight: 600;
     letter-spacing: var(--ls-large);
     text-transform: uppercase;

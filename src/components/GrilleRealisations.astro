@@ -1,5 +1,6 @@
 ---
 import CarteRealisation from './CarteRealisation.astro';
+import { SIZES_VIGNETTE } from '@data/realisations';
 import type { Realisation } from '@data/realisations';
 
 interface Props {
@@ -30,7 +31,7 @@ const sizes =
     ? '(min-width: 68rem) 23vw, 46vw'
     : colonnes === 2
       ? '46vw'
-      : '(min-width: 68rem) 31vw, 46vw';
+      : SIZES_VIGNETTE;
 
 /* La pièce mise en scène occupe deux colonnes : elle demande une image plus large. */
 const sizesVedette = '(min-width: 68rem) 63vw, 94vw';

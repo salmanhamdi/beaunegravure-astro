@@ -173,6 +173,58 @@ export function faqSchema(entrees: { question: string; reponse: string }[]) {
   };
 }
 
+/** Une photographie de réalisation, décrite pour les moteurs. */
+export interface ImageDeclaree {
+  /** URL absolue du fichier réellement généré et servi. */
+  contentUrl: string;
+  /** Légende affichée sous la vignette. */
+  nom: string;
+  /** Texte alternatif de l'image, qui décrit la pièce. */
+  description: string;
+  largeur: number;
+  hauteur: number;
+}
+
+/**
+ * Liste de réalisations.
+ *
+ * Ne sont déclarés que des faits vérifiables : l'adresse du fichier généré, la
+ * légende et le texte alternatif tels qu'ils apparaissent sur la page, et les
+ * dimensions réelles de l'image produite. Ni auteur, ni date, ni lieu, ni
+ * client, ni prix — le site ne les connaît pas et ne les invente pas.
+ *
+ * Les pièces n'ayant pas de page propre, aucun `url` n'est déclaré par élément :
+ * ce serait affirmer l'existence d'une adresse qui n'existe pas.
+ */
+export function listeImages(options: {
+  url: string;
+  nom: string;
+  description: string;
+  images: ImageDeclaree[];
+}) {
+  if (!options.images.length) return null;
+  return {
+    '@type': 'ItemList',
+    '@id': `${options.url}#realisations`,
+    name: options.nom,
+    description: options.description,
+    numberOfItems: options.images.length,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListElement: options.images.map((image, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'ImageObject',
+        contentUrl: image.contentUrl,
+        name: image.nom,
+        description: image.description,
+        width: image.largeur,
+        height: image.hauteur,
+      },
+    })),
+  };
+}
+
 /** Emballe les entités dans un graphe unique, plus lisible pour les moteurs. */
 export function graphe(entites: unknown[]) {
   return {

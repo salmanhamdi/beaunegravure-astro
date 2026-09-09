@@ -7,11 +7,13 @@ import SectionDevis from '@components/SectionDevis.astro';
 import {
   CATEGORIES,
   categoriesOrdonnees,
+  imagesDeclarees,
   parCategorie,
+  realisations,
   type CategorieSlug,
 } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
-import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+import { filAriane, graphe, listeImages, organisation, pageWeb } from '@utils/schema';
 
 export function getStaticPaths() {
   return (Object.keys(CATEGORIES) as CategorieSlug[]).map((slug) => ({
@@ -49,6 +51,14 @@ const schema = graphe([
   organisation('/og/beaune-gravure-partage.jpg'),
   pageWeb({ url, titre, description }),
   filAriane(miettes),
+  // La page EST une liste de pièces : la déclarer comme telle ne crée aucune
+  // structure artificielle, elle décrit ce que le visiteur voit.
+  listeImages({
+    url,
+    nom: categorie.titre,
+    description: categorie.description,
+    images: await imagesDeclarees(pieces),
+  }),
 ]);
 ---
 
@@ -61,7 +71,10 @@ const schema = graphe([
       <p class="chapo">{categorie.description}</p>
 
       <nav class="filtres" aria-label="Catégories de réalisations">
-        <a href="/realisations/">Tout voir</a>
+        <a href="/realisations/">
+          Toutes les réalisations
+          <span aria-hidden="true"> ({realisations.length})</span>
+        </a>
         {
           categoriesOrdonnees.map((autre) =>
             autre.slug === slug ? (
