@@ -53,18 +53,18 @@ export const whatsapp = {
 
 /**
  * Informations légales obligatoires (art. 6-III LCEN).
- * `null` = donnée non vérifiable dans les sources disponibles.
- * NE PAS INVENTER : renseigner à partir de l'extrait Kbis.
+ * Renseignées à partir des données d'immatriculation communiquées par le client.
+ * NE PAS INVENTER : `null` = donnée non vérifiable dans les sources disponibles.
  */
 export const legal = {
-  raisonSociale: 'SARL Beaune Gravure',
-  formeJuridique: 'SARL',
+  raisonSociale: 'BEAUNE GRAVURE',
+  formeJuridique: 'EURL',
   /** Nom du gérant, directeur de la publication. */
-  directeurPublication: null as string | null,
-  siret: null as string | null,
-  rcs: null as string | null,
-  capitalSocial: null as string | null,
-  tvaIntracommunautaire: null as string | null,
+  directeurPublication: 'Salman Hamdi' as string | null,
+  siret: '897 823 183 00016' as string | null,
+  rcs: '897 823 183 R.C.S. Dijon' as string | null,
+  capitalSocial: '2 000 €' as string | null,
+  tvaIntracommunautaire: 'FR42 897 823 183' as string | null,
   hebergeur: {
     nom: 'Hostinger International Ltd.',
     adresse: '61 Lordou Vironos Street, 6023 Larnaca, Chypre',
@@ -77,11 +77,6 @@ export const horaires = null;
 
 /** Champs à obtenir auprès du client avant la mise en production. */
 export const donneesManquantes = [
-  'legal.directeurPublication — nom du gérant (mentions légales obligatoires)',
-  'legal.siret — numéro SIRET',
-  'legal.rcs — ville et numéro d’immatriculation RCS',
-  'legal.capitalSocial — montant du capital social',
-  'legal.tvaIntracommunautaire — numéro de TVA si assujetti',
   'horaires — horaires d’ouverture de l’atelier (schema LocalBusiness + page contact)',
   'telephone — confirmer que le 07 66 22 50 62 est bien la ligne principale et pas uniquement WhatsApp',
   'email — confirmer que contact@beaunegravure.fr est actif et relevé',
