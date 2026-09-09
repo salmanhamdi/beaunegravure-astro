@@ -155,20 +155,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/verres-graves/',
   },
   {
-    fichier: 'verre-vin-grave-logo-domaine-patrick-guillot.webp',
-    titre: 'Verre de domaine personnalisé',
-    alt: 'Verre à vin gravé avec le logo d’un domaine viticole, tenu devant un feuillage',
-    categorie: 'verre',
-    service: '/services/verres-graves/',
-  },
-  {
-    fichier: 'verre-vin-grave-mariage-personnalise.webp',
-    titre: 'Verre de mariage personnalisé',
-    alt: 'Verre à vin gravé avec un prénom, une date et un décor floral pour un mariage',
-    categorie: 'verre',
-    service: '/services/verres-graves/',
-  },
-  {
     fichier: 'verre-grave-veuve-ambal-spritz-club.jpg',
     titre: 'Série pour une maison de vins effervescents',
     alt: 'Verre gravé en série pour une maison de vins effervescents bourguignonne',
@@ -203,6 +189,20 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     categorie: 'verre',
     service: '/services/cadeaux-personnalises/',
   },
+  {
+    fichier: 'verre-vin-grave-logo-domaine-patrick-guillot.webp',
+    titre: 'Verre de domaine personnalisé',
+    alt: 'Verre à vin gravé avec le logo d’un domaine viticole, tenu devant un feuillage',
+    categorie: 'verre',
+    service: '/services/verres-graves/',
+  },
+  {
+    fichier: 'verre-vin-grave-mariage-personnalise.webp',
+    titre: 'Verre de mariage personnalisé',
+    alt: 'Verre à vin gravé avec un prénom, une date et un décor floral pour un mariage',
+    categorie: 'verre',
+    service: '/services/verres-graves/',
+  },
 
   /* --------------------------- Bois et coffrets --------------------------- */
   {
@@ -216,13 +216,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     fichier: 'caisse-vin-bois-gravee-domaine-bruno-colin.webp',
     titre: 'Caisse de domaine personnalisée',
     alt: 'Caisse de vin en bois gravée au nom d’un domaine viticole de la Côte de Beaune',
-    categorie: 'bois',
-    service: '/services/caisses-bois-gravees/',
-  },
-  {
-    fichier: 'caisses-bois-gravees-hospices-de-beaune.webp',
-    titre: 'Série de caisses gravées',
-    alt: 'Série de caisses en bois gravées empilées dans l’atelier',
     categorie: 'bois',
     service: '/services/caisses-bois-gravees/',
   },
@@ -263,6 +256,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     // Photographie en portrait : le recadrage carré est remonté pour conserver
     // la date imprimée en haut du coffret.
     cadrage: 'center 22%',
+  },
+  {
+    fichier: 'caisses-bois-gravees-hospices-de-beaune.webp',
+    titre: 'Série de caisses gravées',
+    alt: 'Série de caisses en bois gravées empilées dans l’atelier',
+    categorie: 'bois',
+    service: '/services/caisses-bois-gravees/',
   },
   {
     fichier: 'impression-uv-bois-planches-decoratives.webp',
@@ -352,23 +352,9 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/cadeaux-personnalises/',
   },
   {
-    fichier: 'coffret-sommelier-couteau-personnalise.webp',
-    titre: 'Couteau et coffret imprimés',
-    alt: 'Couteau de sommelier personnalisé accompagné de son coffret imprimé',
-    categorie: 'objets',
-    service: '/services/cadeaux-personnalises/',
-  },
-  {
     fichier: 'couteaux-graves-appellations-vins-bourgogne.webp',
     titre: 'Couteaux aux appellations',
     alt: 'Coffret bois personnalisé avec des couteaux gravés aux noms d’appellations de Bourgogne',
-    categorie: 'objets',
-    service: '/services/cadeaux-personnalises/',
-  },
-  {
-    fichier: 'couteaux-viticoles-graves-appellations.webp',
-    titre: 'Couteaux viticoles gravés',
-    alt: 'Deux couteaux gravés avec des noms de villages viticoles de la Côte de Beaune',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
   },
@@ -386,13 +372,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
     vedette: true,
-  },
-  {
-    fichier: 'couteaux-coffrets-viticoles-personnalises.webp',
-    titre: 'Couteaux et coffrets viticoles',
-    alt: 'Couteaux gravés accompagnés de coffrets personnalisés pour un domaine viticole',
-    categorie: 'objets',
-    service: '/services/cadeaux-personnalises/',
   },
   {
     fichier: 'tire-bouchon-bois-grave-personnalise.webp',
@@ -413,6 +392,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     fichier: 'stylos-bois-graves-cadeaux-entreprise.webp',
     titre: 'Stylos bois en série',
     alt: 'Stylos en bois gravés pour une entreprise',
+    categorie: 'objets',
+    service: '/services/cadeaux-personnalises/',
+  },
+  {
+    fichier: 'couteaux-coffrets-viticoles-personnalises.webp',
+    titre: 'Couteaux et coffrets viticoles',
+    alt: 'Couteaux gravés accompagnés de coffrets personnalisés pour un domaine viticole',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
   },
@@ -533,13 +519,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/etiquettes-industrielles/',
   },
   {
-    fichier: 'outil-industriel-grave-reference.webp',
-    titre: 'Identification d’outillage',
-    alt: 'Outil industriel métallique gravé avec une référence',
-    categorie: 'metal',
-    service: '/services/etiquettes-industrielles/',
-  },
-  {
     fichier: 'piece-horlogerie-gravee-edition-limitee.webp',
     titre: 'Numérotation de précision',
     alt: 'Pièce horlogère métallique gravée avec un numéro d’édition limitée',
@@ -550,6 +529,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     fichier: 'marquage-laser-fibre-outils-serie.webp',
     titre: 'Outillage marqué en série',
     alt: 'Série de forets métalliques positionnés pour un marquage laser',
+    categorie: 'metal',
+    service: '/services/etiquettes-industrielles/',
+  },
+  {
+    fichier: 'outil-industriel-grave-reference.webp',
+    titre: 'Identification d’outillage',
+    alt: 'Outil industriel métallique gravé avec une référence',
     categorie: 'metal',
     service: '/services/etiquettes-industrielles/',
   },
@@ -656,13 +642,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     fichier: 'decoupe-laser-plexiglass-rose-beaune-gravure.jpg',
     titre: 'Découpe en plexiglass teinté',
     alt: 'Pièces découpées au laser dans du plexiglass rose',
-    categorie: 'decoupe',
-    service: '/services/decoupe-laser/',
-  },
-  {
-    fichier: 'decoupe-laser-badges-roses-serie.webp',
-    titre: 'Découpe en série',
-    alt: 'Série de formes roses personnalisées découpées au laser dans l’atelier',
     categorie: 'decoupe',
     service: '/services/decoupe-laser/',
   },

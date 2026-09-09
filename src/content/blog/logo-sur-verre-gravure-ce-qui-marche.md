@@ -6,7 +6,7 @@ chapo: "Un logo gravé sur verre doit être simplifié, lisible et bien placé. 
 categorie: "verre-grave"
 datePublication: 2026-06-15
 dateModification: 2026-07-09
-couverture: "verre-grave-veuve-ambal-spritz-club.webp"
+couverture: "verre-grave-veuve-ambal-spritz-club.jpg"
 couvertureAlt: "Verre gravé avec un logo, posé sur un plan de travail"
 tempsLecture: "2 min"
 pilier: false

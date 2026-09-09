@@ -6,7 +6,7 @@ chapo: "Un guide pour choisir le modèle, le motif, la zone de marquage et le ni
 categorie: "verre-grave"
 datePublication: 2026-02-12
 dateModification: 2026-07-09
-couverture: "verre-grave-veuve-ambal-spritz-club.webp"
+couverture: "verre-grave-veuve-ambal-spritz-club.jpg"
 couvertureAlt: "Verre gravé en série pour une maison de vins effervescents"
 tempsLecture: "2 min"
 pilier: true

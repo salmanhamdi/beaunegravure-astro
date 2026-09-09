@@ -2,12 +2,7 @@
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { nomCategorie } from '@data/categoriesBlog';
-import type { ImageMetadata } from 'astro';
-
-const couvertures = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/images/blog/*.{webp,jpg,jpeg,png}',
-  { eager: true },
-);
+import { couverture as resoudreCouverture } from '@utils/couvertures';
 
 interface Props {
   article: CollectionEntry<'blog'>;
@@ -19,7 +14,7 @@ interface Props {
 const { article, prioritaire = false, large = false } = Astro.props;
 const { data } = article;
 
-const couverture = couvertures[`../assets/images/blog/${data.couverture}`]?.default;
+const couverture = resoudreCouverture(data.couverture);
 const dateLisible = new Intl.DateTimeFormat('fr-FR', {
   day: 'numeric',
   month: 'long',

@@ -80,6 +80,7 @@ export const donneesManquantes = [
   'horaires — horaires d’ouverture de l’atelier (schema LocalBusiness + page contact)',
   'telephone — confirmer que le 07 66 22 50 62 est bien la ligne principale et pas uniquement WhatsApp',
   'email — confirmer que contact@beaunegravure.fr est actif et relevé',
+  'og/beaune-gravure-partage.jpg — image de partage social à refaire : c’est aujourd’hui un recadrage de la macro d’étui en cuir, qui ne montre ni l’atelier, ni le laser, ni une pièce représentative',
 ] as const;
 
 export const site = {

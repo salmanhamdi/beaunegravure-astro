@@ -6,7 +6,7 @@ chapo: "Le fichier idéal pour une gravure laser dépend du support et du rendu 
 categorie: "fichiers-et-bat"
 datePublication: 2026-06-01
 dateModification: 2026-07-09
-couverture: "atelier-laser-uv-beaune-gravure-hero.webp"
+couverture: "atelier-laser-uv-beaune-gravure-hero.jpg"
 couvertureAlt: "Fichier de gravure ouvert sur l'ordinateur de préparation de l'atelier"
 tempsLecture: "2 min"
 pilier: false

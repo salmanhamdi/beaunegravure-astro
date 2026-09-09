@@ -6,7 +6,7 @@ chapo: "Le guide central pour comprendre ce que la gravure laser peut vraiment a
 categorie: "guides-atelier"
 datePublication: 2026-02-05
 dateModification: 2026-07-09
-couverture: "atelier-laser-uv-beaune-gravure-hero.webp"
+couverture: "atelier-laser-uv-beaune-gravure-hero.jpg"
 couvertureAlt: "Poste de marquage laser de l'atelier avec son ordinateur de préparation"
 tempsLecture: "3 min"
 pilier: true
