@@ -17,6 +17,24 @@ export default defineConfig({
   site: SITE_URL,
   output: 'static',
   trailingSlash: 'always',
+  /**
+   * Astro place son cache — dont les images déjà converties en AVIF et WebP —
+   * dans `node_modules/.astro` par défaut. Or l'intégration continue exécute
+   * `npm ci`, qui SUPPRIME `node_modules` avant de réinstaller : le cache ne
+   * pouvait donc jamais survivre d'un déploiement à l'autre, et les variantes
+   * d'images étaient toutes recalculées à chaque fois.
+   *
+   * En le sortant de `node_modules`, il devient conservable d'une exécution à
+   * l'autre. C'est un répertoire de travail : ignoré par Git, absent de
+   * `dist/`, il n'est donc jamais publié.
+   *
+   * Le cache est adressé par contenu : Astro y range chaque variante sous son
+   * nom de sortie, lequel dérive de l'empreinte de l'image source et des
+   * paramètres de transformation. Une image modifiée produit un nom différent,
+   * donc une entrée différente — un cache périmé ne peut pas servir une image
+   * erronée.
+   */
+  cacheDir: './.astro-cache',
   build: {
     format: 'directory',
     inlineStylesheets: 'auto',

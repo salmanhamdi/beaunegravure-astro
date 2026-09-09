@@ -39,6 +39,32 @@ jobs:
       - name: Installer les dépendances
         run: npm ci
 
+      # Le cache d'images d'Astro vit dans « .astro-cache », hors de
+      # « node_modules » que « npm ci » vient d'effacer. Il est restauré ici,
+      # après l'installation, pour que rien ne puisse le supprimer ensuite.
+      #
+      # La clef n'a pas à être parfaitement précise : le cache d'Astro est
+      # adressé par contenu, chaque variante y étant rangée sous un nom dérivé
+      # de l'empreinte de son image source. Une entrée périmée ne peut donc
+      # jamais être servie à la place d'une autre — la clef ne joue que sur
+      # l'efficacité, jamais sur la justesse.
+      #
+      #   package-lock.json  -> versions d'Astro et de sharp : un changement
+      #                         de moteur doit tout régénérer ;
+      #   astro.config.mjs   -> réglages « image » : formats, qualité, gabarit ;
+      #   src/assets/**      -> les images sources elles-mêmes.
+      #
+      # « restore-keys » retombe sur le cache compatible le plus récent quand
+      # seules les images ont changé : les variantes des autres images restent
+      # ainsi réutilisées, et seule l'image modifiée est retraitée.
+      - name: Restaurer le cache d'images Astro
+        uses: actions/cache@v4
+        with:
+          path: .astro-cache
+          key: astro-assets-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-${{ hashFiles('src/assets/**') }}
+          restore-keys: |
+            astro-assets-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-
+
       - name: Vérifier les types
         run: npx astro check
 

@@ -1,6 +1,7 @@
 # Build
 dist/
 .astro/
+.astro-cache/
 .output/
 
 # Dépendances
