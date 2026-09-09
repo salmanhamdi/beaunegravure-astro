@@ -10,8 +10,7 @@ import { adresse, reseaux, site, zones } from '@data/site';
 import { urlAbsolue } from '@utils/env';
 import { graphe, organisation, pageWeb, siteWeb } from '@utils/schema';
 import atelier from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
-
-const heroImage = imagesRealisations['gravure-laser-etui-cuir-rouge']!;
+import heroImage from '@assets/images/atelier/hero-accueil-decoupe-laser-plaque-beaune-gravure.jpg';
 
 const services = (await getCollection('services')).sort(
   (a, b) => a.data.ordre - b.data.ordre,
@@ -55,10 +54,10 @@ const selection = parIds(
   naturelle de chaque matière fait partie de la démonstration : elle n'est plus
   désaturée.
 
-  Le cuir n'a pas de vignette : la seule photographie de cuir de l'atelier est
-  celle du héros, et la règle « une image = une occurrence » interdit de la
-  répéter ici. Le cuir est donc porté par la plus grande image de la page, avec
-  sa légende, et le liège prend la sixième vignette.
+  Le héros n'est plus une pièce finie mais la scène de fabrication : les six
+  vignettes portent donc seules la démonstration des matières. Le cuir n'y
+  figure pas — la seule photographie de cuir de l'atelier ne vaut pas les six
+  retenues ici — et le liège prend la sixième vignette.
 */
 const matieres = [
   { nom: 'Métal', detail: 'Inox, aluminium, laiton', id: 'pieces-inox-marquage-numero-serie' },
@@ -80,7 +79,6 @@ const visuelAtelier = imagesRealisations['marquage-laser-fibre-outils-serie']!;
   build : impossible de réintroduire un doublon sans s'en apercevoir.
 */
 const imagesAccueil = [
-  'gravure-laser-etui-cuir-rouge',
   ...matieres.map((m) => m.id),
   ...selection.map((r) => r.id),
   'decoupe-bois-prenoms-cercles-personnalises',
@@ -140,57 +138,127 @@ const schema = graphe([
 
 <Base titre={titre} description={description} chemin="/" schema={schema}>
   <!-- ============================== Hero ============================== -->
+  {/*
+    Le héros n'est pas « une colonne de texte à côté d'une image » : c'est une
+    seule scène. La photographie tient toute la largeur, et le texte est posé
+    dans la zone que la lumière de l'atelier laisse naturellement libre, à
+    gauche. La photographie est en tête du DOM — c'est l'élément LCP — et la
+    mise en page la replace sous le texte sur mobile.
+  */}
   <section class="hero">
-    <div class="enveloppe--large hero__grille">
-      <div class="hero__texte">
-        <p class="surtitre">Studio de création, personnalisation &amp; fabrication</p>
-        <h1>La matière<br />devient signature.</h1>
-        <p class="hero__chapo">
-          Nous dessinons, personnalisons et fabriquons. Sur le métal, le bois, le verre,
-          le plexiglass, le cuir ou l’objet que vous nous confiez — de la pièce unique à
-          la série.
-        </p>
-        <div class="boutons hero__boutons">
-          <a class="bouton" href="/contact/">Parler de votre projet</a>
-          <a class="bouton bouton--fantome" href="/realisations/">Voir les réalisations</a>
-        </div>
-      </div>
+    <figure class="hero__media">
+      <Picture
+        src={heroImage}
+        alt="Tête de découpe laser rouge en action sur une plaque de plexiglass gravée au logo Beaune Gravure, dans l’atelier"
+        widths={[640, 960, 1280, 1672]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+        quality={76}
+        formats={['avif']}
+        fallbackFormat="webp"
+      />
+    </figure>
 
-      <figure class="hero__media">
-        <Picture
-          src={heroImage}
-          alt="Étui en cuir rouge gravé au laser d’un motif floral très détaillé"
-          widths={[480, 768, 1000]}
-          sizes="(min-width: 64rem) 52vw, 100vw"
-          loading="eager"
-          fetchpriority="high"
-          decoding="sync"
-          quality={76}
-          formats={['avif']}
-          fallbackFormat="webp"
-        />
-        <figcaption>Cuir · gravure d’un motif dessiné à l’atelier</figcaption>
-      </figure>
-    </div>
+    {/*
+      Voile de lisibilité, et non aplat : deux dégradés calés sur la source de
+      lumière déjà présente dans l'image — l'ouverture claire en haut à gauche.
+      Ils s'éteignent avant d'atteindre la machine, qui reste strictement
+      photographique.
+    */}
+    <div class="hero__voile" aria-hidden="true"></div>
 
-    <!--
-      Le bandeau n'est pas une frise décorative : c'est l'argument commercial
-      central — « vous arrivez avec une idée, nous l'amenons jusqu'à l'objet ».
-      Il est donc énoncé, puis décliné en cinq étapes lisibles.
-    -->
-    <div class="chaine-bandeau enveloppe--large">
-      <p class="chaine-bandeau__annonce">
-        Vous arrivez avec une idée.<br />
-        <strong>Nous l’amenons jusqu’à l’objet.</strong>
+    <div class="hero__texte enveloppe--large">
+      <p class="surtitre">Création · Personnalisation · Fabrication</p>
+      <h1>Des idées<br />qui prennent<br />forme.</h1>
+      <p class="hero__chapo">
+        Gravure laser, découpe laser, impression UV et création graphique.
+        Un studio équipé pour mener votre projet du dessin à la pièce finie —
+        de l’exemplaire unique à la série.
       </p>
-      <ol class="chaine-bandeau__liste" aria-label="Notre chaîne de valeur">
-        <li>Idée</li>
-        <li>Création</li>
-        <li>Matière</li>
-        <li>Fabrication</li>
-        <li>Objet</li>
-      </ol>
+      <div class="boutons hero__boutons">
+        <a class="bouton" href="/services/">Découvrir nos savoir-faire</a>
+        <a class="bouton bouton--fantome" href="/contact/">Demander un devis</a>
+      </div>
     </div>
+
+    <div class="hero__socle enveloppe--large">
+      <ul class="hero__preuves">
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path
+              d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+          <span><strong>Haute précision</strong>Technologies laser &amp; UV</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path
+              d="m12 3 8.5 4.5L12 12 3.5 7.5 12 3Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+            <path
+              d="m3.5 12 8.5 4.5 8.5-4.5M3.5 16.5 12 21l8.5-4.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span><strong>Pièces uniques ou séries</strong>De l’unité à la production</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+            <path
+              d="M20 12v7a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+            <path
+              d="M18.4 3.6a1.8 1.8 0 0 1 2.5 2.5L13.5 13.5l-3.3.8.8-3.3 7.4-7.4Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span><strong>Accompagnement sur mesure</strong>Conseil et création graphique</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!--
+    Le bandeau n'est pas une frise décorative : c'est l'argument commercial
+    central — « vous arrivez avec une idée, nous l'amenons jusqu'à l'objet ».
+    Il est donc énoncé, puis décliné en cinq étapes lisibles. Il sort du héros
+    depuis que celui-ci est une scène photographique pleine largeur.
+  -->
+  <section class="chaine-bandeau enveloppe--large">
+    <p class="chaine-bandeau__annonce">
+      Vous arrivez avec une idée.<br />
+      <strong>Nous l’amenons jusqu’à l’objet.</strong>
+    </p>
+    <ol class="chaine-bandeau__liste" aria-label="Notre chaîne de valeur">
+      <li>Idée</li>
+      <li>Création</li>
+      <li>Matière</li>
+      <li>Fabrication</li>
+      <li>Objet</li>
+    </ol>
   </section>
 
   <!--
@@ -667,40 +735,59 @@ const schema = graphe([
 <style>
   /* ============================== Hero ============================== */
 
+  /*
+    Mobile : une pile lisible — le texte porte d'abord, la photographie arrive
+    ensuite en pleine largeur, les preuves ferment. `order` permet de garder la
+    photographie en tête du DOM pour le LCP sans subir cet ordre à l'écran.
+  */
   .hero {
-    padding-block: var(--e-xl) 0;
-  }
-
-  .hero__grille {
-    display: grid;
-    gap: var(--e-l);
-    align-items: center;
-  }
-
-  @media (min-width: 64rem) {
-    .hero__grille {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-      gap: var(--e-2xl);
-    }
+    display: flex;
+    flex-direction: column;
+    padding-block-start: var(--e-xl);
+    background-color: var(--c-fond);
   }
 
   .hero__texte {
+    order: 1;
     display: flex;
     flex-direction: column;
     align-items: start;
-    max-width: 32rem;
+  }
+
+  .hero__media {
+    order: 2;
+    position: relative;
+    margin: var(--e-l) 0 0;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background-color: var(--c-fond-creux);
+  }
+
+  .hero__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    /* Cadrage mobile : la tête laser et la plaque, pas le mur vide. */
+    object-position: 62% 45%;
+  }
+
+  .hero__voile {
+    display: none;
   }
 
   .hero h1 {
+    margin-block-start: var(--e-2xs);
+    max-width: 14ch;
     font-size: var(--t-6);
     font-weight: var(--gr-titre);
     line-height: var(--lh-serre);
     letter-spacing: var(--ls-serre);
+    text-wrap: balance;
   }
 
   .hero__chapo {
     margin-block-start: var(--e-m);
-    max-width: 44ch;
+    max-width: 40ch;
     color: var(--c-encre-douce);
     font-size: var(--t-1);
     line-height: 1.55;
@@ -710,35 +797,208 @@ const schema = graphe([
     margin-block-start: var(--e-l);
   }
 
-  .hero__media {
-    position: relative;
-    margin: 0;
-    overflow: hidden;
-    background-color: var(--c-fond-creux);
+  /* Trois preuves courtes : lues d'un coup d'œil, jamais surchargées. */
+  .hero__socle {
+    order: 3;
   }
 
-  .hero__media :global(img) {
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
+  .hero__preuves {
+    display: grid;
+    gap: var(--e-m);
+    margin-block: var(--e-l) 0;
+    padding: 0;
+    list-style: none;
   }
 
-  @media (min-width: 64rem) {
-    .hero__media {
-      aspect-ratio: 5 / 4;
+  .hero__preuves li {
+    display: flex;
+    align-items: start;
+    gap: var(--e-xs);
+  }
+
+  /*
+    Le fond des preuves n'est pas un aplat mais une photographie éclaircie :
+    `--c-encre-muette` n'y tiendrait pas le rapport de 4,5:1. Le texte
+    secondaire passe donc d'un cran plus dense.
+  */
+  .hero__preuves svg {
+    flex: none;
+    margin-block-start: 2px;
+    color: var(--c-encre-douce);
+  }
+
+  .hero__preuves span {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    color: var(--c-encre-douce);
+    font-size: var(--t--2);
+    line-height: 1.45;
+  }
+
+  .hero__preuves strong {
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    font-weight: var(--gr-fort);
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 40rem) {
+    .hero__preuves {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--e-l);
     }
   }
 
-  .hero__media figcaption {
-    position: absolute;
-    inset-block-end: 0;
-    inset-inline: 0;
-    padding: var(--e-l) var(--e-s) var(--e-xs);
-    background: linear-gradient(to top, rgb(0 0 0 / 0.68), transparent);
-    color: #fff;
-    font-family: var(--f-mono);
-    font-size: var(--t--2);
-    letter-spacing: 0.02em;
+  /*
+    Desktop : une seule scène. La photographie et le voile occupent les deux
+    rangées de la grille ; le texte se centre dans la première, les preuves
+    reposent dans la seconde. Aucun élément n'est positionné en absolu : la
+    hauteur du héros reste pilotée par son contenu.
+  */
+  @media (min-width: 64rem) {
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 1fr auto;
+      /*
+        La hauteur suit la proportion de la photographie (2/1) plutôt qu'une
+        fraction de la fenêtre : le cadrage reste celui qui a été composé, et
+        la machine n'est jamais rognée. Le plancher garde le héros habitable
+        sur les petits portables, le plafond l'empêche d'écraser la suite.
+      */
+      min-block-size: min(88vh, 48rem);
+      padding-block-start: 0;
+      background-color: var(--c-fond-creux);
+    }
+
+    .hero__media,
+    .hero__voile {
+      grid-area: 1 / 1 / 3 / 2;
+    }
+
+    .hero__media {
+      margin: 0;
+      z-index: 0;
+      aspect-ratio: auto;
+      block-size: 100%;
+    }
+
+    .hero__media :global(img) {
+      /* Plein cadre : le mur clair à gauche devient l'espace du titre. */
+      object-position: 50% 50%;
+    }
+
+    /*
+      `.hero__media` étant positionné, il peindrait au-dessus d'un voile
+      statique : les trois calques sont donc explicitement empilés.
+    */
+    .hero__voile {
+      display: block;
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero__texte {
+      grid-area: 1 / 1 / 2 / 2;
+      position: relative;
+      z-index: 2;
+      align-self: center;
+      padding-block-start: var(--e-xl);
+    }
+
+    .hero__socle {
+      grid-area: 2 / 1 / 3 / 2;
+      position: relative;
+      z-index: 2;
+      padding-block-end: var(--e-l);
+    }
+
+    .hero__preuves {
+      margin-block: 0;
+      /*
+        Les trois preuves restent dans le champ lumineux : au-delà, elles
+        tomberaient sur la plaque gravée et deviendraient illisibles. Le bloc
+        est calé à gauche, pas centré : « enveloppe--large » gouverne la
+        gouttière, ce `max-inline-size` gouverne la colonne.
+      */
+      max-inline-size: 33rem;
+      gap: var(--e-s);
+    }
+
+    .hero h1 {
+      max-width: 11ch;
+    }
+
+    .hero__chapo {
+      max-width: 37ch;
+    }
+  }
+
+  /*
+    Le voile suit la lumière déjà présente dans la photographie : l'ouverture
+    claire est en haut à gauche, donc la clarté vient de la gauche. Le second
+    dégradé ne relève que l'angle inférieur gauche, où la table du laser est
+    sombre — c'est là que se posent les preuves. Les deux s'éteignent avant la
+    machine.
+  */
+  .hero__voile {
+    background:
+      /*
+        Reprise de la retombée de lumière : l'angle inférieur gauche est la
+        zone la plus sombre de la photographie (luminance mesurée 93 sur 255),
+        c'est là que le champ doit être le plus dense.
+      */
+      radial-gradient(
+          86% 90% at -4% 100%,
+          color-mix(in srgb, var(--c-fond) 94%, transparent),
+          color-mix(in srgb, var(--c-fond) 74%, transparent) 46%,
+          transparent 80%
+        ),
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--c-fond) 94%, transparent) 0%,
+        color-mix(in srgb, var(--c-fond) 88%, transparent) 26%,
+        color-mix(in srgb, var(--c-fond) 66%, transparent) 42%,
+        color-mix(in srgb, var(--c-fond) 30%, transparent) 56%,
+        transparent 70%
+      );
+  }
+
+  /*
+    Entre 1024 et 1280 px, la colonne de texte occupe une part plus large de
+    l'écran : le champ lumineux s'étend d'autant, sinon la troisième preuve
+    retomberait sur la plaque gravée.
+  */
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    /*
+      Sur les petits portables, un héros aussi haut ferait perdre près d’un
+      tiers de la largeur de la photographie au recadrage « cover ». On le
+      raccourcit pour rester proche de la proportion d’origine.
+    */
+    .hero {
+      min-block-size: min(76vh, 40rem);
+    }
+
+    .hero__voile {
+      background:
+        radial-gradient(
+            88% 86% at -4% 100%,
+            color-mix(in srgb, var(--c-fond) 94%, transparent),
+            color-mix(in srgb, var(--c-fond) 70%, transparent) 46%,
+            transparent 78%
+          ),
+        linear-gradient(
+          to right,
+          color-mix(in srgb, var(--c-fond) 94%, transparent) 0%,
+          color-mix(in srgb, var(--c-fond) 88%, transparent) 30%,
+          color-mix(in srgb, var(--c-fond) 62%, transparent) 48%,
+          color-mix(in srgb, var(--c-fond) 22%, transparent) 64%,
+          transparent 78%
+        );
+    }
   }
 
   /*
@@ -748,7 +1008,7 @@ const schema = graphe([
   */
   .chaine-bandeau {
     margin-block-start: var(--e-2xl);
-    padding-block: var(--e-l);
+    padding-block: var(--e-l) var(--e-l);
     border-block-start: 2px solid var(--c-encre);
     border-block-end: 1px solid var(--c-filet);
   }
