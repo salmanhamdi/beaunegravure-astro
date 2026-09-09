@@ -8,7 +8,7 @@ chapo: "Une signalétique réussie guide sans se faire remarquer. Numéros de po
 ordre: 10
 famille: "application"
 galerie: "plaques"
-visuel: "decoupe-plexiglass-plaque-numero-porte"
+visuel: "gravure-grand-format-panneau-domaine-viticole"
 points:
   - "Numéros de porte et de chambre"
   - "Plaques directionnelles et repérage"

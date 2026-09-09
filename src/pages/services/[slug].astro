@@ -37,6 +37,19 @@ const chemin = `/services/${service.id}/`;
 const url = urlAbsolue(chemin);
 
 const visuel = imagesRealisations[data.visuel]!;
+
+/**
+ * Proportion de la bande d'ouverture sur téléphone et tablette.
+ *
+ * Un ratio unique imposé aux dix pages recadrerait sévèrement les sources
+ * verticales (le coffret d'impression UV est en 3/4, le panneau d'échantillons
+ * en 2,23/1). On part donc de la proportion NATIVE de chaque photographie et on
+ * la borne : sept des dix visuels tombent dans la fourchette et sont montrés
+ * sans le moindre recadrage ; les trois autres sont ramenés à une bande qui
+ * tient dans le premier écran sans couper leur sujet.
+ */
+const ratioTete = Math.min(Math.max(visuel.width / visuel.height, 0.9), 2.4);
+
 const galerie = parCategorie(data.galerie).slice(0, 6);
 const categorie = CATEGORIES[data.galerie];
 
@@ -81,7 +94,7 @@ const schema = graphe([
 >
   <article>
     <header class="tete">
-      <div class="enveloppe--large tete__grille">
+      <div class="enveloppe--large tete__grille" style={`--ratio-tete: ${ratioTete.toFixed(3)}`}>
         <div class="tete__copie">
           <FilAriane miettes={miettes} />
           <p class="surtitre">{data.surtitre}</p>
@@ -102,7 +115,7 @@ const schema = graphe([
             src={visuel}
             alt={`${data.titre} — réalisation de l’atelier Beaune Gravure`}
             widths={[480, 720, 960, 1280]}
-            sizes="(min-width: 64rem) 44vw, 92vw"
+            sizes="(min-width: 64rem) 44vw, 100vw"
             loading="eager"
             fetchpriority="high"
             quality={74}
@@ -201,27 +214,69 @@ const schema = graphe([
     padding-block: var(--e-l) var(--e-2xl);
   }
 
-  .tete__grille {
-    display: grid;
-    gap: var(--e-l);
-    align-items: center;
-  }
+  /*
+    Sous 64rem, la photographie ouvre la page.
 
-  @media (min-width: 64rem) {
-    .tete__grille {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
-      gap: var(--e-2xl);
-    }
+    Elle ne descend pas simplement d'un cran dans le DOM : elle devient une
+    bande pleine largeur posée sous le fil d'Ariane, à la proportion de la
+    photographie elle-même (--ratio-tete). C'est la même langue que le hero de
+    l'accueil et du studio — image bord à bord, texte dessous — et le premier
+    écran d'une page savoir-faire montre enfin un objet gravé.
+
+    Le fil d'Ariane reste en tête : il annonce où l'on est avant de montrer
+    quoi que ce soit. Il est extrait de sa colonne par « display: contents »,
+    qui laisse ses frères et sœurs se réordonner sans toucher au balisage ni au
+    dessin desktop.
+  */
+  .tete__grille {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .tete__copie {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+    display: contents;
   }
 
-  .tete__copie .fil-ariane {
+  .tete__copie :global(.fil-ariane) {
+    order: 1;
+    margin-block-end: var(--e-m);
+  }
+
+  .tete__media {
+    order: 2;
+    overflow: hidden;
+    background-color: var(--c-fond-creux);
+    /* Bord à bord : sous 1560 px l'enveloppe vaut 100% - 2 gouttières. */
+    margin-inline: calc(var(--gouttiere) * -1);
     margin-block-end: var(--e-l);
+    aspect-ratio: var(--ratio-tete, 4 / 3);
+    /* Une bande, jamais un mur : sur tablette la proportion native de
+       certaines sources donnerait 850 px de haut. Au-delà, le cadrage se
+       resserre au lieu de repousser le texte hors du premier écran. */
+    max-block-size: min(62vh, 36rem);
+  }
+
+  /*
+    Le ratio est porté par l'image, pas par le <picture> : sur un <picture>,
+    « aspect-ratio » ne gouverne pas la hauteur de l'image qu'il contient.
+  */
+  .tete__media :global(picture) {
+    display: contents;
+  }
+
+  .tete__media :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+
+  .tete__copie .surtitre,
+  .tete__copie h1,
+  .tete__copie .chapo,
+  .tete__copie .boutons,
+  .tete__points {
+    order: 3;
   }
 
   .tete__copie h1 {
@@ -254,21 +309,29 @@ const schema = graphe([
     border-block-end: 1px solid var(--c-filet);
   }
 
-  .tete__media {
-    overflow: hidden;
-    border-radius: var(--r-l);
-    background-color: var(--c-fond-creux);
-  }
-
   @media (min-width: 64rem) {
-    .tete__media {
-      aspect-ratio: 4 / 5;
+    .tete__grille {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+      gap: var(--e-2xl);
+      align-items: center;
     }
 
-    .tete__media :global(img) {
-      inline-size: 100%;
-      block-size: 100%;
-      object-fit: cover;
+    .tete__copie {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .tete__copie :global(.fil-ariane) {
+      margin-block-end: var(--e-l);
+    }
+
+    .tete__media {
+      margin-inline: 0;
+      margin-block-end: 0;
+      border-radius: var(--r-l);
+      max-block-size: none;
     }
   }
 

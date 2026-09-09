@@ -8,7 +8,7 @@ chapo: "Identifier durablement une machine, un poste, un outil ou une pièce. Le
 ordre: 9
 famille: "application"
 galerie: "metal"
-visuel: "pieces-inox-marquage-numero-serie"
+visuel: "etiquette-industrielle-jaune-metal-beaune-gravure"
 points:
   - "Numéros de série, références et graduations"
   - "QR codes et DataMatrix lisibles machine"

@@ -63,6 +63,29 @@ const schema = graphe([
               <h2>{projet.nom}</h2>
               <p class="projet__accroche">{projet.accroche}</p>
 
+              {/*
+                La preuve photographique vient AVANT le récit, pas après.
+                Reléguée sous les trois étapes, elle n'apparaissait qu'à
+                1 469 px sur desktop et 1 598 px sur téléphone : une page de
+                projets qui ne montrait rien avant d'avoir tout raconté. Le
+                récit en trois temps, les repères et le lien sortant restent
+                intacts en dessous — la page ne devient pas une galerie, elle
+                pose sa preuve à l'ouverture du dossier.
+              */}
+              <figure class="projet__preuve">
+                <Picture
+                  src={projet.visuel}
+                  alt={projet.visuelAlt}
+                  widths={[400, 640, 900, 1086]}
+                  sizes="(min-width: 56rem) 34rem, 92vw"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  quality={72}
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                />
+                <figcaption>{projet.visuelLegende}</figcaption>
+              </figure>
+
               <div class="projet__texte">
                 <p>{projet.description}</p>
               </div>
@@ -86,19 +109,6 @@ const schema = graphe([
                   <p>{projet.resultat}</p>
                 </li>
               </ol>
-
-              <figure class="projet__preuve">
-                <Picture
-                  src={projet.visuel}
-                  alt={projet.visuelAlt}
-                  widths={[400, 640, 900, 1086]}
-                  sizes="(min-width: 56rem) 34rem, 92vw"
-                  quality={72}
-                  formats={['avif']}
-                  fallbackFormat="webp"
-                />
-                <figcaption>{projet.visuelLegende}</figcaption>
-              </figure>
 
               <ul class="projet__reperes">
                 {projet.reperes.map((repere) => (
@@ -209,6 +219,44 @@ const schema = graphe([
     max-width: 62rem;
   }
 
+  /*
+    À partir de 64rem, la preuve passe en colonne de droite, à hauteur du nom
+    du projet. Elle est alors visible dès l'ouverture de la page — 823 px de
+    haut de page en moins — sans qu'une seule ligne du récit soit déplacée, et
+    elle occupe la marge droite que la colonne de texte laissait vide. Le
+    dossier reste un dossier : contexte, atelier, résultat, repères et lien
+    sortant se lisent dans le même ordre qu'avant.
+  */
+  @media (min-width: 64rem) {
+    .projet__corps {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+      column-gap: var(--e-2xl);
+      row-gap: 0;
+      align-content: start;
+      justify-items: start;
+      max-width: none;
+    }
+
+    /*
+      Sélecteurs disjoints et non « > * » suivi d'une exception : la
+      minification réordonne les règles de même spécificité, et l'exception se
+      faisait alors écraser par la règle générale.
+    */
+    .projet__corps > :not(.projet__preuve) {
+      grid-column: 1;
+    }
+
+    .projet__corps > .projet__preuve {
+      grid-column: 2;
+      /* Ancrée en haut de la colonne, sans étirer aucune ligne du récit. */
+      grid-row: 1 / span 12;
+      align-self: start;
+      margin-block: 0;
+      max-width: none;
+    }
+  }
+
   .projet__nature {
     color: var(--c-encre-muette);
     font-family: var(--f-mono);
@@ -284,7 +332,7 @@ const schema = graphe([
   .projet__preuve {
     inline-size: 100%;
     max-width: 34rem;
-    margin-block-end: var(--e-l);
+    margin-block: var(--e-m) var(--e-l);
   }
 
   /*

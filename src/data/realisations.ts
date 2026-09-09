@@ -605,14 +605,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/plaques-professionnelles/',
   },
   {
-    fichier: 'plaques-professionnelles-gravees-multi-finitions.webp',
-    titre: 'Signalétique multi-finitions',
-    alt: 'Ensemble de plaques de signalétique gravées présentées en plusieurs finitions',
-    categorie: 'plaques',
-    service: '/services/plaques-professionnelles/',
-    vedette: true,
-  },
-  {
     fichier: 'plaque-plexiglass-doree-avocat-decoupee.webp',
     titre: 'Plaque professionnelle en plexiglass',
     alt: 'Plaque professionnelle dorée en plexiglass découpée et gravée pour un cabinet',
@@ -649,6 +641,14 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Badge nominatif professionnel gravé et découpé',
     categorie: 'plaques',
     service: '/services/plaques-professionnelles/',
+  },
+  {
+    fichier: 'plaques-professionnelles-gravees-multi-finitions.webp',
+    titre: 'Signalétique multi-finitions',
+    alt: 'Ensemble de plaques de signalétique gravées présentées en plusieurs finitions',
+    categorie: 'plaques',
+    service: '/services/plaques-professionnelles/',
+    vedette: true,
   },
   {
     fichier: 'gravure-laser-plaques-vigneron-serie-atelier.webp',
