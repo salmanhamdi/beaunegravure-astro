@@ -233,9 +233,14 @@ const { image, alt, surtitre, lignesTitre, chapo, actions, preuves } = Astro.pro
 }
 
 @media (min-width: 40rem) {
+  /*
+    Trois colonnes tant que chacune tient sa ligne, puis deux, puis une. La
+    grille décide d'après la place réellement disponible : aucune largeur
+    intermédiaire ne peut donc tasser les libellés.
+  */
   .hero__preuves {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--e-l);
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: var(--e-m) var(--e-l);
   }
 }
 
@@ -312,7 +317,13 @@ const { image, alt, surtitre, lignesTitre, chapo, actions, preuves } = Astro.pro
       est calé à gauche, pas centré : « enveloppe--large » gouverne la
       gouttière, ce `max-inline-size` gouverne la colonne.
     */
-    max-inline-size: 33rem;
+    /*
+    Bornées à une fraction du conteneur, pas à une largeur fixe : à 1024 px,
+    33 rem menaient la troisième preuve à 56 % de la largeur, hors du champ
+    lumineux, où elle retombait à 2,5:1 sur le sujet. La grille passe alors
+    d’elle-même en 2 + 1.
+  */
+  max-inline-size: min(33rem, 42%);
     gap: var(--e-s);
   }
 
@@ -322,6 +333,49 @@ const { image, alt, surtitre, lignesTitre, chapo, actions, preuves } = Astro.pro
 
   .hero__chapo {
     max-width: 37ch;
+  }
+}
+
+/*
+  Écrans courts — la quasi-totalité des portables. À 1440 x 900 le contenu
+  remplit déjà la boîte exactement : dès que la fenêtre est plus basse, il la
+  dépasse, l'écart entre les boutons et les preuves tombe à zéro et le bloc
+  descend dans le sujet de la photographie. Le titre reprend donc une échelle
+  proportionnée à la hauteur disponible, et un écart minimal est garanti.
+
+  Le seuil est volontairement placé sous 900 px : la composition validée en
+  1440 x 900 n'est pas touchée.
+*/
+@media (min-width: 64rem) and (max-height: 54rem) {
+  .hero {
+    min-block-size: min(92vh, 42rem);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 5.6vw, 4.6rem);
+  }
+
+  .hero__chapo {
+    margin-block-start: var(--e-s);
+    font-size: var(--t-0);
+  }
+
+  .hero__boutons {
+    margin-block-start: var(--e-m);
+  }
+
+  .hero__texte {
+    padding-block-start: var(--e-l);
+  }
+}
+
+/*
+  Écart minimal entre les appels à l'action et les preuves, à toute largeur :
+  sans lui, les deux blocs se touchent dès que le contenu remplit la boîte.
+*/
+@media (min-width: 64rem) {
+  .hero__socle {
+    padding-block-start: var(--e-m);
   }
 }
 

@@ -260,13 +260,28 @@ const schema = graphe([
           matieres.map((matiere) => (
             <li class="matieres__item revele">
               <div class="matieres__media">
+                {/*
+                  Le cadre est un portrait 4/5 alors que la plupart de ces
+                  photographies sont en paysage : sans recadrage à la source,
+                  « object-fit: cover » jette jusqu'aux deux tiers de la largeur
+                  du fichier servi, et le peu qui reste est étiré. Les variantes
+                  sont donc générées DÉJÀ recadrées — même cadrage à l'écran,
+                  mais chaque pixel téléchargé est un pixel affiché.
+
+                  Le « sizes » décrit la vraie case de la grille : trois
+                  colonnes dans « enveloppe--large », et non 16vw.
+                */}
                 <Picture
                   src={imagesRealisations[matiere.id]!}
                   alt=""
-                  widths={[280, 420, 640]}
-                  sizes="(min-width: 68rem) 16vw, (min-width: 40rem) 30vw, 45vw"
+                  width={560}
+                  height={700}
+                  fit="cover"
+                  position="center"
+                  widths={[280, 420, 560, 700, 840]}
+                  sizes="(min-width: 100rem) 500px, (min-width: 68rem) 31vw, (min-width: 40rem) 30vw, 45vw"
                   loading="lazy"
-                  quality={70}
+                  quality={78}
                   formats={['avif']}
                   fallbackFormat="webp"
                 />
