@@ -87,9 +87,22 @@
   --e-s: 1rem;
   --e-m: 1.5rem;
   --e-l: 2.25rem;
-  --e-xl: 3.5rem;
-  --e-2xl: clamp(4rem, 3rem + 5vw, 7.5rem);
-  --e-3xl: clamp(5.5rem, 4rem + 7vw, 11rem);
+  /*
+    Les trois grands pas étaient fluides en apparence seulement : leur terme
+    constant — 3rem pour --e-2xl, 4rem pour --e-3xl — dominait sur un
+    téléphone, où deux sections consécutives se retrouvaient séparées de
+    135 px, soit un sixième de l'écran en vide. Les coefficients sont
+    recalculés pour donner EXACTEMENT la même valeur qu'avant à 1440 px et se
+    resserrer franchement à mesure que l'écran rétrécit.
+
+                     390 px      768 px     1024 px     1440 px
+      --e-xl      28 (56)     38 (56)     46 (56)     56 (=)
+      --e-2xl     42 (68)     70 (86)     89 (99)    120 (=)
+      --e-3xl     58 (91)     97 (118)   123 (136)   165 (=)
+  */
+  --e-xl: clamp(1.75rem, 1.1rem + 2.67vw, 3.5rem);
+  --e-2xl: clamp(2.5rem, 0.8rem + 7.43vw, 7.5rem);
+  --e-3xl: clamp(3.25rem, 1.15rem + 10.2vw, 11rem);
 
   /* ---------- Trame ---------- */
   --gouttiere: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);

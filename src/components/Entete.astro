@@ -362,7 +362,14 @@ function estActif(href: string): boolean {
     display: none;
   }
 
-  @media (min-width: 26rem) {
+  /*
+    Le libellé long n'apparaît qu'une fois qu'il tient réellement. À 26rem il
+    s'affichait dès 416 px : additionné à la marque et au bouton de menu, la
+    barre dépassait la fenêtre — un iPhone 430 défilait horizontalement. Le
+    seuil est reporté à 36rem, où les trois éléments tiennent avec leurs
+    gouttières.
+  */
+  @media (min-width: 36rem) {
     .entete__cta-court {
       display: none;
     }
