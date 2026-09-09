@@ -1,8 +1,10 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import SectionDevis from '@components/SectionDevis.astro';
 import { projets } from '@data/projets';
+import { imagesRealisations } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 
@@ -64,17 +66,59 @@ const schema = graphe([
 
               <div class="projet__texte">
                 <p>{projet.description}</p>
-                <p class="projet__apport">
-                  <span class="projet__apport-etiquette">Ce que l’atelier y apporte</span>
-                  {projet.apport}
-                </p>
               </div>
+
+              {/*
+                Le projet en trois temps. C'est ce qui sépare une page de
+                marque d'une page de preuve : d'où l'on part, ce qui a été
+                réellement fait, et ce que cela démontre.
+              */}
+              <ol class="etapes">
+                <li>
+                  <span class="etapes__titre">Le point de départ</span>
+                  <p>{projet.contexte}</p>
+                </li>
+                <li>
+                  <span class="etapes__titre">Ce que l’atelier a fait</span>
+                  <p>{projet.atelier}</p>
+                </li>
+                <li>
+                  <span class="etapes__titre">Ce que le projet démontre</span>
+                  <p>{projet.resultat}</p>
+                </li>
+              </ol>
+
+              <figure class="projet__preuve">
+                <Picture
+                  src={imagesRealisations[projet.visuel]!}
+                  alt={projet.visuelAlt}
+                  widths={[400, 640, 900]}
+                  sizes="(min-width: 56rem) 34rem, 92vw"
+                  quality={72}
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                />
+                <figcaption>{projet.visuelLegende}</figcaption>
+              </figure>
 
               <ul class="projet__reperes">
                 {projet.reperes.map((repere) => (
                   <li>{repere}</li>
                 ))}
               </ul>
+
+              <div class="projet__savoirs">
+                <p class="projet__savoirs-etiquette">Les savoir-faire mobilisés</p>
+                <ul>
+                  {projet.savoirFaire.map((lien) => (
+                    <li>
+                      <a class="lien-fleche" href={lien.href}>
+                        {lien.libelle}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
               <a class="bouton" href={projet.url} rel="noopener" target="_blank">
                 {projet.libelleLien}
@@ -104,9 +148,14 @@ const schema = graphe([
           C’est cette expérience que nous remettons dans vos projets — qu’il s’agisse de
           dix pièces ou d’une gamme complète à imaginer.
         </p>
-        <a class="lien-fleche" href="/services/creation-graphique/">
-          Notre travail de conception
-        </a>
+        <div class="pourquoi__liens">
+          <a class="lien-fleche" href="/services/creation-graphique/">
+            Notre travail de conception
+          </a>
+          <a class="lien-fleche" href="/a-propos/">
+            L’atelier et ses machines
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -191,12 +240,31 @@ const schema = graphe([
     color: var(--c-encre-douce);
   }
 
-  .projet__apport {
-    padding-inline-start: var(--e-m);
-    border-inline-start: 2px solid var(--c-encre);
+  /* Le projet en trois temps. La numérotation reprend celle des projets
+     eux-mêmes : un filet à gauche, un compteur discret, aucune décoration. */
+  .etapes {
+    display: grid;
+    gap: var(--e-m);
+    inline-size: 100%;
+    max-width: 62ch;
+    margin-block-end: var(--e-l);
+    counter-reset: etape;
+    list-style: none;
+    padding: 0;
   }
 
-  .projet__apport-etiquette {
+  .etapes li {
+    counter-increment: etape;
+    padding-inline-start: var(--e-m);
+    border-inline-start: 2px solid var(--c-filet-fort);
+    color: var(--c-encre-douce);
+  }
+
+  .etapes li:first-child {
+    border-inline-start-color: var(--c-encre);
+  }
+
+  .etapes__titre {
     display: block;
     margin-block-end: var(--e-3xs);
     color: var(--c-encre-muette);
@@ -204,6 +272,53 @@ const schema = graphe([
     font-size: var(--t--2);
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  .etapes__titre::before {
+    content: counter(etape, decimal-leading-zero) ' · ';
+  }
+
+  .projet__preuve {
+    inline-size: 100%;
+    max-width: 34rem;
+    margin-block-end: var(--e-l);
+  }
+
+  .projet__preuve :global(img) {
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: var(--r-l);
+  }
+
+  .projet__preuve figcaption {
+    margin-block-start: var(--e-xs);
+    max-width: 46ch;
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.55;
+  }
+
+  .projet__savoirs {
+    inline-size: 100%;
+    max-width: 42rem;
+    margin-block-end: var(--e-l);
+  }
+
+  .projet__savoirs-etiquette {
+    margin-block-end: var(--e-xs);
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .projet__savoirs ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs) var(--e-l);
+    list-style: none;
+    padding: 0;
   }
 
   .projet__reperes {
@@ -256,5 +371,11 @@ const schema = graphe([
     justify-items: start;
     max-width: 56ch;
     color: var(--c-encre-douce);
+  }
+
+  .pourquoi__liens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs) var(--e-l);
   }
 </style>

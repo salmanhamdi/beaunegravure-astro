@@ -87,6 +87,32 @@ const schema = graphe([
     </div>
   </div>
 
+  {/*
+    Placé après la grille, et non avant : sur ces pages, ce sont les pièces qui
+    parlent en premier. Le texte vient répondre à la question que la grille fait
+    naître — qu'est-ce que ces photographies ont en commun, et dans quels cas
+    ces pièces sont-elles commandées.
+  */}
+  <section class="section section--serree contexte">
+    <div class="enveloppe contexte__grille">
+      <div>
+        <p class="surtitre">Ce que montre cette catégorie</p>
+        <p class="contexte__intro">{categorie.intro}</p>
+      </div>
+      <div class="contexte__usages">
+        <p class="contexte__etiquette">Le plus souvent commandées pour</p>
+        <p>{categorie.usages}</p>
+        {
+          'voirAussi' in categorie && (
+            <a class="lien-fleche" href={categorie.voirAussi.href}>
+              {categorie.voirAussi.libelle}
+            </a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
   {
     services.length > 0 && (
       <section class="section section--creuse">
@@ -98,7 +124,7 @@ const schema = graphe([
                 <a href={`/services/${service.id}/`}>
                   <strong>{service.data.titre}</strong>
                   <span>{service.data.chapo}</span>
-                  <span class="lien-fleche">Découvrir</span>
+                  <span class="lien-fleche">{service.data.titre} en détail</span>
                 </a>
               </li>
             ))}
@@ -151,6 +177,54 @@ const schema = graphe([
     background-color: var(--c-encre);
     color: var(--c-fond);
   }
+
+  /* ------------------------- Ce que montre la page ------------------------ */
+
+  .contexte__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .contexte__grille {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .contexte__intro {
+    margin-block-start: var(--e-s);
+    max-width: 54ch;
+    color: var(--c-encre);
+    font-size: var(--t-1);
+    line-height: 1.55;
+  }
+
+  .contexte__usages {
+    display: grid;
+    gap: var(--e-2xs);
+    justify-items: start;
+    max-width: 48ch;
+    padding-block-start: var(--e-s);
+    border-block-start: 1px solid var(--c-filet-fort);
+    color: var(--c-encre-douce);
+    line-height: 1.65;
+  }
+
+  .contexte__etiquette {
+    color: var(--c-encre-muette);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .contexte__usages .lien-fleche {
+    margin-block-start: var(--e-xs);
+  }
+
+  /* -------------------------- Savoir-faire associés ------------------------ */
 
   .associes {
     display: grid;

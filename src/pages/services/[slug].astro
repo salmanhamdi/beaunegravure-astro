@@ -40,10 +40,23 @@ const visuel = imagesRealisations[data.visuel]!;
 const galerie = parCategorie(data.galerie).slice(0, 6);
 const categorie = CATEGORIES[data.galerie];
 
-const autres = (await getCollection('services'))
-  .filter((s) => s.id !== service.id)
-  .sort((a, b) => a.data.ordre - b.data.ordre)
-  .slice(0, 4);
+/**
+ * Les quatre savoir-faire qui SUIVENT celui-ci dans l'ordre, en repartant au
+ * début une fois la liste épuisée.
+ *
+ * Un simple `.slice(0, 4)` ne citait jamais que les quatre premiers de la
+ * liste : les six suivants — dont la signalétique, dernière — ne recevaient
+ * aucun lien de leurs voisins. La fenêtre glissante donne à chaque page
+ * exactement quatre liens entrants, sans ajouter un seul lien au site.
+ */
+const tousLesServices = (await getCollection('services')).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+const position = tousLesServices.findIndex((s) => s.id === service.id);
+const autres = Array.from(
+  { length: 4 },
+  (_, i) => tousLesServices[(position + 1 + i) % tousLesServices.length]!,
+);
 
 const miettes = [
   { nom: 'Accueil', href: '/' },

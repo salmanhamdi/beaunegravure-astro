@@ -36,6 +36,9 @@ const schema = graphe([
         Aucun visuel de catalogue, aucune image de synthèse. Les logos visibles
         appartiennent à leurs propriétaires et illustrent le travail effectué.
       </p>
+      <p class="entete-page__renvoi">
+        <a class="lien-fleche" href="/a-propos/">L’atelier où elles ont été faites</a>
+      </p>
 
       <nav class="filtres" aria-label="Catégories de réalisations">
         <span class="filtres__actif" aria-current="page">Tout voir</span>
@@ -65,6 +68,10 @@ const schema = graphe([
 </Base>
 
 <style>
+  .entete-page__renvoi {
+    margin-block-start: var(--e-m);
+  }
+
   .entete-page .fil-ariane {
     margin-block-end: var(--e-l);
   }

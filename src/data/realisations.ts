@@ -13,6 +13,17 @@ const fichiers = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true },
 );
 
+/**
+ * Catégories de réalisations.
+ *
+ * `intro` explique ce que la catégorie donne réellement à voir, `usages`
+ * énumère les contextes dans lesquels ces pièces sont commandées. Les deux sont
+ * établis à partir des photographies effectivement présentes dans la catégorie :
+ * rien n'y est extrapolé, aucun client n'y est nommé.
+ *
+ * `voirAussi` n'est renseigné que lorsqu'un lien est factuellement justifié —
+ * jamais pour étoffer une liste.
+ */
 export const CATEGORIES = {
   verre: {
     slug: 'verre',
@@ -20,6 +31,14 @@ export const CATEGORIES = {
     titre: 'Gravure laser sur verre et cristal',
     description:
       'Verres à vin, verres de dégustation, flûtes à champagne, bouteilles et trophées gravés pour les domaines viticoles, les restaurants, les entreprises et les mariages.',
+    intro:
+      'Le verre ne pardonne rien : la gravure y devient blanche et mate, définitive dès la première passe. C’est aussi la matière où le modèle compte autant que le dessin — un logo qui fonctionne sur un calice large ne tient pas toujours sur un pied étroit. Les pièces réunies ici montrent le même procédé appliqué à des formes très différentes.',
+    usages:
+      'Verres et flûtes pour les domaines viticoles et les restaurants, séries d’entreprise, trophées, bouteilles commémoratives et pièces de mariage.',
+    voirAussi: {
+      href: '/projets/',
+      libelle: 'Glassora, notre marque de verrerie gravée',
+    },
   },
   bois: {
     slug: 'bois',
@@ -27,6 +46,10 @@ export const CATEGORIES = {
     titre: 'Gravure et impression sur bois',
     description:
       'Caisses de vin, coffrets, panneaux et décors gravés au laser ou imprimés en couleur pour les domaines de Bourgogne et les cadeaux d’entreprise.',
+    intro:
+      'C’est la seule catégorie où les trois procédés de l’atelier se croisent : la gravure creuse et brunit la matière, la découpe y taille des formes, l’impression UV y dépose de la couleur. Une même caisse peut relever des trois. Les photographies vont du coffret unique au panneau grand format.',
+    usages:
+      'Caisses et coffrets de domaines, panneaux d’extérieur, médailles et trophées d’événement, sous-verres et pièces décoratives.',
   },
   objets: {
     slug: 'objets',
@@ -34,6 +57,10 @@ export const CATEGORIES = {
     titre: 'Objets personnalisés et cadeaux gravés',
     description:
       'Couteaux de sommelier, tire-bouchons, stylos, gourdes, flasques et accessoires personnalisés à l’unité comme en série.',
+    intro:
+      'Ces objets arrivent finis : le marquage doit s’inscrire dans un dessin qui existe déjà, sur des surfaces rarement planes et souvent petites. Toute la difficulté est là — trouver la zone qui accepte le motif sans que l’objet cesse d’être lui-même.',
+    usages:
+      'Cadeaux d’entreprise et de fin d’année, coffrets de sommellerie, récompenses d’événement, cadeaux personnels à l’unité.',
   },
   metal: {
     slug: 'metal',
@@ -41,6 +68,14 @@ export const CATEGORIES = {
     titre: 'Marquage laser sur métal et pièces techniques',
     description:
       'Numéros de série, QR codes, DataMatrix et références marqués au laser fibre sur inox, aluminium et plastiques techniques.',
+    intro:
+      'Ici le marquage n’est pas décoratif : il doit rester lisible — par un œil comme par un lecteur — pendant toute la vie de la pièce, sans ajout de matière ni étiquette rapportée. Chaque exemplaire porte souvent une donnée différente, ce qui change entièrement la façon de préparer la série.',
+    usages:
+      'Traçabilité et numéros de série, codes DataMatrix et QR, identification d’outillage et d’équipements, plaques techniques.',
+    voirAussi: {
+      href: '/projets/',
+      libelle: 'Spotitap, nos plaques connectées',
+    },
   },
   plaques: {
     slug: 'plaques',
@@ -48,6 +83,10 @@ export const CATEGORIES = {
     titre: 'Plaques professionnelles et signalétique gravée',
     description:
       'Plaques de porte, badges, repérage et signalétique intérieure conçus pour rester lisibles et cohérents avec l’identité du lieu.',
+    intro:
+      'Une plaque se juge rarement seule : ce qui compte, c’est qu’elle reste cohérente avec celles qui l’entourent et avec celles qui viendront. Matière, format, typographie et hauteur de pose se décident donc pour l’ensemble, pas pour la première pièce. Les finitions présentées ici servent précisément à comparer.',
+    usages:
+      'Cabinets et professions libérales, hôtels et hébergements, entreprises et ateliers, domaines viticoles, badges nominatifs.',
   },
   decoupe: {
     slug: 'decoupe',
@@ -55,6 +94,14 @@ export const CATEGORIES = {
     titre: 'Découpe laser plexiglass et matières fines',
     description:
       'Formes, médaillons, badges et pièces découpées avec des contours nets dans le plexiglass, l’acrylique et le bois fin.',
+    intro:
+      'Le laser coupe et grave dans le même passage : une pièce peut sortir découpée à sa forme et déjà marquée, sans reprise. Sur le plexiglass, le chant reste net et légèrement translucide — c’est cette tranche, autant que la face, qui fait l’objet fini. La forme cesse d’être une contrainte : elle devient une décision de dessin.',
+    usages:
+      'Médaillons et marque-places, badges et formes en série, lettres et éléments de signalétique, pièces décoratives sur mesure.',
+    voirAussi: {
+      href: '/services/signaletique/',
+      libelle: 'Lettres et formes découpées en signalétique',
+    },
   },
 } as const;
 
