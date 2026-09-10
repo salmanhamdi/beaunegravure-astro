@@ -108,7 +108,7 @@ const dimensions = (ratio: number, hauteur: number) => ({
       #000 93%,
       transparent 100%
     );
-    animation: clients-defile var(--clients-duree, 58s) linear infinite;
+    animation: clients-defile var(--clients-duree, 66s) linear infinite;
   }
 
   .clients__ruban {
@@ -148,21 +148,21 @@ const dimensions = (ratio: number, hauteur: number) => ({
   /* ---------------------------- Échelles ---------------------------- */
 
   @media (max-width: 63.999rem) {
-    .clients { --clients-echelle: 0.82; --clients-ecart: 4rem; --clients-duree: 48s; }
+    .clients { --clients-echelle: 0.82; --clients-ecart: 4rem; --clients-duree: 54s; }
   }
 
   @media (max-width: 47.999rem) {
     .clients {
       --clients-echelle: 0.68;
       --clients-ecart: 3.25rem;
-      --clients-duree: 40s;
+      --clients-duree: 44s;
       padding-block: var(--e-l);
     }
     .clients__titre { margin-block-end: var(--e-m); }
   }
 
   @media (max-width: 26.999rem) {
-    .clients { --clients-echelle: 0.62; --clients-ecart: 2.75rem; --clients-duree: 36s; }
+    .clients { --clients-echelle: 0.62; --clients-ecart: 2.75rem; --clients-duree: 39s; }
   }
 
   /* ------------------------- Mouvement réduit ------------------------ */
