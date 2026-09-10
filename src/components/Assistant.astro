@@ -602,6 +602,69 @@ import { textes } from '@data/assistant';
       flex: 1;
       padding-block-end: calc(var(--e-s) + env(safe-area-inset-bottom, 0px));
     }
+
+    /*
+      UNE ECHELLE PROPRE, ET NON LA MEME EN PLUS PETIT.
+
+      Le panneau etait ecrit avec --t--1 et --t--2, les deux plus petits
+      jetons du site, prevus pour des mentions secondaires. Sur desktop il
+      est une carte posee a cote d une page, et cette discretion se defend.
+      Sur telephone il occupe l ecran entier : il EST la page, et se lisait
+      pourtant a 13,2 px pour l introduction, les questions, les options et
+      les reponses, 11,2 px pour la note. Tout au meme corps, tout en graisse
+      400 : aucune hierarchie.
+
+      Les valeurs ci-dessous ne grossissent pas l interface, elles la
+      hierarchisent. Les hauteurs ne bougent pas : les cibles tactiles etaient
+      deja posees en min-block-size, et les lignes de questions restent des
+      lignes, separees d un filet, sans devenir des cartes.
+    */
+    .assistant__titre {
+      font-size: 1rem;
+    }
+
+    .assistant__accroche {
+      font-size: 1.125rem;
+      line-height: 1.45;
+    }
+
+    .assistant__lien {
+      font-size: 1.125rem;
+      line-height: 1.4;
+    }
+
+    .assistant__option {
+      font-size: 1.0625rem;
+      line-height: 1.4;
+    }
+
+    .assistant__texte {
+      font-size: 1.0625rem;
+      line-height: 1.55;
+    }
+
+    .assistant__cta,
+    .assistant__second {
+      font-size: 1.0625rem;
+    }
+
+    .assistant__note {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+
+    .assistant__etiquette {
+      font-size: 0.875rem;
+    }
+
+    .assistant__retour {
+      font-size: 0.9375rem;
+    }
+
+    /* Le rejouer reste une sortie discrete : il ne suit pas la FAQ. */
+    .assistant__rejouer {
+      font-size: 0.9375rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
