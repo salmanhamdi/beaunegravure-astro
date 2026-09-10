@@ -122,8 +122,16 @@ const annee = new Date().getFullYear();
 </footer>
 
 <style>
+  /*
+    Noir pur, et ici seulement. `.sur-nuit` pose le graphite #17171a et sert à
+    neuf endroits du site : toucher au jeton repeindrait le manifeste, la
+    chaîne, la relance, le bandeau d'atelier et la section devis. La valeur est
+    donc surchargée sur le pied, qui ne consomme aucun jeton de fond en
+    interne — la surcharge n'a rien d'autre à entraîner.
+  */
   .pied {
     padding-block: var(--e-2xl) var(--e-l);
+    background-color: #000;
   }
 
   .pied__haut {

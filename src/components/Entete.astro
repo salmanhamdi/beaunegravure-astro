@@ -268,7 +268,21 @@ function estActif(href: string): boolean {
     letter-spacing: 0.05em;
   }
 
-  @media (max-width: 26rem) {
+  /*
+    LE SEUIL EST MESURÉ, PAS CHOISI.
+
+    La baseline réapparaissait à 26rem — 416 px — alors qu'elle ne tient qu'à
+    partir de 422. Entre les deux, la barre demandait 417,8 px de contenu pour
+    376,1 px disponibles : la marque mesure 264 px, les actions 121,8, et les
+    deux gouttières 32. Ni l'une ni l'autre ne peut céder, toutes deux étant en
+    `flex: 0 0 auto` avec un minimum automatique — d'où cinq pixels de barre
+    horizontale à 417 px, décroissant jusqu'à un seul à 421.
+
+    Le mécanisme était le bon ; seul son déclenchement était trop bas. 27rem
+    laisse dix pixels au-dessus du minimum mesuré, de quoi absorber la part
+    variable des corps et des gouttières sans jamais rouvrir la brèche.
+  */
+  @media (max-width: 27rem) {
     .entete__nom small {
       display: none;
     }
