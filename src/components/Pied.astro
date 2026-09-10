@@ -76,12 +76,14 @@ const annee = new Date().getFullYear();
       <nav class="pied__colonne" aria-labelledby="pied-projets">
         <p class="pied__titre" id="pied-projets">Nos projets</p>
         <ul>
+          {/*
+            Vers le dossier du projet, pas vers sa plateforme : elle est en
+            construction, et /projets/ l'indique. Ce pied figure sur les 41
+            pages — c'était le dernier endroit du site à envoyer dehors.
+          */}
           {projets.map((projet) => (
             <li>
-              <a href={projet.url} rel="noopener" target="_blank">
-                {projet.nom}
-                <span class="visuellement-cache"> (nouvel onglet)</span>
-              </a>
+              <a href={`/projets/#${projet.slug}`}>{projet.nom}</a>
             </li>
           ))}
           <li><a href="/projets/">Comment ils sont nés</a></li>

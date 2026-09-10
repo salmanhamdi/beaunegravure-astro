@@ -391,9 +391,15 @@ const schema = graphe([
                   <li>{repere}</li>
                 ))}
               </ul>
-              <a class="lien-fleche" href={projet.url} rel="noopener" target="_blank">
+              {/*
+                La découverte reste offerte, mais elle mène au dossier du
+                projet, pas à sa plateforme : celle-ci est en construction, et
+                /projets/ le dit desormais. Envoyer le visiteur dehors depuis
+                l'accueil contredirait cette mention. L'ancre ouvre la page
+                directement sur le bon projet.
+              */}
+              <a class="lien-fleche" href={`/projets/#${projet.slug}`}>
                 {projet.libelleLien}
-                <span class="visuellement-cache"> (nouvel onglet)</span>
               </a>
             </li>
           ))
