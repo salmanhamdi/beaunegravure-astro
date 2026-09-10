@@ -19,7 +19,13 @@ function estActif(href: string): boolean {
       complété par une précision réservée aux lecteurs d'écran.
     */}
     <a class="entete__marque" href="/">
-      <Monogramme taille={38} class="entete__logo" />
+      {/*
+        `taille` ne fixe plus le rendu — le CSS ci-dessous le calcule sur les
+        corps du texte — mais elle reste la dimension intrinsèque du SVG, donc
+        la place réservée avant l'application des feuilles. La valeur suit la
+        hauteur calculée à la largeur de référence : 54 × 30, et non 38 × 21.
+      */}
+      <Monogramme taille={54} class="entete__logo" />
       <span class="entete__nom">
         <strong>Beaune Gravure</strong>
         <small>Création · Personnalisation · Fabrication</small>
@@ -175,10 +181,72 @@ function estActif(href: string): boolean {
     text-decoration: none;
   }
 
-  .entete__logo {
+  /*
+    LE MONOGRAMME SE MESURE SUR L'ENCRE DU TEXTE, PAS SUR SA BOÎTE.
+
+    Le fichier n'était pas en cause : sa boîte encrée occupe 325,94 × 180,65
+    d'un viewBox de 326,4 × 181, soit moins de 0,15 % de marge interne. Le
+    centrage non plus : les deux centres tombaient à 40,00 px.
+
+    Le défaut était une affaire de taille. Le symbole mesurait 21 px pour un
+    bloc texte dont l'encre — du haut de capitale de « Beaune Gravure » au bas
+    de jambage de la baseline — en mesure 30,16 : il ne couvrait que 70 % du
+    texte et se lisait comme une pièce rapportée.
+
+    La hauteur est donc calculée sur les deux corps de la ligne. Boîte du bloc
+    = 1,15 × (F1 + F2) ; le blanc typographique retire 0,18 × F1 en haut et
+    0,18 × F2 en bas, mesuré sur Archivo. Reste 0,97 × (F1 + F2) — 30,23 px
+    calculés contre 30,16 mesurés. Aucun nombre magique : la valeur suit les
+    jetons, donc le clamp de --t-1, à toutes les largeurs.
+
+    Le décalage vertical corrige le reste : le centre de l'encre est plus bas
+    que celui de la boîte, d'un demi-écart entre les deux blancs, soit
+    0,09 × (F1 − F2). Sous 26rem la baseline disparaît, le bloc retombe sur une
+    ligne, et les deux valeurs se recalculent pour ce seul corps.
+  */
+  /*
+    `:global` EST INDISPENSABLE ICI, et son absence était la cause du défaut.
+
+    Astro ne transmet pas sa portée à la racine d'un composant enfant : le
+    `<svg>` du monogramme ne porte pas le `data-astro-cid` de cette page. La
+    règle compilée valait `.entete__logo[data-astro-cid-…]` et ne rencontrait
+    donc jamais son élément. Elle n'avait aucun effet depuis toujours — la
+    taille venait du seul attribut `taille`, figée à 38 × 21, pendant que le
+    texte suivait le clamp de --t-1 et grandissait sans elle.
+  */
+  /*
+    Taille compacte par défaut : une hauteur de ligne pleine, soit les 21 px
+    que le monogramme a toujours eus sur téléphone et que rien ne reprochait.
+    Sous 26rem la baseline est masquée et le bloc tient sur une ligne ; le
+    calquer alors sur l'encre donnerait 13 px et ferait de la seule marque
+    restante un détail. Elle dépasse donc l'encre, comme il est d'usage pour un
+    bloc compact, et reste centrée sur elle.
+  */
+  .entete__marque :global(.entete__logo) {
+    --logo-f1: var(--t-1);
+    --logo-f2: 0.6875rem;
+
     flex: none;
-    inline-size: 2.375rem;
-    block-size: auto;
+    inline-size: auto;
+    block-size: calc(1.2 * var(--logo-f1));
+    translate: 0 calc(-0.039 * var(--logo-f1));
+  }
+
+  /*
+    Dès qu'il y a la place, la marque se cale sur l'encre des deux lignes.
+
+    Le seuil est à 30rem et non à 26rem, là où la baseline réapparaît : entre
+    les deux, le symbole calé sur l'encre mesure 50 px de large contre 38, et
+    ces douze pixels suffisaient à pousser le bouton de menu hors du cadre —
+    cinq pixels de barre horizontale à 430 px, mesurés en comparant les deux
+    tailles sur la même page. Le lockup complet attend donc d'avoir de quoi
+    tenir.
+  */
+  @media (min-width: 30rem) {
+    .entete__marque :global(.entete__logo) {
+      block-size: calc(0.97 * (var(--logo-f1) + var(--logo-f2)));
+      translate: 0 calc(0.09 * (var(--logo-f1) - var(--logo-f2)));
+    }
   }
 
   .entete__nom {

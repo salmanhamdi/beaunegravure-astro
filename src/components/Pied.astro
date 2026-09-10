@@ -144,10 +144,21 @@ const annee = new Date().getFullYear();
     }
   }
 
+  /*
+    Le fond grisâtre ne venait pas du fichier : le SVG ne contient aucun
+    rectangle de fond, aucune image raster — seulement des tracés blancs et un
+    rouge, sur transparence. Il venait de la feuille de base, qui pose sous
+    chaque image une teinte d'attente à 6 % d'encre contre le flash blanc d'une
+    photographie qui se charge. Dans un contexte sombre `--c-encre` bascule en
+    clair : la teinte devenait un voile blanc à 6 % sur le graphite du pied,
+    soit un rectangle plus clair à la dimension exacte de la boîte. Une
+    photographie l'aurait recouverte ; un logo détouré, jamais.
+  */
   .pied__marque img {
     inline-size: 8.25rem;
     block-size: auto;
     margin-block-end: var(--e-s);
+    background-color: transparent;
   }
 
   .pied__accroche {
