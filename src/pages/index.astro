@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '@layouts/Base.astro';
+import BandeauClients from '@components/BandeauClients.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
 import HeroScene from '@components/HeroScene.astro';
 import SectionDevis from '@components/SectionDevis.astro';
@@ -174,6 +175,13 @@ const schema = graphe([
       <li>Objet</li>
     </ol>
   </section>
+
+    {/*
+      La preuve arrive juste apres la promesse : la chaine de valeur dit ce
+      que l'atelier fait, le bandeau montre pour qui. Il sert de transition
+      vers les savoir-faire sans devenir une section a lui seul.
+    */}
+    <BandeauClients />
 
   <!--
     ============================== Manifeste ==============================

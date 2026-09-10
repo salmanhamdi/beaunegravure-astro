@@ -1,0 +1,186 @@
+---
+/**
+ * Bandeau des logos clients — défilement horizontal continu.
+ *
+ * LA BOUCLE. Deux rubans identiques se suivent dans une piste en flex ; la
+ * piste est translatée de −50 %, soit exactement la largeur d'un ruban. À
+ * l'instant où l'animation reboucle, le second ruban occupe la position du
+ * premier : la reprise tombe au pixel près, il n'y a rien à masquer. C'est
+ * pour cela qu'il n'y a ni JavaScript, ni mesure, ni repositionnement.
+ *
+ * LE SECOND RUBAN N'EXISTE QUE POUR L'ŒIL. Il porte aria-hidden et ses images
+ * un alt vide : un lecteur d'écran parcourt les dix-huit marques une seule
+ * fois. Et comme les deux rubans pointent vers les mêmes fichiers, le
+ * navigateur ne télécharge chaque logo qu'une fois.
+ *
+ * PAS DE CHARGEMENT DIFFERE. Un logo translate hors de l'ecran par la piste
+ * n'est jamais "visible" au sens de l'observateur d'intersection : en lazy, il
+ * apparaissait vide puis surgissait en cours de defilement. Les images sont
+ * donc chargees d'emblee, mais en priorite basse — elles ne disputent rien au
+ * heros, et le bandeau est deja complet quand il entre dans le champ.
+ *
+ * LES HAUTEURS viennent de src/data/clients.ts, où elles sont mesurées et non
+ * choisies. Elles sont posées en variable CSS par logo et multipliées par une
+ * échelle unique, qui descend sur téléphone. C'est le seul endroit où l'on
+ * touche à la taille : la hiérarchie établie par la mesure est préservée
+ * telle quelle à toutes les largeurs.
+ */
+import { clients } from '@data/clients';
+
+/** Dimensions intrinsèques, pour réserver la place avant le chargement. */
+const dimensions = (ratio: number, hauteur: number) => ({
+  width: Math.round(hauteur * ratio),
+  height: Math.round(hauteur),
+});
+---
+
+<section class="clients">
+  <div class="enveloppe--large">
+    <p class="surtitre clients__titre">Ils nous font confiance</p>
+  </div>
+
+  <div class="clients__piste">
+    <ul class="clients__ruban">
+      {
+        clients.map((client) => (
+          <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
+            <img
+              src={`/logos/${client.fichier}`}
+              alt={client.nom}
+              {...dimensions(client.ratio, client.hauteur)}
+              loading="eager"
+              fetchpriority="low"
+              decoding="async"
+              draggable="false"
+            />
+          </li>
+        ))
+      }
+    </ul>
+
+    {/*
+      Copie strictement visuelle : même source, donc aucune requête
+      supplémentaire, et aucune duplication pour les technologies d'assistance.
+    */}
+    <ul class="clients__ruban" aria-hidden="true">
+      {
+        clients.map((client) => (
+          <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
+            <img
+              src={`/logos/${client.fichier}`}
+              alt=""
+              {...dimensions(client.ratio, client.hauteur)}
+              loading="eager"
+              fetchpriority="low"
+              decoding="async"
+              draggable="false"
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .clients {
+    padding-block: var(--e-xl);
+    overflow: hidden;
+  }
+
+  .clients__titre {
+    margin-block-end: var(--e-l);
+  }
+
+  /*
+    La piste déborde volontairement de la fenêtre — c'est ce débordement qui
+    permet le défilement. Le `overflow: hidden` de la section le contient :
+    la page elle-même n'acquiert jamais de barre horizontale.
+  */
+  .clients__piste {
+    display: flex;
+    inline-size: max-content;
+    /* Entrée et sortie progressives. Le centre reste parfaitement net. */
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 7%,
+      #000 93%,
+      transparent 100%
+    );
+    animation: clients-defile var(--clients-duree, 58s) linear infinite;
+  }
+
+  .clients__ruban {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--clients-ecart, 5rem);
+    margin: 0;
+    padding-inline: calc(var(--clients-ecart, 5rem) / 2);
+    list-style: none;
+  }
+
+  .clients__item {
+    display: flex;
+    flex: none;
+    align-items: center;
+  }
+
+  /*
+    `--h` est la hauteur MESURÉE du logo, `--clients-echelle` la seule variable qui
+    change d'une largeur d'écran à l'autre. Les rapports entre logos sont donc
+    identiques partout : ce qui a été équilibré une fois le reste.
+  */
+  .clients__item :global(img) {
+    display: block;
+    block-size: calc(var(--clients-h) * 1px * var(--clients-echelle, 1));
+    inline-size: auto;
+    max-inline-size: none;
+    user-select: none;
+  }
+
+  @keyframes clients-defile {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* ---------------------------- Échelles ---------------------------- */
+
+  @media (max-width: 63.999rem) {
+    .clients { --clients-echelle: 0.82; --clients-ecart: 4rem; --clients-duree: 48s; }
+  }
+
+  @media (max-width: 47.999rem) {
+    .clients {
+      --clients-echelle: 0.68;
+      --clients-ecart: 3.25rem;
+      --clients-duree: 40s;
+      padding-block: var(--e-l);
+    }
+    .clients__titre { margin-block-end: var(--e-m); }
+  }
+
+  @media (max-width: 26.999rem) {
+    .clients { --clients-echelle: 0.62; --clients-ecart: 2.75rem; --clients-duree: 36s; }
+  }
+
+  /* ------------------------- Mouvement réduit ------------------------ */
+
+  /*
+    Animation coupée, et la piste devient parcourable à la main : aucune marque
+    ne disparaît. Le second ruban, lui, n'a plus de raison d'être.
+  */
+  @media (prefers-reduced-motion: reduce) {
+    .clients__piste {
+      inline-size: 100%;
+      overflow-x: auto;
+      animation: none;
+      mask-image: none;
+    }
+
+    .clients__piste > :global([aria-hidden='true']) {
+      display: none;
+    }
+  }
+</style>
