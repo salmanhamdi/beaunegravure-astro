@@ -6,7 +6,7 @@ import FilAriane from '@components/FilAriane.astro';
 import Faq from '@components/Faq.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
 import SectionDevis from '@components/SectionDevis.astro';
-import { CATEGORIES, imagesRealisations, parCategorie } from '@data/realisations';
+import { CATEGORIES, imagesRealisations, parCategorie, parIds } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
 import {
   faqSchema,
@@ -50,8 +50,33 @@ const visuel = imagesRealisations[data.visuel]!;
  */
 const ratioTete = Math.min(Math.max(visuel.width / visuel.height, 0.9), 2.4);
 
-const galerie = parCategorie(data.galerie).slice(0, 6);
 const categorie = CATEGORIES[data.galerie];
+
+/*
+  La galerie suit la catégorie, sauf si la page nomme ses pièces. Un procédé
+  qui traverse les matières — l'impression UV se pose sur le bois, sur un
+  chevalet de comptoir, sur du plexiglass — ne se laisse pas résumer par une
+  seule catégorie du catalogue.
+
+  `parIds` conserve l'ordre demandé mais écarte en silence un identifiant
+  inconnu. Le compte est donc vérifié ici : une coquille dans le frontmatter
+  arrête la compilation, au lieu de publier une galerie amputée que personne
+  ne remarquerait.
+*/
+const galerie = data.pieces ? parIds(...data.pieces) : parCategorie(data.galerie).slice(0, 6);
+
+if (data.pieces && galerie.length !== data.pieces.length) {
+  const connus = new Set(galerie.map((piece) => piece.id));
+  const manquants = data.pieces.filter((id) => !connus.has(id));
+  throw new Error(
+    `${service.id} : pièce(s) introuvable(s) dans le catalogue — ${manquants.join(', ')}. ` +
+      'Vérifier `pieces` dans le frontmatter et les identifiants de src/data/realisations.ts.',
+  );
+}
+
+/* Une galerie choisie ne parle plus au nom d'une catégorie : elle a son titre. */
+const galerieTitre = data.galerieTitre ?? categorie.titre;
+const galerieChapo = data.galerieChapo ?? categorie.description;
 
 /**
  * Les quatre savoir-faire qui SUIVENT celui-ci dans l'ordre, en repartant au
@@ -137,15 +162,28 @@ const schema = graphe([
         <div class="tete-section tete-section--duo">
           <div>
             <p class="surtitre">Réalisations</p>
-            <h2>{categorie.titre}</h2>
+            <h2>{galerieTitre}</h2>
           </div>
-          <p class="chapo">{categorie.description}</p>
+          <p class="chapo">{galerieChapo}</p>
         </div>
         <GrilleRealisations realisations={galerie} colonnes={3} />
+        {/*
+          Une galerie choisie traverse les catégories : l'envoyer vers l'une
+          d'elles promettrait la suite d'un ensemble qui n'existe pas. Elle
+          ouvre donc sur le catalogue entier.
+        */}
         <p class="suite">
-          <a class="bouton bouton--fantome" href={`/realisations/${categorie.slug}/`}>
-            Toute la catégorie {categorie.nom.toLowerCase()}
-          </a>
+          {
+            data.pieces ? (
+              <a class="bouton bouton--fantome" href="/realisations/">
+                Toutes les réalisations
+              </a>
+            ) : (
+              <a class="bouton bouton--fantome" href={`/realisations/${categorie.slug}/`}>
+                Toute la catégorie {categorie.nom.toLowerCase()}
+              </a>
+            )
+          }
         </p>
       </div>
     </section>

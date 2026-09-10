@@ -94,18 +94,19 @@ const sizesVedette = '(min-width: 68rem) 63vw, 94vw';
   }
 
   /*
-    Depuis que chaque carte occupe deux rangées — une pour l'image, une pour le
-    texte —, la pièce mise en scène doit couvrir la hauteur de DEUX cartes,
-    soit quatre rangées. Elle sort de la sous-grille et redevient une colonne
-    flex : elle n'a que deux enfants, qui ne sauraient remplir quatre rangées,
-    et elle est seule sur sa colonne — il n'y a personne avec qui aligner sa
-    légende.
+    Depuis que chaque carte occupe trois rangées — image, titre, catégorie —,
+    la pièce mise en scène doit couvrir la hauteur de DEUX cartes, soit six
+    rangées. Elle sort de la sous-grille et redevient une colonne flex : elle
+    n'a que deux enfants, qui ne sauraient remplir six rangées, et elle est
+    seule sur sa colonne — il n'y a personne avec qui aligner sa légende.
+    Sa légende, dont la sous-grille n'a plus de grille parente, retombe d'elle-
+    même sur deux rangées automatiques : le bloc reste empilé.
   */
   @supports (grid-template-rows: subgrid) {
     @media (min-width: 68rem) {
       .grille-realisations[data-vedette][data-colonnes='3'] > :global(:first-child) {
         display: flex;
-        grid-row: span 4;
+        grid-row: span 6;
         grid-template-rows: none;
       }
     }

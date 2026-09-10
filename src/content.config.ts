@@ -24,6 +24,18 @@ const services = defineCollection({
     famille: z.enum(['creation', 'fabrication', 'application']),
     /** Catégorie du catalogue de réalisations utilisée pour la galerie. */
     galerie: z.enum(['verre', 'bois', 'objets', 'metal', 'plaques', 'decoupe']),
+    /**
+     * Pièces de la galerie, choisies une à une, quand la catégorie ne suffit
+     * pas. Un savoir-faire se définit par un procédé, pas par une matière :
+     * l'impression UV se pose aussi bien sur un panneau de bois que sur un
+     * chevalet de comptoir ou une étiquette de plexiglass, et la galerie par
+     * catégorie n'en montrait qu'une seule des trois. Absent, la galerie reste
+     * celle de `galerie` — c'est le cas des neuf autres savoir-faire.
+     */
+    pieces: z.array(z.string()).min(3).max(6).optional(),
+    /** Titre et chapô de la galerie, quand `pieces` la détache d'une catégorie. */
+    galerieTitre: z.string().optional(),
+    galerieChapo: z.string().optional(),
     /** Identifiant de la réalisation servant de visuel principal. */
     visuel: z.string(),
     /** Quatre repères courts affichés en liste. */

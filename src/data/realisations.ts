@@ -286,6 +286,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/impression-uv/',
   },
   {
+    fichier: 'impression-uv-icone-religieuse-panneau-bois.webp',
+    titre: 'Icône reproduite sur bois',
+    alt: 'Reproduction d’une icône ancienne imprimée en couleur sur un panneau de bois, accrochée au mur de pierre d’une église',
+    categorie: 'bois',
+    service: '/services/impression-uv/',
+  },
+  {
     fichier: 'gravure-laser-panneau-bois-moto-club.webp',
     titre: 'Panneau bois grand format',
     alt: 'Grand panneau rond en bois gravé au laser pour un club de motards',
@@ -598,6 +605,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
 
   /* ------------------------ Plaques et signalétique ----------------------- */
   {
+    fichier: 'impression-uv-chevalet-nfc-avis-google-osteopathe.webp',
+    titre: 'Chevalet d’avis clients NFC',
+    alt: 'Chevalet de comptoir imprimé en couleur avec une puce NFC et un QR code, posé sur le bureau d’un cabinet d’ostéopathie',
+    categorie: 'plaques',
+    service: '/services/impression-uv/',
+  },
+  {
     fichier: 'plaques-plexiglass-bicouche-reperes-couleur.webp',
     titre: 'Repères en plexiglass bicouche',
     alt: 'Plaques et jetons en plexiglass bicouche gravés de repères et de numéros, en cinq couleurs',
@@ -659,6 +673,20 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
   },
 
   /* ------------------------ Découpe et plexiglass ------------------------- */
+  {
+    fichier: 'impression-uv-etiquettes-plexiglass-domaine-leflaive.webp',
+    titre: 'Étiquettes de parcelle en plexiglass',
+    alt: 'Étiquettes de vigne en plexiglass blanc, découpées, percées et imprimées en couleur pour un domaine de Puligny-Montrachet',
+    categorie: 'decoupe',
+    service: '/services/impression-uv/',
+  },
+  {
+    fichier: 'impression-uv-medaillons-plexiglass-animaux-spotitap.webp',
+    titre: 'Médaillons pour animaux',
+    alt: 'Six médaillons ronds en plexiglass imprimés en couleur, chacun dans un motif différent, tenus dans une main',
+    categorie: 'decoupe',
+    service: '/services/impression-uv/',
+  },
   {
     fichier: 'decoupe-laser-plexiglass-rose-beaune-gravure.jpg',
     titre: 'Découpe en plexiglass teinté',

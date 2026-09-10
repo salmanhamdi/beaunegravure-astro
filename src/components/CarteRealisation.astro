@@ -89,10 +89,11 @@ const categorie = CATEGORIES[realisation.categorie];
   @supports (grid-template-rows: subgrid) {
     .realisation {
       display: grid;
-      grid-row: span 2;
+      grid-row: span 3;
       grid-template-rows: subgrid;
       row-gap: var(--e-xs);
     }
+
   }
 
   /*
@@ -139,6 +140,35 @@ const categorie = CATEGORIES[realisation.categorie];
     align-items: start;
     justify-content: space-between;
     gap: var(--e-2xs);
+  }
+
+  /*
+    Trois rangées de sous-grille, pas deux : image, titre, catégorie.
+
+    Une seule rangée de texte suffisait tant qu'une galerie regroupait une même
+    catégorie — un libellé, une ligne. Sur une galerie qui traverse les
+    matières, « Plaques et signalétique » se replie en deux lignes à 375 px
+    quand « Bois et coffrets » en tient une : calée par le bas, la catégorie
+    démarrait alors une interligne plus haut que celle de sa voisine — 18,2 px
+    mesurés. Avec sa propre rangée, elle partage sa ligne de départ, et celle
+    qui se replie descend d'un cran pour tout le monde à la fois.
+
+    Ce bloc suit la règle ci-dessus, et ne la précède pas : à spécificité
+    égale, c'est le dernier qui l'emporte. Placé avant, son `display: grid`
+    était écrasé par le `display: flex` et la sous-grille ne prenait jamais.
+  */
+  @supports (grid-template-rows: subgrid) {
+    .realisation__legende {
+      display: grid;
+      grid-row: span 2;
+      grid-template-rows: subgrid;
+      row-gap: var(--e-2xs);
+    }
+
+    .realisation__titre,
+    .realisation__categorie {
+      align-self: start;
+    }
   }
 
   .realisation__titre {

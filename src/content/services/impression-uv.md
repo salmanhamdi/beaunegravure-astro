@@ -8,7 +8,16 @@ chapo: "Quand un projet demande de la couleur, un dégradé ou un rendu photogra
 ordre: 4
 famille: "fabrication"
 galerie: "bois"
-visuel: "impression-uv-coffret-bois-mariage-personnalise"
+pieces:
+  - "impression-uv-icone-religieuse-panneau-bois"
+  - "impression-uv-etiquettes-plexiglass-domaine-leflaive"
+  - "impression-uv-chevalet-nfc-avis-google-osteopathe"
+  - "impression-uv-medaillons-plexiglass-animaux-spotitap"
+  - "impression-uv-coffret-bois-mariage-personnalise"
+  - "impression-uv-bois-planches-decoratives"
+galerieTitre: "La couleur sur toutes les matières."
+galerieChapo: "Bois, plexiglass, supports de comptoir : le procédé ne change pas, seul le support change. Voici ce que l’encre UV donne sur les uns et sur les autres."
+visuel: "impression-uv-icone-religieuse-panneau-bois"
 points:
   - "Impression couleur directe sur support rigide"
   - "Logos polychromes et visuels photographiques"
