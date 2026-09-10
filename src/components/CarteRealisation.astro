@@ -63,6 +63,39 @@ const categorie = CATEGORIES[realisation.categorie];
   }
 
   /*
+    LA CARTE PARTAGE LES RANGÉES DE LA GRILLE.
+
+    Les images sont carrées, donc déjà alignées ; le décalage venait du texte.
+    Le titre et la catégorie se partageaient une ligne souple : quand le titre
+    était court, la catégorie se plaçait à côté de lui ; quand il était long,
+    elle passait dessous. D'une carte à l'autre, la catégorie tombait donc une
+    ou deux interlignes plus bas que chez sa voisine — mesuré à 17,7 px et
+    35,4 px sur seize rangées du catalogue.
+
+    Réserver deux lignes en dur aurait creusé un blanc partout à partir de
+    768 px, où tous les titres tiennent sur une ligne. La carte devient donc
+    une sous-grille de deux rangées : la rangée de texte prend la hauteur du
+    plus long titre de SA ligne, et pas un pixel de plus. La légende, étirée
+    sur cette hauteur, pousse la catégorie contre le bas. Titres alignés en
+    haut, catégories alignées en bas, sans hauteur inventée.
+
+    La sous-grille impose son propre `row-gap` pour l'intervalle image-texte ;
+    celui de la grille parente continue de séparer les rangées de cartes.
+
+    Sans `subgrid`, la carte reste la colonne flex ci-dessus : le titre et la
+    catégorie sont empilés — ce qui est déjà l'ordre voulu — simplement sans
+    égalisation d'une carte à l'autre.
+  */
+  @supports (grid-template-rows: subgrid) {
+    .realisation {
+      display: grid;
+      grid-row: span 2;
+      grid-template-rows: subgrid;
+      row-gap: var(--e-xs);
+    }
+  }
+
+  /*
     Cadre carré, imposé par la mise en page et non par le fichier source.
     Auparavant chaque vignette gardait le ratio natif de sa photographie : dans
     une grille, une image en portrait à côté d'une image en 16/9 creusait
@@ -95,10 +128,15 @@ const categorie = CATEGORIES[realisation.categorie];
     }
   }
 
+  /*
+    Le titre et la catégorie forment un bloc, jamais une ligne partagée.
+    `space-between` n'écarte plus deux mots sur une ligne : il plaque la
+    catégorie au bas de la hauteur donnée par la sous-grille.
+  */
   .realisation__legende {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
+    flex-direction: column;
+    align-items: start;
     justify-content: space-between;
     gap: var(--e-2xs);
   }
@@ -110,11 +148,16 @@ const categorie = CATEGORIES[realisation.categorie];
     line-height: 1.35;
   }
 
+  /*
+    `white-space: nowrap` a été retiré : « Plaques et signalétique », en
+    capitales et interlettré, mesure 168,5 px pour une carte de 159,5 px à
+    375 px de large. Huit vignettes débordaient ainsi de neuf pixels. La
+    catégorie se replie désormais si la place manque, et reste plaquée en bas.
+  */
   .realisation__categorie {
     color: var(--c-encre-muette);
     font-size: var(--t--2);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    white-space: nowrap;
   }
 </style>

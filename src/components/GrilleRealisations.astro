@@ -94,6 +94,24 @@ const sizesVedette = '(min-width: 68rem) 63vw, 94vw';
   }
 
   /*
+    Depuis que chaque carte occupe deux rangées — une pour l'image, une pour le
+    texte —, la pièce mise en scène doit couvrir la hauteur de DEUX cartes,
+    soit quatre rangées. Elle sort de la sous-grille et redevient une colonne
+    flex : elle n'a que deux enfants, qui ne sauraient remplir quatre rangées,
+    et elle est seule sur sa colonne — il n'y a personne avec qui aligner sa
+    légende.
+  */
+  @supports (grid-template-rows: subgrid) {
+    @media (min-width: 68rem) {
+      .grille-realisations[data-vedette][data-colonnes='3'] > :global(:first-child) {
+        display: flex;
+        grid-row: span 4;
+        grid-template-rows: none;
+      }
+    }
+  }
+
+  /*
     Tant que la grille n'a que deux colonnes, la pièce mise en scène occupe
     toute la largeur : un carré y deviendrait un bloc d'un écran et quart à
     1024 px. Elle prend donc un format paysage, et ne redevient carrée qu'à
