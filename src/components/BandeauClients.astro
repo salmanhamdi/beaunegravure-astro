@@ -9,7 +9,7 @@
  * pour cela qu'il n'y a ni JavaScript, ni mesure, ni repositionnement.
  *
  * LE SECOND RUBAN N'EXISTE QUE POUR L'ŒIL. Il porte aria-hidden et ses images
- * un alt vide : un lecteur d'écran parcourt les dix-huit marques une seule
+ * un alt vide : un lecteur d'écran parcourt les vingt et une marques une seule
  * fois. Et comme les deux rubans pointent vers les mêmes fichiers, le
  * navigateur ne télécharge chaque logo qu'une fois.
  *
@@ -19,6 +19,15 @@
  * donc chargees d'emblee, mais en priorite basse — elles ne disputent rien au
  * heros, et le bandeau est deja complet quand il entre dans le champ.
  *
+ * LE FONDU SE POSE SUR LA FENÊTRE, JAMAIS SUR LA PISTE. Un masque exprimé en
+ * pourcentages se calcule sur la boîte qui le porte. Posé sur la piste, qui
+ * mesure plus de cinq mille pixels, « 7 % » valait trois cent soixante pixels
+ * de dégradé emportés par le défilement : les logos traversaient une zone de
+ * transparence mobile et s'y délavaient, n'importe où dans le bandeau. Le
+ * masque appartient donc à la fenêtre, qui est immobile et large comme
+ * l'écran ; le fondu est une longueur, pas un pourcentage, et il reste
+ * accroché aux deux bords.
+ *
  * LES HAUTEURS viennent de src/data/clients.ts, où elles sont mesurées et non
  * choisies. Elles sont posées en variable CSS par logo et multipliées par une
  * échelle unique, qui descend sur téléphone. C'est le seul endroit où l'on
@@ -27,10 +36,18 @@
  */
 import { clients } from '@data/clients';
 
-/** Dimensions intrinsèques, pour réserver la place avant le chargement. */
+/**
+ * Dimensions intrinsèques, pour réserver la place avant le chargement.
+ *
+ * Le facteur dix n'est pas cosmétique. Les hauteurs mesurées sont
+ * fractionnaires (25,4 px) : arrondir les deux côtés séparément donnait
+ * 97 × 25, soit une proportion de 3,88 là où le logo vaut 3,80. La boîte
+ * réservée n'était pas celle qui arrivait, et la ligne se réajustait au
+ * chargement. En dixièmes de pixel, l'écart tombe sous 0,05 %.
+ */
 const dimensions = (ratio: number, hauteur: number) => ({
-  width: Math.round(hauteur * ratio),
-  height: Math.round(hauteur),
+  width: Math.round(hauteur * ratio * 10),
+  height: Math.round(hauteur * 10),
 });
 ---
 
@@ -39,46 +56,48 @@ const dimensions = (ratio: number, hauteur: number) => ({
     <p class="surtitre clients__titre">Ils nous font confiance</p>
   </div>
 
-  <div class="clients__piste">
-    <ul class="clients__ruban">
-      {
-        clients.map((client) => (
-          <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
-            <img
-              src={`/logos/${client.fichier}`}
-              alt={client.nom}
-              {...dimensions(client.ratio, client.hauteur)}
-              loading="eager"
-              fetchpriority="low"
-              decoding="async"
-              draggable="false"
-            />
-          </li>
-        ))
-      }
-    </ul>
+  <div class="clients__fenetre">
+    <div class="clients__piste">
+      <ul class="clients__ruban">
+        {
+          clients.map((client) => (
+            <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
+              <img
+                src={`/logos/${client.fichier}`}
+                alt={client.nom}
+                {...dimensions(client.ratio, client.hauteur)}
+                loading="eager"
+                fetchpriority="low"
+                decoding="async"
+                draggable="false"
+              />
+            </li>
+          ))
+        }
+      </ul>
 
-    {/*
-      Copie strictement visuelle : même source, donc aucune requête
-      supplémentaire, et aucune duplication pour les technologies d'assistance.
-    */}
-    <ul class="clients__ruban" aria-hidden="true">
-      {
-        clients.map((client) => (
-          <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
-            <img
-              src={`/logos/${client.fichier}`}
-              alt=""
-              {...dimensions(client.ratio, client.hauteur)}
-              loading="eager"
-              fetchpriority="low"
-              decoding="async"
-              draggable="false"
-            />
-          </li>
-        ))
-      }
-    </ul>
+      {/*
+        Copie strictement visuelle : même source, donc aucune requête
+        supplémentaire, et aucune duplication pour les technologies d'assistance.
+      */}
+      <ul class="clients__ruban" aria-hidden="true">
+        {
+          clients.map((client) => (
+            <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
+              <img
+                src={`/logos/${client.fichier}`}
+                alt=""
+                {...dimensions(client.ratio, client.hauteur)}
+                loading="eager"
+                fetchpriority="low"
+                decoding="async"
+                draggable="false"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -93,21 +112,35 @@ const dimensions = (ratio: number, hauteur: number) => ({
   }
 
   /*
+    La fenêtre est immobile et large comme l'écran. C'est elle qui porte le
+    fondu des deux bords, et elle qui contient le débordement de la piste : la
+    page n'acquiert jamais de barre horizontale.
+  */
+  .clients__fenetre {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--clients-fondu, 7rem),
+      #000 calc(100% - var(--clients-fondu, 7rem)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--clients-fondu, 7rem),
+      #000 calc(100% - var(--clients-fondu, 7rem)),
+      transparent 100%
+    );
+  }
+
+  /*
     La piste déborde volontairement de la fenêtre — c'est ce débordement qui
-    permet le défilement. Le `overflow: hidden` de la section le contient :
-    la page elle-même n'acquiert jamais de barre horizontale.
+    permet le défilement.
   */
   .clients__piste {
     display: flex;
     inline-size: max-content;
-    /* Entrée et sortie progressives. Le centre reste parfaitement net. */
-    mask-image: linear-gradient(
-      to right,
-      transparent 0,
-      #000 7%,
-      #000 93%,
-      transparent 100%
-    );
     animation: clients-defile var(--clients-duree, 66s) linear infinite;
   }
 
@@ -128,15 +161,23 @@ const dimensions = (ratio: number, hauteur: number) => ({
   }
 
   /*
-    `--h` est la hauteur MESURÉE du logo, `--clients-echelle` la seule variable qui
-    change d'une largeur d'écran à l'autre. Les rapports entre logos sont donc
-    identiques partout : ce qui a été équilibré une fois le reste.
+    `--clients-h` est la hauteur MESURÉE du logo, `--clients-echelle` la seule
+    variable qui change d'une largeur d'écran à l'autre. Les rapports entre
+    logos sont donc identiques partout : ce qui a été équilibré une fois le reste.
+
+    `background-color` est remis à plat volontairement. La feuille de base pose
+    sous chaque image une teinte d'attente à 6 % d'encre, pour éviter le flash
+    blanc d'une photographie qui se charge. Une photographie finit par la
+    recouvrir ; un logo vectoriel, lui, est transparent partout où il n'y a pas
+    de trait — la teinte restait donc visible en permanence, sous la forme d'un
+    rectangle gris à la dimension exacte de la boîte.
   */
   .clients__item :global(img) {
     display: block;
     block-size: calc(var(--clients-h) * 1px * var(--clients-echelle, 1));
     inline-size: auto;
     max-inline-size: none;
+    background-color: transparent;
     user-select: none;
   }
 
@@ -148,7 +189,12 @@ const dimensions = (ratio: number, hauteur: number) => ({
   /* ---------------------------- Échelles ---------------------------- */
 
   @media (max-width: 63.999rem) {
-    .clients { --clients-echelle: 0.82; --clients-ecart: 4rem; --clients-duree: 54s; }
+    .clients {
+      --clients-echelle: 0.82;
+      --clients-ecart: 4rem;
+      --clients-duree: 54s;
+      --clients-fondu: 4.5rem;
+    }
   }
 
   @media (max-width: 47.999rem) {
@@ -156,27 +202,39 @@ const dimensions = (ratio: number, hauteur: number) => ({
       --clients-echelle: 0.68;
       --clients-ecart: 3.25rem;
       --clients-duree: 44s;
+      --clients-fondu: 3rem;
       padding-block: var(--e-l);
     }
+
     .clients__titre { margin-block-end: var(--e-m); }
   }
 
   @media (max-width: 26.999rem) {
-    .clients { --clients-echelle: 0.62; --clients-ecart: 2.75rem; --clients-duree: 39s; }
+    .clients {
+      --clients-echelle: 0.62;
+      --clients-ecart: 2.75rem;
+      --clients-duree: 39s;
+      --clients-fondu: 2.25rem;
+    }
   }
 
   /* ------------------------- Mouvement réduit ------------------------ */
 
   /*
     Animation coupée, et la piste devient parcourable à la main : aucune marque
-    ne disparaît. Le second ruban, lui, n'a plus de raison d'être.
+    ne disparaît. Le second ruban, lui, n'a plus de raison d'être, et le fondu
+    non plus — il masquerait le début et la fin d'une liste qu'on parcourt.
   */
   @media (prefers-reduced-motion: reduce) {
+    .clients__fenetre {
+      -webkit-mask-image: none;
+      mask-image: none;
+    }
+
     .clients__piste {
       inline-size: 100%;
       overflow-x: auto;
       animation: none;
-      mask-image: none;
     }
 
     .clients__piste > :global([aria-hidden='true']) {
