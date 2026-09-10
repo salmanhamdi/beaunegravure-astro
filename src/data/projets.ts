@@ -18,6 +18,15 @@ export interface Projet {
   nom: string;
   /** Nature du projet, en deux mots. */
   nature: string;
+  /**
+   * État d'avancement, affiché à côté de la nature.
+   *
+   * Les deux marques existent et leurs pièces sont réelles — ce sont leurs
+   * plateformes qui ne sont pas achevées. Le dire une fois, à l'endroit où le
+   * lecteur découvre le projet, évite que la page laisse croire à des sites
+   * finalisés et officiellement lancés.
+   */
+  statut: string;
   /** Formule courte affichée en tête de carte. */
   accroche: string;
   description: string;
@@ -57,6 +66,7 @@ export const projets: Projet[] = [
     slug: 'glassora',
     nom: 'Glassora',
     nature: 'Marque de verrerie personnalisée',
+    statut: 'Projet en construction',
     accroche: 'Une maison de verrerie gravée, avec sa boutique et son configurateur.',
     description:
       'Glassora est une marque dédiée au verre gravé : une sélection de verres à vin, verres à eau, flûtes, verres à spiritueux et carafes, un configurateur en ligne pour composer sa gravure et visualiser le bon à tirer avant production, et une boutique organisée par occasion — mariage, naissance, anniversaire, domaines viticoles, entreprises.',
@@ -89,6 +99,7 @@ export const projets: Projet[] = [
     slug: 'spotitap',
     nom: 'Spotitap',
     nature: 'Plaques et cartes NFC connectées',
+    statut: 'Projet en construction',
     accroche: 'Un objet connecté, son application et son CRM, conçus et fabriqués en France.',
     description:
       'Spotitap est une gamme de plaques et de cartes NFC — avis Google, menu de restaurant, Wi-Fi, réseaux sociaux, carte de visite — pilotée depuis une application unique, avec un CRM qui enregistre les contacts, les avis et les scans. Le profil reste modifiable à vie, sans installation côté visiteur.',

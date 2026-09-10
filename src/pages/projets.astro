@@ -24,12 +24,16 @@ const schema = graphe([
   filAriane(miettes),
   // Les deux marques sont déclarées comme des marques distinctes, dont
   // Beaune Gravure est à l'origine. Elles ne sont pas des services.
+  //
+  // Aucune propriété « url » : la déclarer reviendrait à donner aux moteurs
+  // l'adresse d'une plateforme encore en construction, et à l'annoncer comme
+  // le site officiel de la marque. Le nom, la description et le rattachement
+  // à l'atelier sont exacts ; l'adresse attendra la mise en ligne.
   ...projets.map((projet) => ({
     '@type': 'Brand',
     '@id': `${url}#${projet.slug}`,
     name: projet.nom,
     description: projet.description,
-    url: projet.url,
     parentOrganization: { '@id': urlAbsolue('/#organization') },
   })),
 ]);
@@ -59,7 +63,16 @@ const schema = graphe([
             </div>
 
             <div class="projet__corps">
-              <p class="projet__nature">{projet.nature}</p>
+              {/*
+                La nature du projet et son état d'avancement se lisent d'un
+                seul regard, avant le nom. Le statut reste secondaire — même
+                registre typographique, une pastille au filet fin, aucune
+                couleur d'alerte — mais il n'est pas escamotable.
+              */}
+              <div class="projet__entete">
+                <p class="projet__nature">{projet.nature}</p>
+                <p class="projet__statut">{projet.statut}</p>
+              </div>
               <h2>{projet.nom}</h2>
               <p class="projet__accroche">{projet.accroche}</p>
 
@@ -129,10 +142,12 @@ const schema = graphe([
                 </ul>
               </div>
 
-              <a class="bouton" href={projet.url} rel="noopener" target="_blank">
-                {projet.libelleLien}
-                <span class="visuellement-cache"> — {projet.domaine}, nouvel onglet</span>
-              </a>
+              {/*
+                Pas d'appel à l'action vers la plateforme : elle n'est pas
+                achevée, et un bouton « Découvrir » la présenterait comme
+                lancée. Le domaine reste indiqué — c'est un fait, pas une
+                invitation — et la fiche se lit entièrement sans lui.
+              */}
               <p class="projet__domaine">{projet.domaine}</p>
             </div>
           </article>
@@ -257,12 +272,52 @@ const schema = graphe([
     }
   }
 
+  /* Nature et statut sur une même ligne, qui se replie d'elle-même sur les
+     largeurs étroites plutôt que de déborder. */
+  .projet__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--e-3xs) var(--e-xs);
+    inline-size: 100%;
+  }
+
   .projet__nature {
     color: var(--c-encre-muette);
     font-family: var(--f-mono);
     font-size: var(--t--2);
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  /*
+    Pastille de statut : le même registre typographique que la nature, un
+    filet fin, aucune couleur d'alerte. Elle doit se lire, pas se remarquer
+    avant la photographie et le nom du projet.
+  */
+  .projet__statut {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding-block: 0.2em;
+    padding-inline: 0.7em;
+    border: 1px solid var(--c-filet-fort);
+    border-radius: 999px;
+    color: var(--c-encre-douce);
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .projet__statut::before {
+    content: '';
+    flex: none;
+    inline-size: 0.4em;
+    block-size: 0.4em;
+    border-radius: 50%;
+    background-color: currentColor;
   }
 
   .projet h2 {
