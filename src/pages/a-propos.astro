@@ -10,10 +10,11 @@ import { adresse, site } from '@data/site';
 import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 import portrait from '@assets/images/atelier/about-faire-simple-faire-juste.jpg';
-import poste from '@assets/images/atelier/atelier-laser-uv-beaune-gravure-hero.jpg';
-import machine from '@assets/images/atelier/contact-hero-trotec-speedy-400.jpg';
 import posteCreation from '@assets/images/atelier/hero-studio-poste-creation-beaune-gravure.jpg';
-import teteLaser from '@assets/images/atelier/tete-laser-fibre-plateau-gradue.jpg';
+import artisjet from '@assets/images/atelier/equipement-artisjet-3000u-impression-uv.webp';
+import fibre from '@assets/images/atelier/equipement-laser-fibre-50w-rotatif.webp';
+import mactron from '@assets/images/atelier/equipement-mactron-laser-uv-5w.webp';
+import speedy from '@assets/images/atelier/equipement-trotec-speedy-400-print-and-cut.webp';
 
 const chemin = '/a-propos/';
 const url = urlAbsolue(chemin);
@@ -24,6 +25,79 @@ const description =
 const miettes = [
   { nom: 'Accueil', href: '/' },
   { nom: 'Le studio', href: chemin },
+];
+
+/**
+ * Les quatre moyens de production.
+ *
+ * L'ORDRE N'EST PAS ALPHABÉTIQUE. La Speedy 400 ouvre la liste et reçoit un
+ * traitement plus large : c'est la plateforme qui absorbe la majorité des
+ * pièces, et la seule dont une option — le Print & Cut — ouvre un procédé que
+ * les trois autres n'ont pas. Les suivantes se lisent dans le même système,
+ * plus compact.
+ *
+ * LA ZONE EST UNE ZONE UTILE, jamais l'encombrement de la machine. C'est la
+ * réponse à la première question d'un prospect — « quelle taille pouvez-vous
+ * faire ? » — et elle est donc traitée comme une donnée, pas comme une ligne
+ * de fiche technique perdue dans un paragraphe.
+ *
+ * `reserve` porte ce qu'une machine NE fait pas. Le champ n'existe que parce
+ * qu'une capacité annoncée en trop coûte plus cher qu'une capacité tue : la
+ * Speedy grave le verre mais ne le découpe pas, et ne touche pas au métal.
+ * Mieux vaut le lire ici qu'après un devis.
+ */
+const equipements = [
+  {
+    rang: '01',
+    nom: 'Trotec Speedy 400',
+    capacites: 'Gravure · Découpe · Print & Cut',
+    image: speedy,
+    alt: 'Graveuse laser Trotec Speedy 400, capot relevé sur son plateau de découpe ; en médaillon, la tête Print & Cut et sa caméra de repérage au-dessus d’une planche imprimée en couleur',
+    zoneLabel: 'Zone utile',
+    zone: '1010 × 610 mm',
+    texte:
+      'Notre plateforme de production grand format, dédiée à la gravure et à la découpe des matières non métalliques. Son option Print & Cut associe impression et découpe avec un positionnement précis : la caméra relit les repères du support imprimé avant de le détourer. C’est ce qui rend possibles les supports imprimés, la signalétique et les petites séries.',
+    matieres:
+      'Bois, acrylique (PMMA), cuir, papier et carton, textiles, plastiques et caoutchoucs compatibles. La compatibilité d’un plastique dépend de sa composition : elle se vérifie au cas par cas, sur échantillon.',
+    reserve:
+      'La Speedy 400 ne découpe ni le verre ni le métal. Le verre peut en revanche être gravé. Pour le marquage et la gravure du métal, nous utilisons notre laser fibre.',
+  },
+  {
+    rang: '02',
+    nom: 'Laser UV 5 W',
+    capacites: 'Marquage UV · Surfaces 3D',
+    image: mactron,
+    alt: 'Station de marquage laser UV MacTron 5 W, avec son plateau perforé, son mandrin rotatif et son poste de préparation ; en médaillon, la tête galvanométrique et son faisceau de visée',
+    zoneLabel: 'Zone utile',
+    zone: '100 × 100 mm',
+    texte:
+      'Une technologie dédiée au marquage fin et précis sur de nombreux objets et surfaces. Le 3D Shifter adapte le marquage aux formes et aux surfaces qui ne sont pas planes.',
+    reserve: 'C’est une technologie de marquage : elle ne découpe pas.',
+  },
+  {
+    rang: '03',
+    nom: 'Artisjet 3000U',
+    capacites: 'Impression UV · Haute définition',
+    image: artisjet,
+    alt: 'Imprimante UV artisJet 3000U, son écran de commande et ses huit cartouches d’encre ; en médaillon, le bloc d’alimentation et ses circuits d’encre',
+    zoneLabel: 'Zone d’impression',
+    zone: '347 × 490 mm',
+    texte:
+      'Une solution d’impression UV directe haute définition, pour personnaliser objets et supports avec précision, détails et couleurs déposés puis fixés sur la matière elle-même.',
+    reserve: 'C’est une imprimante : elle n’a pas de fonction de découpe.',
+  },
+  {
+    rang: '04',
+    nom: 'Laser fibre 50 W',
+    capacites: 'Gravure profonde · Métal',
+    image: fibre,
+    alt: 'Station de marquage laser fibre 50 W, tête galvanométrique sur colonne graduée et mandrin rotatif sur plateau perforé',
+    zoneLabel: 'Zone utile',
+    zone: '200 × 200 mm',
+    texte:
+      'Notre technologie dédiée au marquage et à la gravure des métaux : pièces techniques, plaques, outillage, objets industriels, et toute personnalisation qui demande une gravure durable et profonde. Le mandrin rotatif permet de traiter les pièces cylindriques.',
+    reserve: 'Elle marque et grave le métal ; elle ne le découpe pas.',
+  },
 ];
 
 const schema = graphe([
@@ -92,53 +166,6 @@ const engagements = [
     <FilAriane slot="fil" miettes={miettes} />
   </HeroScene>
 
-  <section class="section section--serree">
-    <div class="enveloppe--large mosaique">
-      <div class="mosaique__grand">
-        <Picture
-          src={poste}
-          alt="Poste de marquage laser de l’atelier, avec son ordinateur de préparation, un pied à coulisse et des lunettes de protection"
-          widths={[480, 768, 1024, 1440]}
-          sizes="(min-width: 56rem) 62vw, 92vw"
-          loading="lazy"
-          quality={74}
-          formats={['avif']}
-          fallbackFormat="webp"
-        />
-      </div>
-      <div class="mosaique__petit">
-        <Picture
-          src={machine}
-          alt="Machine de gravure laser CO₂ Trotec Speedy 400 installée dans l’atelier"
-          widths={[320, 480, 720]}
-          sizes="(min-width: 56rem) 24vw, 92vw"
-          loading="lazy"
-          quality={70}
-          formats={['avif']}
-          fallbackFormat="webp"
-        />
-      </div>
-      {/*
-        La tuile étroite est au format 3/4 : une photographie en portrait s'y
-        inscrit sans être rognée, ce que la précédente image en paysage
-        subissait. Le détail de tête, lui, montre le geste que les deux autres
-        vues d'ensemble ne donnent pas à voir.
-      */}
-      <div class="mosaique__petit">
-        <Picture
-          src={teteLaser}
-          alt="Tête de marquage laser fibre au-dessus du plateau gradué, avec son avertissement de classe 2"
-          widths={[320, 480, 720, 941]}
-          sizes="(min-width: 56rem) 24vw, 92vw"
-          loading="lazy"
-          quality={72}
-          formats={['avif']}
-          fallbackFormat="webp"
-        />
-      </div>
-    </div>
-  </section>
-
   <section class="section histoire">
     <div class="enveloppe histoire__grille">
       <div class="histoire__media revele">
@@ -205,35 +232,79 @@ const engagements = [
     </div>
   </section>
 
-  <section class="section equipement sur-nuit">
-    <div class="enveloppe equipement__grille">
-      <div>
-        <p class="surtitre">L’équipement</p>
-        <h2>Trois lasers, parce qu’un seul ne suffit pas.</h2>
+  {/*
+    Quatre machines, quatre blocs, un seul système. Le premier tient toute la
+    largeur et met sa photographie à gauche ; les trois suivants se rangent sur
+    une ligne. L'asymétrie vient de la hiérarchie réelle, pas d'un effet.
+
+    Les photographies sont des vues constructeur, sur fond blanc : elles sont
+    posées sur une plaque blanche filetée, `object-fit: contain`, jamais
+    rognées ni étirées. Le blanc de la plaque absorbe celui du fond, et la
+    machine garde ses proportions à toutes les largeurs.
+  */}
+  <section class="section equipements">
+    <div class="enveloppe--large">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">L’équipement</p>
+          <h2>Quatre machines, quatre façons d’entrer dans la matière.</h2>
+        </div>
         <p class="chapo">
-          Chaque famille de matière demande une longueur d’onde différente. C’est ce qui
-          permet de graver un verre de dégustation le matin et de marquer une pièce inox
-          l’après-midi, sans compromis sur le résultat.
+          Chaque famille de matière demande une longueur d’onde, ou une encre. C’est ce
+          qui permet de graver un verre de dégustation le matin et de marquer une pièce
+          inox l’après-midi, sans compromis sur le résultat.
         </p>
       </div>
-      <dl class="equipement__liste">
-        <div>
-          <dt>Laser CO₂</dt>
-          <dd>Bois, cuir, acrylique, liège, ardoise · zone 101 × 65 cm</dd>
-        </div>
-        <div>
-          <dt>Laser UV 355 nm</dt>
-          <dd>Verre et surfaces délicates, faible apport thermique · zone 10 × 10 cm</dd>
-        </div>
-        <div>
-          <dt>Laser fibre 1064 nm</dt>
-          <dd>Inox, aluminium, laiton, titane, traçabilité · zone 30 × 30 cm</dd>
-        </div>
-        <div>
-          <dt>Impression UV</dt>
-          <dd>Couleur directe sur supports rigides compatibles</dd>
-        </div>
-      </dl>
+
+      <ol class="equipements__liste">
+        {
+          equipements.map((equipement, index) => (
+            <li class="machine" data-majeure={index === 0 ? '' : undefined}>
+              <div class="machine__plaque">
+                <Picture
+                  src={equipement.image}
+                  alt={equipement.alt}
+                  widths={index === 0 ? [480, 720, 1024, 1440] : [360, 540, 800]}
+                  sizes={
+                    index === 0
+                      ? '(min-width: 68rem) 54vw, 92vw'
+                      : '(min-width: 68rem) 30vw, 92vw'
+                  }
+                  loading="lazy"
+                  quality={78}
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                />
+              </div>
+
+              <div class="machine__texte">
+                <p class="machine__rang">{equipement.rang}</p>
+                <h3 class="machine__nom">{equipement.nom}</h3>
+                <p class="machine__capacites">{equipement.capacites}</p>
+
+                <p class="machine__zone">
+                  <span class="machine__zone-label">{equipement.zoneLabel}</span>
+                  <span class="machine__zone-valeur">{equipement.zone}</span>
+                </p>
+
+                <p class="machine__corps">{equipement.texte}</p>
+
+                {equipement.matieres && (
+                  <p class="machine__matieres">
+                    <span class="machine__matieres-label">Matières</span>
+                    {equipement.matieres}
+                  </p>
+                )}
+
+                <p class="machine__reserve">
+                  <span class="machine__reserve-label">À savoir</span>
+                  {equipement.reserve}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
     </div>
   </section>
 
@@ -245,8 +316,8 @@ const engagements = [
           <h2>Ce qui sort de l’atelier.</h2>
         </div>
         <p class="chapo">
-          Un aperçu des pièces récentes. Toutes les photographies du site montrent des
-          réalisations effectives, jamais des visuels de catalogue.
+          Un aperçu des pièces récentes. Chaque pièce montrée est sortie de cet atelier ;
+          les vues d’équipement, plus haut, sont celles des fabricants.
         </p>
       </div>
       <GrilleRealisations realisations={realisationsVedettes.slice(0, 6)} colonnes={3} />
@@ -271,60 +342,6 @@ const engagements = [
   .entete-page h1 {
     margin-block: var(--e-2xs) var(--e-m);
     max-width: 17ch;
-  }
-
-  /* ---------- Mosaïque ---------- */
-
-  .mosaique {
-    display: grid;
-    gap: var(--e-s);
-  }
-
-  @media (min-width: 56rem) {
-    .mosaique {
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
-    }
-  }
-
-  .mosaique__grand,
-  .mosaique__petit {
-    overflow: hidden;
-    border-radius: var(--r-l);
-    background-color: var(--c-fond-creux);
-  }
-
-  /*
-    En pile, les trois tuiles sont cadrées plutôt que laissées à leur
-    proportion native : sans cela une photographie en portrait occupait trois
-    fois la hauteur des deux autres.
-  */
-  .mosaique__grand {
-    aspect-ratio: 16 / 9;
-  }
-
-  .mosaique__petit {
-    aspect-ratio: 4 / 3;
-  }
-
-  .mosaique__grand :global(img),
-  .mosaique__petit :global(img) {
-    inline-size: 100%;
-    block-size: 100%;
-    object-fit: cover;
-  }
-
-  @media (min-width: 56rem) {
-    /*
-      La grande vue épouse la hauteur de la rangée, fixée par les deux tuiles
-      en 3/4 : trois images de hauteur égale, sans letterbox.
-    */
-    .mosaique__grand {
-      aspect-ratio: auto;
-    }
-
-    .mosaique__petit {
-      aspect-ratio: 3 / 4;
-    }
   }
 
   /* ---------- Histoire ---------- */
@@ -402,57 +419,198 @@ const engagements = [
 
   /* ---------- Équipement ---------- */
 
-  .equipement__grille {
+  .equipements__liste {
     display: grid;
-    gap: var(--e-l);
-    align-items: start;
-  }
-
-  @media (min-width: 56rem) {
-    .equipement__grille {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: var(--e-2xl);
-    }
-  }
-
-  .equipement h2 {
-    margin-block: var(--e-2xs) var(--e-m);
-    max-width: 16ch;
-    font-size: var(--t-3);
-  }
-
-  .equipement__liste {
-    display: grid;
-    gap: 0;
+    gap: var(--e-2xl);
     margin: 0;
-    border-block-start: 1px solid var(--c-filet);
+    padding: 0;
+    list-style: none;
   }
 
-  .equipement__liste > div {
+  /*
+    `minmax(0, 1fr)` et non la colonne implicite. Sans colonne déclarée, la
+    grille interne se dimensionne sur le contenu — l'image porte une largeur
+    intrinsèque de 1290 px — et la carte débordait de 109 px hors de sa piste
+    de 406 px, soit 62 px de barre horizontale à 1440. Le minimum automatique
+    d'un élément de grille vaut `auto` : il faut l'annuler explicitement.
+  */
+  .machine {
     display: grid;
-    gap: var(--e-3xs);
-    padding-block: var(--e-s);
-    border-block-end: 1px solid var(--c-filet);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--e-m);
+    align-content: start;
+    min-inline-size: 0;
   }
 
-  @media (min-width: 40rem) {
-    .equipement__liste > div {
-      grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
-      gap: var(--e-m);
-      align-items: baseline;
-    }
+  .machine__plaque,
+  .machine__texte {
+    min-inline-size: 0;
   }
 
-  .equipement__liste dt {
-    font-family: var(--f-titre);
-    font-size: var(--t-1);
+  /*
+    La plaque. Les vues constructeur sont détourées sur blanc : sans support,
+    leur fond formerait un rectangle plus clair que la page, au bord franc et
+    involontaire. La plaque assume ce blanc, le file d'un trait, et
+    `object-fit: contain` garantit qu'aucune machine n'est rognée ni étirée —
+    les quatre proportions natives vont de 1,06 à 1,50.
+  */
+  .machine__plaque {
+    display: grid;
+    aspect-ratio: 4 / 3;
+    padding: var(--e-m);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-l);
+    background-color: var(--c-blanc);
   }
 
-  .equipement__liste dd {
+  .machine__plaque :global(picture) {
+    display: contents;
+  }
+
+  /*
+    L'image remplit sa case et s'y inscrit ; elle ne la dimensionne pas.
+    Centrée par `place-items`, elle gardait sa hauteur naturelle et poussait la
+    plaque au-delà du 4/3 : les trois plaques d'une même ligne mesuraient alors
+    1,45, 1,07 et 1,06 au lieu de 1,33, et les textes voisins ne démarraient
+    plus à la même hauteur. `min-block-size: 0` lève le minimum automatique
+    d'un élément de grille, et `contain` garantit qu'aucune machine n'est
+    rognée ni étirée — les proportions natives vont de 1,06 à 1,50.
+  */
+  .machine__plaque :global(img) {
+    inline-size: 100%;
+    block-size: 100%;
+    min-inline-size: 0;
+    min-block-size: 0;
+    object-fit: contain;
+  }
+
+  .machine__texte {
+    display: grid;
+    gap: var(--e-2xs);
+    align-content: start;
+  }
+
+  .machine__rang {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.14em;
+  }
+
+  .machine__nom {
     margin: 0;
+    font-size: var(--t-2);
+    line-height: 1.15;
+  }
+
+  .machine__capacites {
     color: var(--c-encre-douce);
     font-size: var(--t--1);
-    line-height: 1.55;
+    letter-spacing: 0.02em;
+  }
+
+  /*
+    La zone utile est la première question d'un prospect. Elle est donc traitée
+    comme une donnée : filet au-dessus, intitulé en petites capitales, valeur en
+    chiffres tabulaires assez grands pour être lus d'un coup d'œil.
+  */
+  .machine__zone {
+    display: grid;
+    gap: var(--e-3xs);
+    margin-block-start: var(--e-s);
+    padding-block-start: var(--e-xs);
+    border-block-start: 1px solid var(--c-filet-fort);
+  }
+
+  .machine__zone-label {
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .machine__zone-valeur {
+    font-family: var(--f-titre);
+    font-size: var(--t-2);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+
+  .machine__corps {
+    margin-block-start: var(--e-xs);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .machine__matieres {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .machine__matieres-label,
+  .machine__reserve-label {
+    display: block;
+    margin-block-end: var(--e-3xs);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /*
+    Ce qu'une machine ne fait pas se lit avant le devis, pas après. Le bloc est
+    donc marqué d'un filet rouge et posé sur un fond légèrement creusé : il se
+    repère sans crier, et ne peut pas être pris pour une note de bas de page.
+  */
+  .machine__reserve {
+    margin-block-start: var(--e-xs);
+    padding: var(--e-xs) var(--e-s);
+    border-inline-start: 2px solid var(--c-signal);
+    background-color: var(--c-fond-creux);
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .machine__reserve-label {
+    color: var(--c-signal);
+  }
+
+  /* La première machine passe en deux colonnes et gagne une image plus large. */
+  @media (min-width: 68rem) {
+    .equipements__liste {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--e-xl);
+    }
+
+    .machine[data-majeure] {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      column-gap: var(--e-2xl);
+      align-items: center;
+    }
+
+    .machine[data-majeure] .machine__plaque {
+      aspect-ratio: 3 / 2;
+    }
+
+    .machine[data-majeure] .machine__nom {
+      font-size: var(--t-3);
+    }
+
+    .machine[data-majeure] .machine__zone-valeur {
+      font-size: var(--t-3);
+    }
+  }
+
+  @media (min-width: 40rem) and (max-width: 67.999rem) {
+    .machine {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: var(--e-xl);
+      align-items: center;
+    }
   }
 
   .suite {
