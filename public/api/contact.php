@@ -142,6 +142,45 @@ function surUneLigne(string $valeur, int $max = 200): string
     return mb_substr(trim(preg_replace('/[\r\n]+/', ' ', $valeur) ?? ''), 0, $max);
 }
 
+/**
+ * Une origine est acceptée si elle figure dans la liste, ou si elle désigne
+ * l'hôte qui sert la requête.
+ *
+ * LA LISTE SEULE NE SUFFISAIT PAS. Un hébergement mutualisé sert le même
+ * répertoire sous plusieurs noms — le domaine définitif, et le domaine
+ * temporaire attribué au compte, par lequel on visite le site tant que les
+ * enregistrements DNS ne pointent pas encore ici. Le formulaire visité sous ce
+ * second nom envoyait une origine absente de la liste et se voyait refusé,
+ * alors qu'il s'agissait de la même page, servie par le même serveur.
+ *
+ * CE N'EST PAS UN ASSOUPLISSEMENT. Le garde-fou vise les soumissions
+ * inter-domaines : une page hébergée ailleurs qui posterait ici. Une telle page
+ * porte forcément une origine différente de l'hôte demandé, et l'attaquant ne
+ * choisit pas l'hôte que le serveur voit pour la requête d'une victime. Ce qui
+ * est accepté ici, c'est exactement le cas « même origine », qui est par
+ * définition légitime.
+ *
+ * Le port est retiré de l'hôte demandé : une origine ne le porte que s'il sort
+ * de l'ordinaire, alors que `HTTP_HOST` peut l'inclure. Le protocole n'entre
+ * pas dans la comparaison : derrière un proxy, il n'est pas connu de façon
+ * fiable, et une page du même hôte reste le même site quel qu'il soit.
+ */
+function origineAcceptee(string $origine, array $autorisees): bool
+{
+    if (in_array($origine, $autorisees, true)) {
+        return true;
+    }
+
+    $hoteOrigine = parse_url($origine, PHP_URL_HOST);
+    if (!is_string($hoteOrigine) || $hoteOrigine === '') {
+        return false;
+    }
+
+    $hoteDemande = preg_replace('/:\d+$/', '', (string) ($_SERVER['HTTP_HOST'] ?? '')) ?? '';
+
+    return $hoteDemande !== '' && strcasecmp($hoteOrigine, $hoteDemande) === 0;
+}
+
 function adresseIp(): string
 {
     // Hostinger place un CDN devant le site : l'IP réelle arrive dans l'en-tête.
@@ -346,7 +385,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 
 // L'origine doit correspondre au site : bloque les soumissions inter-domaines.
 $origine = $_SERVER['HTTP_ORIGIN'] ?? '';
-if ($origine !== '' && !in_array($origine, $config['origines_autorisees'], true)) {
+if ($origine !== '' && !origineAcceptee($origine, $config['origines_autorisees'])) {
     repondre(403, 'origine', 'Origine non autorisée.');
 }
 
