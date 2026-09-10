@@ -1,0 +1,571 @@
+---
+/**
+ * Assistant de qualification — la surface.
+ *
+ * IL NE DÉPOSE RIEN. Ni cookie, ni `localStorage`, ni `sessionStorage`. La
+ * conversation vit en mémoire et disparaît avec l'onglet. Ce n'est pas une
+ * omission : la politique de confidentialité du site affirme qu'aucun cookie
+ * n'est déposé et qu'aucune bannière n'est nécessaire. Retenir un parcours
+ * entre deux visites obligerait à réécrire cette page et à demander un
+ * consentement — pour le confort de ne pas recliquer trois boutons. Le prix
+ * est disproportionné.
+ *
+ * IL NE PARLE À PERSONNE. Aucun `fetch`, aucune API, aucun service tiers. Le
+ * graphe est importé depuis `@data/assistant` et donc empaqueté dans le module,
+ * mis en cache une fois pour tout le site — les pages ne portent qu'une balise
+ * de script, pas les données.
+ *
+ * IL SE CONSTRUIT TARD. Fermé, il n'existe qu'un bouton. Le panneau et ses
+ * écrans ne sont fabriqués qu'à la première ouverture : un visiteur qui ne
+ * clique jamais ne paie jamais le rendu.
+ *
+ * IL EST ABSENT DE /contact/. La page porte déjà le formulaire ; une bulle qui
+ * propose d'aller au formulaire y serait une redite.
+ */
+import { textes } from '@data/assistant';
+---
+
+<div class="assistant" data-assistant>
+  <button
+    class="assistant__bulle"
+    type="button"
+    data-assistant-bulle
+    aria-expanded="false"
+    aria-controls="assistant-panneau"
+  >
+    <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+      <path
+        d="M21 12a8 8 0 0 1-8 8H7l-4 3v-4.5A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+    <span>{textes.bulle}</span>
+  </button>
+
+  <div
+    class="assistant__panneau"
+    id="assistant-panneau"
+    data-assistant-panneau
+    role="dialog"
+    aria-modal="false"
+    aria-label={textes.titre}
+    tabindex="-1"
+    hidden
+  ></div>
+</div>
+
+<script>
+  import { etapes, faq, textes } from '@data/assistant';
+  import type { Champ, Etape, IdEtape, Option } from '@data/assistant';
+  import { whatsapp } from '@data/site';
+
+  const racine = document.querySelector<HTMLElement>('[data-assistant]');
+  const bulle = document.querySelector<HTMLButtonElement>('[data-assistant-bulle]');
+  const panneau = document.querySelector<HTMLElement>('[data-assistant-panneau]');
+  if (!racine || !bulle || !panneau) throw new Error('Assistant : ossature absente.');
+
+  /*
+    Fonctions fléchées et non déclarations : une déclaration est hissée, donc
+    considérée appelable avant la garde ci-dessus, et le typage y perd le
+    raffinement qui écarte le `null`.
+  */
+  const ouvrirPanneau = () => {
+    if (!construit) {
+      accueil();
+      construit = true;
+    }
+    panneau.hidden = false;
+    racine.dataset.ouvert = "";
+    bulle.setAttribute("aria-expanded", "true");
+    panneau.focus();
+  };
+
+  const fermerPanneau = () => {
+    panneau.hidden = true;
+    delete racine.dataset.ouvert;
+    bulle.setAttribute("aria-expanded", "false");
+    bulle.focus();
+  };
+
+  const parId = new Map<IdEtape, Etape>(etapes.map((e) => [e.id, e]));
+
+  /** Réponses retenues, en mémoire uniquement. */
+  type Reponses = Partial<Record<Champ, string>>;
+  let reponses: Reponses = {};
+  let projet = '';
+  let pile: IdEtape[] = [];
+  let construit = false;
+
+  const el = <K extends keyof HTMLElementTagNameMap>(
+    balise: K,
+    classe?: string,
+    texte?: string,
+  ): HTMLElementTagNameMap[K] => {
+    const n = document.createElement(balise);
+    if (classe) n.className = classe;
+    if (texte) n.textContent = texte;
+    return n;
+  };
+
+  /*
+    Le délai n'est demandé que lorsqu'il apprend quelque chose. Sur un projet
+    dont on ignore encore le procédé ou la matière, c'est une question de plus
+    pour une réponse qui n'orientera rien.
+  */
+  const projetQualifie = () => Boolean(reponses.savoirFaire && reponses.matiere);
+
+  /** Recolle les fragments dans l'ordre du parcours. Aucune donnée personnelle. */
+  const resume = () => {
+    // `fichier` ferme la phrase : c'est une precision, pas le sujet.
+    const ordre: Champ[] = ['savoirFaire', 'matiere', 'quantite', 'delai', 'fichier'];
+    const morceaux = ordre.map((c) => reponses[c]).filter((m): m is string => Boolean(m));
+    return morceaux.length ? morceaux.join(' ') : '';
+  };
+
+  const lienDevis = () => {
+    const p = new URLSearchParams();
+    if (projet) p.set('projet', projet);
+    if (reponses.quantite) p.set('quantite', reponses.quantite.replace(/^en /, ''));
+    const r = resume();
+    if (r) p.set('message', `Je souhaite réaliser ${r}.`);
+    const q = p.toString();
+    return q ? `/contact/?${q}#formulaire` : '/contact/#formulaire';
+  };
+
+  const lienWhatsapp = () => {
+    const r = resume();
+    const texte = r
+      ? `Bonjour, je souhaite réaliser ${r}. Je souhaiterais échanger avec vous.`
+      : 'Bonjour, je souhaite échanger sur un projet.';
+    return `${whatsapp.url}?text=${encodeURIComponent(texte)}`;
+  };
+
+  /* ---------------------------------------------------------------- Rendu -- */
+
+  const ecran = (titre: string, corps: HTMLElement, retour?: () => void) => {
+    panneau.innerHTML = '';
+
+    const entete = el('div', 'assistant__entete');
+    if (retour) {
+      const b = el('button', 'assistant__retour');
+      b.type = 'button';
+      b.textContent = textes.retour;
+      b.addEventListener('click', retour);
+      entete.appendChild(b);
+    }
+    entete.appendChild(el('p', 'assistant__titre', titre));
+
+    const fermer = el('button', 'assistant__fermer');
+    fermer.type = 'button';
+    fermer.setAttribute('aria-label', textes.fermer);
+    fermer.innerHTML =
+      '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>';
+    fermer.addEventListener('click', fermerPanneau);
+    entete.appendChild(fermer);
+
+    panneau.append(entete, corps);
+  };
+
+  const boutonOption = (o: Option, onClic: (o: Option) => void) => {
+    const b = el('button', 'assistant__option', o.libelle);
+    b.type = 'button';
+    b.addEventListener('click', () => onClic(o));
+    return b;
+  };
+
+  const accueil = () => {
+    pile = [];
+    const corps = el('div', 'assistant__corps');
+    corps.appendChild(el('p', 'assistant__accroche', textes.accroche));
+
+    const demarrer = el('button', 'assistant__cta', textes.demarrer);
+    demarrer.type = 'button';
+    demarrer.addEventListener('click', () => {
+      reponses = {};
+      projet = '';
+      allerA('savoir-faire');
+    });
+    corps.appendChild(demarrer);
+
+    corps.appendChild(el('p', 'assistant__etiquette', textes.faqTitre));
+    const liste = el('ul', 'assistant__faq');
+    faq.forEach((entree) => {
+      const li = el('li');
+      const b = el('button', 'assistant__lien', entree.q);
+      b.type = 'button';
+      b.addEventListener('click', () => reponseFaq(entree.q, entree.r));
+      li.appendChild(b);
+      liste.appendChild(li);
+    });
+    corps.appendChild(liste);
+
+    ecran(textes.titre, corps);
+  };
+
+  const reponseFaq = (q: string, paragraphes: readonly string[]) => {
+    const corps = el('div', 'assistant__corps');
+    paragraphes.forEach((p) => corps.appendChild(el('p', 'assistant__texte', p)));
+    const devis = el('a', 'assistant__cta');
+    devis.href = '/contact/#formulaire';
+    devis.textContent = textes.devis;
+    corps.appendChild(devis);
+    ecran(q, corps, accueil);
+  };
+
+  const allerA = (id: IdEtape) => {
+    if (id === 'sortie') return sortie();
+    // Le délai est sauté quand il n'apprendrait rien.
+    if (id === 'delai' && !projetQualifie()) return sortie();
+
+    const etape = parId.get(id);
+    if (!etape) return sortie();
+
+    const corps = el('div', 'assistant__corps');
+    (etape.texte ?? []).forEach((t) => corps.appendChild(el('p', 'assistant__texte', t)));
+
+    const liste = el('div', 'assistant__options');
+    etape.options.forEach((o) =>
+      liste.appendChild(
+        boutonOption(o, (choix) => {
+          if (choix.champ) {
+            if (choix.resume) reponses[choix.champ] = choix.resume;
+            else delete reponses[choix.champ];
+          }
+          // Une réorientation réécrit ce qu'elle réoriente.
+          if (choix.corrige) Object.assign(reponses, choix.corrige);
+          if (choix.projet) projet = choix.projet;
+          pile.push(id);
+          allerA(choix.vers);
+        }),
+      ),
+    );
+    corps.appendChild(liste);
+
+    const precedent = pile[pile.length - 1];
+    ecran(etape.question, corps, () => {
+      pile.pop();
+      if (precedent) allerA(precedent);
+      else accueil();
+    });
+  };
+
+  const sortie = () => {
+    const corps = el('div', 'assistant__corps');
+    const r = resume();
+    corps.appendChild(
+      el('p', 'assistant__texte', r ? `Votre projet : ${r}.` : textes.sortieSansReponse),
+    );
+    corps.appendChild(el('p', 'assistant__note', textes.incertitude));
+
+    const devis = el('a', 'assistant__cta');
+    devis.href = lienDevis();
+    devis.textContent = textes.devis;
+    corps.appendChild(devis);
+
+    const wa = el('a', 'assistant__second');
+    wa.href = lienWhatsapp();
+    wa.target = '_blank';
+    wa.rel = 'noopener';
+    wa.textContent = textes.whatsapp;
+    corps.appendChild(wa);
+
+    const rejouer = el('button', 'assistant__lien assistant__rejouer', textes.recommencer);
+    rejouer.type = 'button';
+    rejouer.addEventListener('click', accueil);
+    corps.appendChild(rejouer);
+
+    const precedent = pile[pile.length - 1];
+    ecran(textes.sortieTitre, corps, () => {
+      pile.pop();
+      if (precedent) allerA(precedent);
+      else accueil();
+    });
+  };
+
+  bulle.addEventListener('click', () => {
+    if (panneau.hidden) ouvrirPanneau();
+    else fermerPanneau();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panneau.hidden) fermerPanneau();
+  });
+</script>
+
+<style is:global>
+  /*
+    STYLES GLOBAUX, ET C EST NECESSAIRE.
+
+    Astro n applique sa portee qu aux elements presents dans le template. Or
+    tout le contenu du panneau est fabrique en JavaScript a la premiere
+    ouverture : ces elements ne portent pas l attribut de portee, et des regles
+    scopees ne les rencontraient jamais. Constate sur le rendu — le panneau
+    s ouvrait sans bordure, sans fond et sans cibles tactiles.
+
+    Le risque de fuite est nul : chaque selecteur est prefixe « assistant »,
+    et aucun autre composant du site n emploie ce prefixe.
+  */
+  /*
+    Rien de flottant tant que l'assistant est fermé : un bouton, posé dans le
+    coin, à la même échelle typographique que le reste du site. Le panneau
+    s'ouvre au-dessus de l'en-tête (100) et du menu (200), sous la modale (300)
+    et sous le lien d'évitement, qui doit rester atteignable au clavier.
+  */
+  .assistant {
+    position: fixed;
+    inset-block-end: clamp(1rem, 3vw, 1.75rem);
+    inset-inline-end: clamp(1rem, 3vw, 1.75rem);
+    z-index: 250;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--e-2xs);
+  }
+
+  .assistant__bulle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--e-2xs);
+    /* 44 px de haut : la cible tactile recommandée, sans y penser. */
+    min-block-size: 2.75rem;
+    padding-inline: var(--e-s);
+    border: 1px solid var(--c-encre);
+    border-radius: var(--r-l);
+    background-color: var(--c-encre);
+    color: var(--c-clair);
+    font-family: var(--f-titre);
+    font-size: var(--t--1);
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: var(--ombre-m);
+    transition: background-color var(--duree) var(--courbe-sortie);
+  }
+
+  .assistant__bulle:hover {
+    background-color: var(--c-graphite-doux);
+  }
+
+  .assistant[data-ouvert] .assistant__bulle {
+    display: none;
+  }
+
+  .assistant__panneau {
+    display: flex;
+    flex-direction: column;
+    inline-size: min(23.5rem, calc(100vw - 2rem));
+    max-block-size: min(34rem, calc(100dvh - 6rem));
+    border: 1px solid var(--c-filet-fort);
+    border-radius: var(--r-l);
+    background-color: var(--c-blanc);
+    box-shadow: var(--ombre-l);
+    overflow: hidden;
+    animation: assistant-entree var(--duree) var(--courbe-sortie);
+  }
+
+  @keyframes assistant-entree {
+    from { opacity: 0; transform: translateY(0.5rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .assistant__entete {
+    display: flex;
+    align-items: center;
+    gap: var(--e-2xs);
+    padding: var(--e-xs) var(--e-s);
+    border-block-end: 1px solid var(--c-filet);
+  }
+
+  .assistant__titre {
+    flex: 1;
+    min-inline-size: 0;
+    font-family: var(--f-titre);
+    font-size: var(--t--1);
+    line-height: 1.3;
+  }
+
+  .assistant__retour,
+  .assistant__fermer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    /* 44 px : la cible tactile recommandee, y compris pour fermer. */
+    min-block-size: 2.75rem;
+    min-inline-size: 2.75rem;
+    padding-inline: var(--e-2xs);
+    border: 0;
+    background: none;
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    cursor: pointer;
+  }
+
+  .assistant__retour:hover,
+  .assistant__fermer:hover {
+    color: var(--c-encre);
+  }
+
+  .assistant__corps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-xs);
+    padding: var(--e-s);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .assistant__accroche,
+  .assistant__texte {
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  .assistant__note {
+    padding: var(--e-xs);
+    border-inline-start: 2px solid var(--c-filet-fort);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    line-height: 1.55;
+  }
+
+  .assistant__etiquette {
+    margin-block-start: var(--e-2xs);
+    color: var(--c-encre-muette);
+    font-size: var(--t--2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .assistant__options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--e-3xs);
+  }
+
+  .assistant__option {
+    min-block-size: 2.75rem;
+    padding: var(--e-2xs) var(--e-xs);
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-m);
+    background-color: var(--c-fond);
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    text-align: start;
+    cursor: pointer;
+    transition:
+      border-color var(--duree) var(--courbe-sortie),
+      background-color var(--duree) var(--courbe-sortie);
+  }
+
+  .assistant__option:hover {
+    border-color: var(--c-encre);
+    background-color: var(--c-blanc);
+  }
+
+  .assistant__cta,
+  .assistant__second {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 2.75rem;
+    padding-inline: var(--e-s);
+    border: 1px solid var(--c-encre);
+    border-radius: var(--r-m);
+    font-family: var(--f-titre);
+    font-size: var(--t--1);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .assistant__cta {
+    background-color: var(--c-encre);
+    color: var(--c-clair);
+  }
+
+  .assistant__second {
+    background-color: transparent;
+    color: var(--c-encre);
+  }
+
+  .assistant__faq {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .assistant__lien {
+    inline-size: 100%;
+    min-block-size: 2.5rem;
+    padding-block: var(--e-2xs);
+    border: 0;
+    border-block-end: 1px solid var(--c-filet);
+    background: none;
+    color: var(--c-encre);
+    font-size: var(--t--1);
+    line-height: 1.45;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .assistant__lien:hover {
+    color: var(--c-signal);
+  }
+
+  .assistant__rejouer {
+    border-block-end: 0;
+    color: var(--c-encre-muette);
+    text-align: center;
+  }
+
+  /*
+    Sur téléphone, le panneau prend l'écran : une carte de 380 px y serait
+    illisible, et les encoches mangeraient l'en-tête comme le dernier bouton.
+  */
+  @media (max-width: 47.999rem) {
+    .assistant {
+      inset-block-end: clamp(0.75rem, 3vw, 1rem);
+      inset-inline-end: clamp(0.75rem, 3vw, 1rem);
+    }
+
+    .assistant[data-ouvert] {
+      inset: 0;
+      z-index: 250;
+    }
+
+    .assistant[data-ouvert] .assistant__panneau {
+      inline-size: 100%;
+      block-size: 100%;
+      max-block-size: none;
+      border: 0;
+      border-radius: 0;
+    }
+
+    .assistant[data-ouvert] .assistant__entete {
+      padding-block-start: calc(var(--e-xs) + env(safe-area-inset-top, 0px));
+    }
+
+    .assistant[data-ouvert] .assistant__corps {
+      flex: 1;
+      padding-block-end: calc(var(--e-s) + env(safe-area-inset-bottom, 0px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .assistant__panneau {
+      animation: none;
+    }
+
+    .assistant__bulle,
+    .assistant__option,
+    .assistant__cta {
+      transition: none;
+    }
+  }
+</style>

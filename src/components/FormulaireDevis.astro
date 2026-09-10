@@ -6,8 +6,20 @@ const services = (await getCollection('services')).sort(
   (a, b) => a.data.ordre - b.data.ordre,
 );
 
-// Type de projet présélectionné depuis une page de savoir-faire.
-const projetDemande = Astro.url.searchParams.get('projet') ?? '';
+/*
+  LE PRÉREMPLISSAGE SE FAIT AU NAVIGATEUR, ET IL LE DOIT.
+
+  Ce composant lisait `Astro.url.searchParams.get('projet')` pour présélectionner
+  le type de projet quand on arrive depuis une page de savoir-faire. Le site est
+  en `output: 'static'` : cette lecture a lieu à la construction, où aucune
+  requête n'existe. Le HTML produit ne porte donc aucune option `selected`, et
+  la présélection n'a jamais pu fonctionner — vérifié dans `dist/`.
+
+  La lecture est descendue dans le script, où `location.search` existe vraiment.
+  Elle couvre `projet`, et désormais `quantite` et `message`, que l'assistant
+  transmet après avoir posé les mêmes questions : le prospect ne les ressaisit
+  pas. Les valeurs restent modifiables — ce sont des points de départ.
+*/
 const horodatage = Math.floor(Date.now() / 1000);
 ---
 
@@ -85,12 +97,12 @@ const horodatage = Math.floor(Date.now() / 1000);
         <option value="">Je ne sais pas encore</option>
         {
           services.map((service) => (
-            <option value={service.data.titre} selected={service.data.titre === projetDemande}>
+            <option value={service.data.titre}>
               {service.data.titre}
             </option>
           ))
         }
-        <option value="Autre projet" selected={projetDemande === 'Autre projet'}>
+        <option value="Autre projet">
           Autre projet
         </option>
       </select>
@@ -353,8 +365,38 @@ const horodatage = Math.floor(Date.now() / 1000);
       }
     });
 
+    /*
+      Préremplissage depuis l'URL — pages de savoir-faire et assistant.
+
+      Ici et pas dans le frontmatter : le site est statique, `Astro.url` n'y
+      porte aucune requête, et le HTML sortirait toujours vide.
+
+      Les valeurs sont nettoyées et bornées : elles viennent de l'adresse, donc
+      de n'importe qui. Le type de projet n'est retenu que s'il correspond à une
+      option réellement offerte — un intitulé inventé serait ignoré plutôt
+      qu'ajouté. Rien n'est écrasé si le visiteur a déjà saisi quelque chose.
+    */
+    const params = new URLSearchParams(window.location.search);
+    const propre = (cle: string, max: number) =>
+      (params.get(cle) ?? '').replace(/\s+/g, ' ').trim().slice(0, max);
+
+    const projetVoulu = propre('projet', 80);
+    const select = formulaire.querySelector<HTMLSelectElement>('[name="projet"]');
+    if (select && projetVoulu) {
+      const connu = [...select.options].some((o) => o.value === projetVoulu);
+      if (connu) select.value = projetVoulu;
+    }
+
+    const quantite = formulaire.querySelector<HTMLInputElement>('[name="quantite"]');
+    const quantiteVoulue = propre('quantite', 60);
+    if (quantite && quantiteVoulue && !quantite.value) quantite.value = quantiteVoulue;
+
+    const messageChamp = formulaire.querySelector<HTMLTextAreaElement>('[name="message"]');
+    const messageVoulu = propre('message', 300);
+    if (messageChamp && messageVoulu && !messageChamp.value) messageChamp.value = messageVoulu;
+
     // Retour du formulaire sans JavaScript : l'état arrive en paramètre d'URL.
-    const etatUrl = new URLSearchParams(window.location.search).get('etat');
+    const etatUrl = params.get('etat');
     if (etatUrl === 'envoye' || etatUrl === 'enregistre') {
       message('succes', 'Votre demande a bien été envoyée. Nous revenons vers vous rapidement.');
     } else if (etatUrl) {

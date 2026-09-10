@@ -4,6 +4,7 @@ import Polices from '@components/Polices.astro';
 import Seo from '@components/Seo.astro';
 import Entete from '@components/Entete.astro';
 import Pied from '@components/Pied.astro';
+import Assistant from '@components/Assistant.astro';
 
 interface Props {
   titre: string;
@@ -73,6 +74,12 @@ const {
       <slot />
     </main>
     <Pied />
+    {/*
+      L'assistant est absent de la page contact : elle porte déjà le formulaire
+      de devis, et un bouton qui propose d'aller au formulaire y serait une
+      redite. Ailleurs, il n'est qu'un bouton tant qu'on ne l'ouvre pas.
+    */}
+    {chemin !== '/contact/' && <Assistant />}
   </body>
 </html>
 
