@@ -100,10 +100,26 @@ import { textes } from '@data/assistant';
     panneau.focus();
   };
 
+  /*
+    FERMER, C EST TERMINER. Le panneau ne reprend pas la ou on l avait laisse :
+    la conversation est oubliee et l accueil redessine, de sorte que le clic
+    suivant ouvre un echange neuf. Quelqu un qui revient une heure plus tard ne
+    retrouve pas « Petite serie » sans savoir de quel projet il s agissait.
+
+    Rien n est ecrit nulle part pour autant : la remise a zero est celle de
+    trois variables en memoire. Aucun stockage, aucun cookie, aucune URL.
+
+    L accueil est redessine AVANT de rendre le focus au bouton : la croix qui
+    portait le focus disparait avec le contenu, et le focus doit atterrir
+    quelque part de choisi plutot que sur le corps du document.
+  */
   const fermerPanneau = () => {
     panneau.hidden = true;
     delete racine.dataset.ouvert;
     bulle.setAttribute("aria-expanded", "false");
+    reponses = {};
+    projet = "";
+    accueil();
     bulle.focus();
   };
 
