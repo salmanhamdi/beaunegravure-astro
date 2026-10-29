@@ -13,6 +13,7 @@ import {
   adresseLigne,
   email,
   geo,
+  horaires,
   legal,
   reseaux,
   site,
@@ -57,8 +58,15 @@ export function organisation(logo: string, image?: string) {
     priceRange: '€€',
     knowsLanguage: 'fr-FR',
     sameAs: [reseaux.instagram, reseaux.googleMaps],
-    // Les horaires ne sont pas publiés tant qu'ils n'ont pas été confirmés :
-    // mieux vaut aucune donnée qu'une donnée fausse.
+    // Une entrée par plage : la pause méridienne interdit de déclarer une
+    // amplitude unique de 09:00 à 18:00, qui annoncerait ouvert un atelier
+    // fermé. Les jours non listés valent fermés, sans déclaration négative.
+    openingHoursSpecification: horaires.plages.map((plage) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: plage.jours,
+      opens: plage.ouverture,
+      closes: plage.fermeture,
+    })),
   };
 }
 

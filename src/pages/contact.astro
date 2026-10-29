@@ -3,7 +3,7 @@ import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import FormulaireDevis from '@components/FormulaireDevis.astro';
 import Faq from '@components/Faq.astro';
-import { adresse, email, reseaux, telephone, whatsapp, zones } from '@data/site';
+import { adresse, email, horaires, reseaux, telephone, whatsapp, zones } from '@data/site';
 import { urlAbsolue } from '@utils/env';
 import {
   faqSchema,
@@ -125,6 +125,10 @@ const schema = graphe([
             {adresse.codePostal} {adresse.ville}<br />
             {adresse.pays}
           </address>
+          <p class="adresse__horaires">
+            {horaires.resume}.<br />
+            <span class="adresse__fermeture">{horaires.fermeture} : fermé.</span>
+          </p>
           <a
             class="lien-fleche"
             href={reseaux.googleMaps}
@@ -258,6 +262,19 @@ const schema = graphe([
     font-style: normal;
     color: var(--c-encre-douce);
     line-height: 1.7;
+  }
+
+  .adresse__horaires {
+    margin-block-end: var(--e-2xs);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+
+  /* Les jours de fermeture comptent autant que les jours d'ouverture, mais
+     ils se lisent en second : une nuance suffit à les ranger. */
+  .adresse__fermeture {
+    color: var(--c-encre-muette);
   }
 
   .zone p {

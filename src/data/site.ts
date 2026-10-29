@@ -72,12 +72,56 @@ export const legal = {
   },
 } as const;
 
-/** Horaires : aucune source fiable disponible, donc non publiés et absents du schema. */
-export const horaires = null;
+/** Jour de la semaine en notation schema.org, seule forme acceptée par Google. */
+export type JourSemaine =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
+export interface PlageHoraire {
+  jours: readonly JourSemaine[];
+  /** Heure d'ouverture au format « HH:MM », 24 h. */
+  ouverture: string;
+  fermeture: string;
+}
+
+/**
+ * Horaires d'ouverture de l'atelier.
+ *
+ * Source : fiche Google Business « SARL BEAUNE GRAVURE », relevée le
+ * 29/10/2026. C'est la seule source faisant foi — si les horaires changent,
+ * ils changent d'abord sur la fiche, et ce fichier suit. Une divergence entre
+ * les deux est plus pénalisante qu'une absence : Google compare.
+ *
+ * La pause méridienne impose deux plages par jour. En schema.org cela se
+ * traduit par deux `OpeningHoursSpecification` distinctes portant les mêmes
+ * jours, et non par une plage unique de 09:00 à 18:00 qui serait fausse.
+ */
+export const horaires = {
+  plages: [
+    {
+      jours: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      ouverture: '09:00',
+      fermeture: '11:30',
+    },
+    {
+      jours: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      ouverture: '14:00',
+      fermeture: '18:00',
+    },
+  ] as const satisfies readonly PlageHoraire[],
+  /** Jours de fermeture, affichés explicitement : un vide se lit mal. */
+  fermeture: 'Samedi et dimanche',
+  /** Libellé lisible, pour la page contact. */
+  resume: 'Du lundi au vendredi, 9 h – 11 h 30 et 14 h – 18 h',
+} as const;
 
 /** Champs à obtenir auprès du client avant la mise en production. */
 export const donneesManquantes = [
-  'horaires — horaires d’ouverture de l’atelier (schema LocalBusiness + page contact)',
   'telephone — confirmer que le 07 66 22 50 62 est bien la ligne principale et pas uniquement WhatsApp',
   'email — confirmer que contact@beaunegravure.fr est actif et relevé',
 ] as const;
@@ -155,6 +199,7 @@ export const piedDePage = {
     { href: '/realisations/', label: 'Réalisations' },
     { href: '/projets/', label: 'Nos projets' },
     { href: '/a-propos/', label: 'Le studio' },
+    { href: '/zone-d-intervention/', label: 'Zone d’intervention' },
     { href: '/blog/', label: 'Journal' },
     { href: '/contact/', label: 'Demander un devis' },
   ],
