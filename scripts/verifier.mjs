@@ -52,7 +52,23 @@ function cibleExiste(href) {
   );
 }
 
-const fichiers = (await listerHtml(DIST)).sort();
+/**
+ * Fichiers de validation de propriété des moteurs de recherche.
+ *
+ * Google et Bing font déposer à la racine un fichier qui ne contient qu'une
+ * ligne de texte : ni titre, ni description, ni `h1`. Ce n'est pas une page,
+ * c'est un jeton. Audité comme une page, il produit une poignée d'erreurs et
+ * fait échouer le déploiement — alors qu'il doit justement rester en place
+ * indéfiniment, sous peine de perdre la propriété vérifiée.
+ *
+ * Le motif est volontairement étroit : seuls les noms émis par les moteurs
+ * sont ignorés, pas n'importe quel fichier posé à la racine.
+ */
+const VALIDATION_MOTEURS = /^(google[0-9a-f]{16}\.html|BingSiteAuth\.xml)$/;
+
+const fichiers = (await listerHtml(DIST))
+  .filter((fichier) => !VALIDATION_MOTEURS.test(path.basename(fichier)))
+  .sort();
 const urlsConnues = new Set(fichiers.map(urlDe));
 
 let totalLiens = 0;
