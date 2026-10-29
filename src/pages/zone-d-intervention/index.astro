@@ -1,0 +1,312 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { adresse, horaires } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+/**
+ * Les quatre départements de la Bourgogne historique.
+ *
+ * Le découpage retenu est celui que les clients emploient : on dit « la
+ * Bourgogne », pas « la région Bourgogne-Franche-Comté ». Les pièces
+ * partent aussi vers la Franche-Comté et au-delà, ce que dit la section
+ * sur l'expédition — mais une zone d'intervention annoncée doit être une
+ * zone réellement servie, et c'est ici que l'atelier travaille.
+ */
+const departements = [
+  {
+    numero: '21',
+    nom: 'Côte-d’Or',
+    reperes: 'Beaune, Nuits-Saint-Georges, Dijon, Ladoix-Serrigny',
+    texte:
+      'Le département de l’atelier. Domaines et négoces de la Côte de Beaune et de la Côte de Nuits, tonnelleries, restaurants et hôtels, cabinets et commerces de Dijon.',
+  },
+  {
+    numero: '71',
+    nom: 'Saône-et-Loire',
+    reperes: 'Chalon-sur-Saône, Mâcon, Autun, Chagny',
+    texte:
+      'Vignoble de la Côte chalonnaise et du Mâconnais, et un tissu industriel qui demande autre chose : plaques techniques, numéros de série, marquage de traçabilité.',
+  },
+  {
+    numero: '89',
+    nom: 'Yonne',
+    reperes: 'Auxerre, Chablis, Sens, Avallon',
+    texte:
+      'Chablis et l’Auxerrois, avec les mêmes besoins qu’en Côte-d’Or : caisses et coffrets gravés, verres de dégustation, signalétique de domaine.',
+  },
+  {
+    numero: '58',
+    nom: 'Nièvre',
+    reperes: 'Nevers, Clamecy, Cosne-Cours-sur-Loire',
+    texte:
+      'Le département le plus éloigné de l’atelier. Les pièces y partent par transporteur, et le délai en tient compte.',
+  },
+];
+
+/**
+ * Modes de remise réellement proposés. L'ordre va du plus immédiat au plus
+ * lointain : c'est celui dans lequel le client se pose la question.
+ */
+const remises = [
+  {
+    titre: 'Retrait sur place',
+    texte: `À ${adresse.ville}, ${horaires.resume.toLowerCase()}. C’est aussi l’occasion de voir la pièce avant la série, ce qu’aucune photo ne remplace.`,
+  },
+  {
+    titre: 'Livraison en main propre',
+    texte:
+      'Sur les secteurs proches de l’atelier, nous apportons la commande. Utile pour les pièces fragiles, les grandes séries et la signalétique posée.',
+  },
+  {
+    titre: 'Expédition',
+    texte:
+      'Partout en Bourgogne et au-delà. Les pièces fragiles — verres, cristal, plaques de grand format — partent dans un calage préparé pour elles.',
+  },
+];
+
+const secteurs = (await getCollection('zones')).sort(
+  (a, b) => a.data.ordre - b.data.ordre,
+);
+
+const chemin = '/zone-d-intervention/';
+const url = urlAbsolue(chemin);
+const titre = 'Zone d’intervention : toute la Bourgogne | Beaune Gravure';
+const description =
+  'Gravure et découpe laser en Bourgogne : Côte-d’Or, Saône-et-Loire, Yonne et Nièvre. Atelier à Ladoix-Serrigny, retrait sur place, livraison et expédition.';
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Zone d’intervention', href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">Côte-d’Or · Saône-et-Loire · Yonne · Nièvre</p>
+      <h1>Un atelier en Côte-d’Or, une zone qui couvre la Bourgogne.</h1>
+      <p class="chapo">
+        L’atelier est à {adresse.ville}, sur la route des grands crus, entre Beaune et
+        Nuits-Saint-Georges. De là, nous travaillons pour les quatre départements
+        bourguignons&nbsp;: on vient chercher, nous livrons, ou nous expédions. Le choix
+        dépend de la pièce et de la distance, pas d’un barème.
+      </p>
+    </div>
+  </header>
+
+  <section class="section section--creuse">
+    <div class="enveloppe">
+      <div class="tete-section">
+        <div>
+          <p class="surtitre">Les quatre départements</p>
+          <h2>Où nous travaillons, et ce qu’on y fait.</h2>
+        </div>
+      </div>
+
+      <ul class="departements">
+        {
+          departements.map((departement) => (
+            <li class="departement">
+              <p class="departement__numero">{departement.numero}</p>
+              <div class="departement__copie">
+                <h3>{departement.nom}</h3>
+                <p class="departement__reperes">{departement.reperes}</p>
+                <p>{departement.texte}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="enveloppe">
+      <div class="tete-section tete-section--duo">
+        <div>
+          <p class="surtitre">Comment la pièce vous parvient</p>
+          <h2>Trois façons, selon ce qu’on fabrique.</h2>
+        </div>
+        <p class="delai">
+          La fabrication prend <strong>24 à 72 heures</strong>. Le délai court à partir du
+          bon à tirer validé, pas de la demande&nbsp;: c’est l’aller-retour sur le visuel
+          qui fait la durée d’un projet, rarement la machine. S’ajoute ensuite le temps
+          de remise, selon le mode choisi ci-dessous.
+        </p>
+      </div>
+
+      <ul class="remises">
+        {
+          remises.map((remise) => (
+            <li class="remise">
+              <h3>{remise.titre}</h3>
+              <p>{remise.texte}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    secteurs.length > 0 && (
+      <section class="section section--creuse">
+        <div class="enveloppe">
+          <div class="tete-section">
+            <div>
+              <p class="surtitre">Secteurs</p>
+              <h2>Le détail, secteur par secteur.</h2>
+            </div>
+          </div>
+
+          <ul class="secteurs liste-filet">
+            {secteurs.map((secteur) => (
+              <li>
+                <a href={`/zone-d-intervention/${secteur.id}/`}>
+                  <span class="secteurs__ville">
+                    {secteur.data.ville} ({secteur.data.departementNumero})
+                  </span>
+                  <span class="secteurs__chapo">{secteur.data.chapo}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <SectionDevis
+    surtitre="Vous êtes ailleurs en Bourgogne ?"
+    titre="Dites-nous d’où vous écrivez, nous vous dirons comment la pièce arrive."
+    texte="Le mode de remise et le délai dépendent de la pièce autant que de la distance. Une série de verres ne voyage pas comme une plaque d’aluminium."
+  />
+</Base>
+
+<style>
+  /* Voir la note de [slug].astro : `.entete-page` se redéfinit page par page. */
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 20ch;
+  }
+
+  .departements,
+  .remises {
+    display: grid;
+    gap: var(--e-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Les points de bascule suivent ceux du système de grilles
+     (global.css) : deux colonnes à partir de 48rem comme le pied de page,
+     trois seulement à 56rem comme `.grille--3`. Une bascule plus précoce
+     donnait des colonnes de 215 px, plus étroites que partout ailleurs. */
+  @media (width >= 40rem) and (width < 56rem) {
+    .remises {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 48rem) {
+    .departements {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width >= 56rem) {
+    .remises {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .departement {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--e-s);
+    padding-block-start: var(--e-s);
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  /* Le numéro de département est un repère, pas un titre : il se lit en
+     mono, à la taille d'une étiquette, et ne concurrence pas le nom. */
+  .departement__numero {
+    margin: 0;
+    font-family: var(--f-mono);
+    font-size: var(--t--1);
+    color: var(--c-encre-muette);
+    line-height: 1.4;
+  }
+
+  .departement h3 {
+    font-size: var(--t-1);
+  }
+
+  .departement__reperes {
+    margin-block: var(--e-3xs) var(--e-2xs);
+    font-size: var(--t--1);
+    color: var(--c-encre-muette);
+  }
+
+  .departement__copie p:last-child {
+    color: var(--c-encre-douce);
+    line-height: 1.6;
+  }
+
+  .delai {
+    max-width: 48ch;
+    color: var(--c-encre-douce);
+    line-height: 1.6;
+  }
+
+  .delai strong {
+    color: var(--c-encre);
+    font-weight: 600;
+  }
+
+  .remise {
+    padding-block-start: var(--e-s);
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .remise h3 {
+    margin-block-end: var(--e-2xs);
+    font-size: var(--t-1);
+  }
+
+  .remise p {
+    color: var(--c-encre-douce);
+    line-height: 1.6;
+  }
+
+  .secteurs a {
+    display: grid;
+    gap: var(--e-3xs);
+    text-decoration: none;
+  }
+
+  .secteurs__ville {
+    font-weight: 600;
+    color: var(--c-encre);
+  }
+
+  .secteurs__chapo {
+    font-size: var(--t--1);
+    color: var(--c-encre-muette);
+  }
+</style>

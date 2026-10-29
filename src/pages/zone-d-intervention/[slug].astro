@@ -1,0 +1,197 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import Faq from '@components/Faq.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import { parIds } from '@data/realisations';
+import { adresse } from '@data/site';
+import { urlAbsolue } from '@utils/env';
+import { faqSchema, filAriane, graphe, organisation, pageWeb } from '@utils/schema';
+
+export async function getStaticPaths() {
+  const secteurs = await getCollection('zones');
+  return secteurs.map((secteur) => ({
+    params: { slug: secteur.id },
+    props: { secteur },
+  }));
+}
+
+interface Props {
+  secteur: CollectionEntry<'zones'>;
+}
+
+const { secteur } = Astro.props;
+const { data } = secteur;
+const { Content } = await render(secteur);
+
+const chemin = `/zone-d-intervention/${secteur.id}/`;
+const url = urlAbsolue(chemin);
+
+/*
+ * Les pièces sont désignées par identifiant dans le frontmatter. `parIds`
+ * ignore silencieusement un identifiant inconnu, ce qui ferait disparaître
+ * la preuve sans rien signaler — exactement le genre de page creuse que le
+ * schéma de la collection cherche à interdire. On vérifie donc nous-mêmes.
+ */
+const pieces = parIds(...data.pieces);
+if (pieces.length !== data.pieces.length) {
+  const connus = new Set(pieces.map((piece) => piece.id));
+  const inconnus = data.pieces.filter((id) => !connus.has(id));
+  throw new Error(
+    `Secteur « ${secteur.id} » : réalisation(s) introuvable(s) — ${inconnus.join(', ')}.`,
+  );
+}
+
+const LIBELLES_REMISE = {
+  atelier: `Retrait à l’atelier, à ${adresse.ville}`,
+  livraison: 'Livraison en main propre',
+  expedition: 'Expédition',
+} as const;
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Zone d’intervention', href: '/zone-d-intervention/' },
+  { nom: data.ville, href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre: data.seoTitle, description: data.description }),
+  filAriane(miettes),
+  ...(data.faq.length > 0 ? [faqSchema(data.faq)] : []),
+]);
+---
+
+<Base
+  titre={data.seoTitle}
+  description={data.description}
+  chemin={chemin}
+  schema={schema}
+>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">{data.departement} ({data.departementNumero})</p>
+      <h1>{data.h1}</h1>
+      <p class="chapo">{data.chapo}</p>
+    </div>
+  </header>
+
+  <section class="section section--serree">
+    <div class="enveloppe">
+      <ul class="pratique">
+        <li>
+          <span class="pratique__label">Depuis l’atelier</span>
+          <span class="pratique__valeur">{data.distanceKm} km</span>
+        </li>
+        <li>
+          <span class="pratique__label">Délai</span>
+          <span class="pratique__valeur">{data.delai}</span>
+        </li>
+        <li>
+          <span class="pratique__label">Remise</span>
+          <span class="pratique__valeur">
+            {data.remise.map((mode) => LIBELLES_REMISE[mode]).join(' · ')}
+          </span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="enveloppe--texte prose">
+      <Content />
+    </div>
+  </section>
+
+  <section class="section section--creuse">
+    <div class="enveloppe">
+      <div class="tete-section">
+        <div>
+          <p class="surtitre">Ce que ce secteur demande</p>
+          <h2>Les besoins qui reviennent.</h2>
+        </div>
+      </div>
+      <ul class="liste-filet">
+        {data.specificites.map((specificite) => <li>{specificite}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="enveloppe">
+      <div class="tete-section">
+        <div>
+          <p class="surtitre">Déjà livré sur ce secteur</p>
+          <h2>Des pièces, pas des promesses.</h2>
+        </div>
+      </div>
+      <p class="references">{data.references.join(' · ')}</p>
+    </div>
+    <GrilleRealisations realisations={pieces} colonnes={3} />
+  </section>
+
+  {data.faq.length > 0 && <Faq entrees={data.faq} />}
+
+  <SectionDevis
+    surtitre={`Un projet à ${data.ville} ?`}
+    titre="Envoyez le support et le visuel, nous vous dirons ce que ça donne."
+    texte="Le devis part de la pièce réelle : sa matière, sa taille, la quantité et l’usage final."
+  />
+</Base>
+
+<style>
+  /* `.entete-page` n'existe pas dans la feuille globale : chaque page en
+     redéfinit l'espacement dans son propre style scopé. Les valeurs ci-dessous
+     sont celles des dix autres pages — ne pas les faire diverger. */
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 20ch;
+  }
+
+  .pratique {
+    display: grid;
+    gap: var(--e-s);
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Même alignement que la page mère sur `.grille--3` : 56rem. */
+  @media (width >= 56rem) {
+    .pratique {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .pratique > li {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block-start: var(--e-2xs);
+    border-block-start: 1px solid var(--c-filet);
+  }
+
+  .pratique__label {
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-encre-muette);
+  }
+
+  .pratique__valeur {
+    color: var(--c-encre);
+    line-height: 1.5;
+  }
+
+  .references {
+    max-width: var(--largeur-texte);
+    color: var(--c-encre-douce);
+    line-height: 1.7;
+  }
+</style>

@@ -66,6 +66,72 @@ const services = defineCollection({
 });
 
 /**
+ * Secteurs d'intervention.
+ *
+ * Une page par secteur réellement servi, et uniquement par secteur
+ * réellement servi. Ces pages répondent à une question que le client se
+ * pose vraiment — « vous êtes à Ladoix, est-ce que vous me livrez ? » —
+ * et non à une requête qu'on espère capter.
+ *
+ * LE SCHÉMA EST LE GARDE-FOU. Les trois champs `delai`, `pieces` et
+ * `references` sont obligatoires et minorés : une page de secteur sans
+ * délai réel, sans pièce réellement livrée et sans référence nommable ne
+ * compile pas. C'est délibéré. Des pages de ville générées à partir d'un
+ * gabarit, où seul le nom de la commune change, relèvent de ce que Google
+ * nomme « pages satellites » et « abus de contenu à grande échelle » : la
+ * sanction est rétroactive et frappe le domaine entier. Le seul rempart
+ * fiable contre cette dérive est de la rendre impossible à committer.
+ *
+ * Corollaire : on ne contourne pas ces minimums en remplissant les champs
+ * de généralités. Une page qui ne peut pas les honorer ne se fait pas.
+ */
+const zones = defineCollection({
+  loader: glob({ base: './src/content/zones', pattern: '**/*.md' }),
+  schema: z.object({
+    /** Nom d'usage de la commune ou du secteur, tel qu'on le dit. */
+    ville: z.string(),
+    /** Département en toutes lettres, et son numéro pour l'affichage. */
+    departement: z.string(),
+    departementNumero: z.string().regex(/^\d{2,3}$/),
+    seoTitle: z.string().max(65),
+    description: z.string().min(110).max(165),
+    h1: z.string(),
+    chapo: z.string(),
+    /** Ordre d'affichage sur la page mère : du plus proche au plus loin. */
+    ordre: z.number().int(),
+    /** Distance routière depuis l'atelier, en kilomètres. Jamais arrondie à la hausse. */
+    distanceKm: z.number().int().positive(),
+    /**
+     * Ce qui est réellement proposé sur ce secteur. Aucune valeur par
+     * défaut : le mode de remise change d'un secteur à l'autre et doit
+     * être tranché page par page.
+     */
+    remise: z
+      .array(z.enum(['atelier', 'livraison', 'expedition']))
+      .min(1),
+    /** Délai constaté sur ce secteur, formulé sans promesse chiffrée fausse. */
+    delai: z.string().min(20),
+    /**
+     * Identifiants de réalisations réellement livrées sur ce secteur.
+     * Vérifiés contre le catalogue à la construction : un identifiant
+     * inconnu fait échouer le build.
+     */
+    pieces: z.array(z.string()).min(2).max(6),
+    /**
+     * Références clientes de ce secteur, nommées ou décrites.
+     * « Un domaine de la Côte de Nuits » est recevable ; « nos nombreux
+     * clients » ne l'est pas, d'où la longueur minimale.
+     */
+    references: z.array(z.string().min(12)).min(1),
+    /** Ce que ce secteur demande en propre : filières, matières, usages. */
+    specificites: z.array(z.string()).min(2).max(5),
+    faq: z
+      .array(z.object({ question: z.string(), reponse: z.string() }))
+      .default([]),
+  }),
+});
+
+/**
  * Journal de l'atelier. Contenu éditorial long, en Markdown.
  */
 const blog = defineCollection({
@@ -108,4 +174,4 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { services, blog };
+export const collections = { services, zones, blog };
