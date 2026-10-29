@@ -59,14 +59,22 @@ RedirectMatch 404 /api/\.data
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # www -> domaine nu. Activée le 29/10/2026 : « www » est un alias DNS de
+    # l'apex et servait donc le site à deux adresses, le même contenu sous
+    # deux noms. La balise canonique le disait déjà à Google ; une 301 le dit
+    # à tout le monde, et consolide pour de bon les signaux de l'ancien
+    # domaine en « www » vers le domaine nu.
+    #
+    # Placée AVANT la règle HTTPS à dessein : comme elle réécrit déjà vers
+    # « https:// », « http://www » atteint le domaine nu en UNE redirection
+    # au lieu de deux (http://www -> https://www -> https://nu).
+    RewriteCond %{HTTP_HOST} ^www\.beaunegravure\.fr$ [NC]
+    RewriteRule ^(.*)$ https://beaunegravure.fr/$1 [R=301,L]
+
     # HTTPS obligatoire.
     RewriteCond %{HTTPS} !=on
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
-
-    # www -> domaine nu (à activer après le basculement DNS).
-    # RewriteCond %{HTTP_HOST} ^www\.beaunegravure\.fr$ [NC]
-    # RewriteRule ^(.*)$ https://beaunegravure.fr/$1 [R=301,L]
 
     # Ajoute le slash final aux URL de pages, hors fichiers réels.
     RewriteCond %{REQUEST_FILENAME} !-f
