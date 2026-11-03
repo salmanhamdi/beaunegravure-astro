@@ -76,6 +76,18 @@ RedirectMatch 404 /api/\.data
     RewriteCond %{HTTP:X-Forwarded-Proto} !https
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
+    # Ancienne page du site Wix, supprimée définitivement le 03/11/2026.
+    #
+    # 410 plutôt que 404 : « supprimée » au lieu de « introuvable ». Les deux
+    # retirent l'URL de l'index, mais Google traite le 410 sans repasser
+    # plusieurs fois pour vérifier que l'absence dure. C'est cette URL qui
+    # alimentait encore le lien de site « APPLICATIONS » sous le résultat de
+    # recherche, des semaines après la bascule.
+    #
+    # Placée avant la règle de slash final pour couvrir les deux écritures
+    # d'un coup, sans passer par une 301 intermédiaire.
+    RewriteRule ^applications/?$ - [G,L]
+
     # Ajoute le slash final aux URL de pages, hors fichiers réels.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
@@ -88,3 +100,8 @@ RedirectMatch 404 /api/\.data
 # Page d'erreur
 # --------------------------------------------------------------------------
 ErrorDocument 404 /404.html
+
+# Les pages supprimées définitivement servent la même page que les introuvables.
+# Le visiteur n'a que faire de la nuance ; le robot, lui, lit le code HTTP, qui
+# reste 410.
+ErrorDocument 410 /404.html
