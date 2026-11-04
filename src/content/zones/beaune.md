@@ -4,7 +4,7 @@ departement: "Côte-d’Or"
 departementNumero: "21"
 seoTitle: "Gravure laser à Beaune : verres, caisses, plaques, cadeaux"
 description: "Atelier de gravure laser à 7 km de Beaune : verres et flûtes gravés, caisses et coffrets, plaques professionnelles, cadeaux et trophées. Retrait ou livraison."
-h1: "Gravure, découpe et personnalisation à Beaune"
+h1: "Graveur laser à Beaune : gravure, découpe et personnalisation"
 chapo: "Beaune est à sept kilomètres de l’atelier. C’est le secteur que nous servons depuis le premier jour, et le seul où toutes les filières que nous connaissons se croisent dans la même ville."
 ordre: 1
 distanceKm: 7

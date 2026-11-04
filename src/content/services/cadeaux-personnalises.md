@@ -2,9 +2,9 @@
 titre: "Cadeaux personnalisés"
 h1: "Cadeaux personnalisés et objets gravés sur mesure"
 seoTitle: "Cadeaux personnalisés et objets gravés en Bourgogne"
-description: "Objets gravés et cadeaux personnalisés en Bourgogne : couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets. À l’unité comme en série."
+description: "Objets publicitaires et cadeaux personnalisés en Bourgogne : couteaux, stylos, gourdes, coffrets, trophées et médailles. À l’unité comme en série."
 surtitre: "Objets et attentions"
-chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets : nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
+chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets, trophées : nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
 ordre: 8
 famille: "application"
 galerie: "objets"
@@ -12,9 +12,11 @@ visuel: "cadeau-sommelier-personnalise-coffret"
 points:
   - "Couteaux de sommelier et tire-bouchons"
   - "Stylos, porte-clés, gourdes et flasques"
+  - "Objets publicitaires et goodies d’entreprise"
+  - "Trophées, coupes et médailles gravés"
   - "Coffrets et objets en bois"
-  - "Cadeaux clients et collaborateurs en série"
-usages: "Cadeaux d’entreprise, remerciements clients, mariages, anniversaires, départs, remises de prix et attentions personnalisées."
+  - "Sans minimum de commande, de la pièce unique à la série"
+usages: "Cadeaux d’entreprise, objets publicitaires et goodies, remerciements clients, mariages, anniversaires, départs, trophées et remises de prix."
 reperes:
   facteurs:
     - "L’objet retenu"
@@ -34,6 +36,12 @@ faq:
     reponse: "Oui. La personnalisation individuelle est courante sur les couteaux, stylos et gourdes. Il suffit de fournir la liste des textes ; nous la reprenons telle quelle après validation, afin d’éviter toute erreur d’orthographe."
   - question: "Proposez-vous les objets ou faut-il les fournir ?"
     reponse: "Les deux sont possibles. Nous pouvons vous orienter vers des supports que nous savons bien réagir au laser, ou travailler sur les objets que vous avez déjà sélectionnés."
+  - question: "Faites-vous des objets publicitaires et des goodies d’entreprise ?"
+    reponse: "Oui, mais en tant que graveur, pas en tant que revendeur : nous marquons les objets, nous ne tenons pas de catalogue. Stylos, gourdes, gobelets isothermes, porte-clés, clés USB, étuis en cuir. C’est une nuance qui a son intérêt — vous choisissez librement vos supports, y compris chez votre fournisseur habituel, au lieu de vous limiter à une gamme imposée."
+  - question: "Réalisez-vous des trophées, des coupes et des médailles ?"
+    reponse: "Oui : trophées en bois gravé, en plexiglass découpé ou en verre, coupes avec plaque gravée, médailles découpées en série. Sur ce type de commande, ce qui fait le planning n’est presque jamais la fabrication mais la liste des lauréats, qui arrive souvent la semaine précédant la remise. Envoyez-la même incomplète : nous préparons le gabarit et nous n’attendons plus que les noms."
+  - question: "Y a-t-il un minimum de commande ?"
+    reponse: "Non, aucun. Nous gravons une pièce comme deux cents. Le réglage machine est le même ; seule la préparation du fichier, qui se fait une fois, pèse proportionnellement plus lourd sur une pièce unique."
 ---
 
 ## Personnaliser sans surcharger
@@ -63,6 +71,14 @@ Un cadeau client réussi tient à trois choses.
 **Il est cohérent.** Un domaine viticole, un cabinet ou un hôtel n’offrent pas la même chose. Le support raconte quelque chose de celui qui l’offre.
 
 Nous vous aidons à arbitrer entre ces critères avant de graver quoi que ce soit.
+
+Une précision utile, parce qu’elle change la façon de travailler : nous
+intervenons comme **graveur**, pas comme revendeur d’objets publicitaires. Nous
+ne tenons pas de catalogue à écouler. Vous choisissez vos supports où vous
+voulez — y compris chez votre fournisseur habituel — et nous les marquons. En
+échange, nous demandons à voir un exemplaire avant une série : tous les objets
+du marché ne se gravent pas, et un revêtement fin peut s’écailler au bord du
+tracé.
 
 ## Séries et personnalisation individuelle
 

@@ -38,6 +38,8 @@ faq:
     reponse: "Oui. Le trait de jauge est gravé au laser à la hauteur demandée, avec un repère net et régulier d’un verre à l’autre. Précisez la contenance visée et le modèle de verre lors de la demande."
   - question: "Combien de temps faut-il pour recevoir les verres ?"
     reponse: "Le délai dépend du modèle de verre, de son approvisionnement, de la quantité et de la période. Nous l’indiquons précisément dans le devis, après validation du support et du visuel."
+  - question: "Pourquoi passer par un graveur sur verre plutôt que commander des verres déjà marqués ?"
+    reponse: "Pour trois raisons concrètes. Le choix du modèle d’abord : vous n’êtes pas limité à un catalogue, et nous gravons le verre que vous avez retenu, y compris un modèle que vous utilisez déjà en salle. La quantité ensuite : les offres de verres personnalisés imposent souvent un seuil de plusieurs dizaines de pièces, alors qu’un graveur travaille à l’unité. Le rendu enfin : la gravure laser transforme la surface du verre et ne s’efface pas, là où une impression ou une sérigraphie pâlit au fil des passages en lave-vaisselle."
 ---
 
 ## Un marquage qui appartient au verre
