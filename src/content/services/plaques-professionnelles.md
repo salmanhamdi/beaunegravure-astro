@@ -32,7 +32,7 @@ faq:
   - question: "Fournissez-vous la fixation ?"
     reponse: "Nous intégrons les perçages, les entraxes et le mode de pose dès la préparation du fichier, afin que la plaque arrive prête à poser. Précisez le support mural — pierre, enduit, bois, vitrine — lors de la demande."
   - question: "Quelles dimensions sont possibles ?"
-    reponse: "Les formats courants vont de la plaque de porte de 10 × 5 cm aux panneaux de plusieurs dizaines de centimètres. La zone de gravure CO₂ atteint 101 × 65 cm et la zone fibre 30 × 30 cm pour le métal."
+    reponse: "Les formats courants vont de la plaque de porte de 10 × 5 cm aux panneaux de plusieurs dizaines de centimètres. La zone de gravure CO₂ atteint 101 × 61 cm et la zone fibre 20 × 20 cm pour le métal."
   - question: "Pouvez-vous reproduire une plaque existante ?"
     reponse: "Oui, à partir d’une photo nette prise de face avec une règle posée à côté pour l’échelle. Nous redessinons le tracé et vous soumettons un bon à tirer avant fabrication."
   - question: "Faites-vous les plaques de boîte aux lettres et les numéros de maison ?"

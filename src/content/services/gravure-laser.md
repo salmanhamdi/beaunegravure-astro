@@ -10,9 +10,9 @@ famille: "fabrication"
 galerie: "bois"
 visuel: "gravure-laser-bois-corton-grand-cru-beaune-gravure"
 points:
-  - "CO₂ · bois et matières · 101 × 65 cm"
+  - "CO₂ · bois et matières · 101 × 61 cm"
   - "UV 355 nm · verre et supports délicats · 10 × 10 cm"
-  - "Fibre 1064 nm · métaux et traçabilité · 30 × 30 cm"
+  - "Fibre 1064 nm · métaux et traçabilité · 20 × 20 cm"
   - "Essai systématique sur matière inconnue"
 usages: "Verres, coffrets, plaques, cadeaux, objets professionnels, caisses bois, signalétique et pièces techniques."
 reperes:
@@ -53,7 +53,7 @@ Le résultat dépend en revanche toujours du matériau : sa couleur, son épaiss
 
 Chêne, noyer, hêtre, contreplaqué, MDF et placage : le CO₂ révèle le veinage avec un contraste qui varie selon l’essence. Il travaille aussi l’acrylique, le cuir, le liège, le papier, le carton, l’ardoise et certains textiles.
 
-**Zone maximale : 101 × 65 cm.** C’est la machine des coffrets, des caisses de vin, de la décoration, des trophées, de la signalétique et des pièces grand format.
+**Zone maximale : 101 × 61 cm.** C’est la machine des coffrets, des caisses de vin, de la décoration, des trophées, de la signalétique et des pièces grand format.
 
 ### Laser UV 355 nm — verre et surfaces délicates
 
@@ -65,7 +65,7 @@ L’UV produit un marquage fin avec un très faible apport thermique. C’est ce
 
 Le fibre marque les métaux de façon permanente, sans encre et sans contact : inox, aluminium, laiton, cuivre, titane et certains métaux revêtus.
 
-**Zone maximale : 30 × 30 cm.** Logos, textes fins, QR codes, numéros de série, plaques techniques, outillage, bijoux et [traçabilité industrielle](/services/etiquettes-industrielles/).
+**Zone maximale : 20 × 20 cm.** Logos, textes fins, QR codes, numéros de série, plaques techniques, outillage, bijoux et [traçabilité industrielle](/services/etiquettes-industrielles/).
 
 ## Les matières que nous travaillons
 

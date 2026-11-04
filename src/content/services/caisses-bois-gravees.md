@@ -30,7 +30,7 @@ faq:
   - question: "Peut-on combiner gravure et couleur ?"
     reponse: "Oui. L’impression UV permet d’ajouter des visuels en couleur sur le bois, seule ou en complément d’une gravure. C’est utile pour un blason polychrome ou un visuel photographique."
   - question: "Travaillez-vous les grands formats ?"
-    reponse: "Oui. La zone de gravure CO₂ atteint 101 × 65 cm, ce qui couvre les panneaux de caisse, les couvercles grand format et la plupart des coffrets de présentation."
+    reponse: "Oui. La zone de gravure CO₂ atteint 101 × 61 cm, ce qui couvre les panneaux de caisse, les couvercles grand format et la plupart des coffrets de présentation."
 ---
 
 ## Ce que la gravure apporte à une caisse
