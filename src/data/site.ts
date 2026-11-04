@@ -138,15 +138,33 @@ export const site = {
   anneesExperience: 20,
 } as const;
 
-/** Zone d'intervention réellement revendiquée par l'atelier. */
+/**
+ * Zone d'intervention réellement revendiquée par l'atelier.
+ *
+ * Sert deux usages : la liste affichée sur la page de contact, et
+ * `areaServed` des données structurées. Les communes d'abord, du plus proche
+ * au plus loin, puis les huit départements de la région, puis la région
+ * elle-même — un moteur qui cherche « Côte-d'Or » comme un moteur qui cherche
+ * « Besançon » doit trouver la zone déclarée explicitement.
+ */
 export const zones = [
   'Beaune',
   'Ladoix-Serrigny',
   'Nuits-Saint-Georges',
   'Dijon',
   'Chalon-sur-Saône',
+  'Mâcon',
+  'Auxerre',
+  'Dole',
+  'Besançon',
   'Côte-d’Or',
   'Saône-et-Loire',
+  'Yonne',
+  'Nièvre',
+  'Jura',
+  'Doubs',
+  'Haute-Saône',
+  'Territoire de Belfort',
   'Bourgogne-Franche-Comté',
 ] as const;
 

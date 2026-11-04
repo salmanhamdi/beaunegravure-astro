@@ -155,6 +155,34 @@ const schema = graphe([
     max-width: 20ch;
   }
 
+  /* Tableaux du corps Markdown.
+     Les mêmes règles que `.contenu` sur les pages de savoir-faire : les
+     tableaux y étaient déjà stylés, mais sous une classe que les pages de
+     secteur n'emploient pas, si bien qu'un tableau écrit ici sortait nu.
+     Un comparatif se lit mieux qu'un paragraphe quand il s'agit de trancher
+     entre des matières ou des filières — et c'est la forme la plus sûrement
+     reprise telle quelle par les moteurs. */
+  .prose :global(table) {
+    inline-size: 100%;
+    margin-block: var(--e-m);
+    border-collapse: collapse;
+    font-size: var(--t--1);
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.7rem 0.9rem;
+    border-block-end: 1px solid var(--c-filet);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  .prose :global(th) {
+    color: var(--c-encre);
+    font-weight: 600;
+    border-block-end-color: var(--c-filet-fort);
+  }
+
   .pratique {
     display: grid;
     gap: var(--e-s);

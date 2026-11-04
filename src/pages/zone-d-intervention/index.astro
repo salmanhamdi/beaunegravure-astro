@@ -8,42 +8,78 @@ import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 
 /**
- * Les quatre départements de la Bourgogne historique.
+ * Les huit départements de Bourgogne-Franche-Comté.
  *
- * Le découpage retenu est celui que les clients emploient : on dit « la
- * Bourgogne », pas « la région Bourgogne-Franche-Comté ». Les pièces
- * partent aussi vers la Franche-Comté et au-delà, ce que dit la section
- * sur l'expédition — mais une zone d'intervention annoncée doit être une
- * zone réellement servie, et c'est ici que l'atelier travaille.
+ * Le découpage retenu est administratif, parce que c'est celui de la zone
+ * réellement servie : l'atelier est en Côte-d'Or et expédie dans toute la
+ * région. L'ordre va du département de l'atelier aux plus éloignés, et
+ * chaque texte dit ce qui y est réellement demandé — pas ce qu'on
+ * aimerait y vendre.
+ *
+ * ATTENTION. Ces entrées ne sont PAS des pages. Une page de secteur
+ * n'existe que là où nous pouvons nommer une référence et montrer une
+ * pièce réellement livrée : c'est ce que le schéma de la collection
+ * `zones` impose, et c'est ce qui sépare un maillage honnête de ce que
+ * Google nomme « pages satellites ». Les départements sans page listée
+ * ci-dessous sont servis par expédition, et le disent.
  */
 const departements = [
   {
     numero: '21',
     nom: 'Côte-d’Or',
-    reperes: 'Beaune, Nuits-Saint-Georges, Dijon, Ladoix-Serrigny',
+    reperes:
+      'Beaune, Ladoix-Serrigny, Nuits-Saint-Georges, Dijon, Gevrey-Chambertin, Meursault, Chassagne',
     texte:
-      'Le département de l’atelier. Domaines et négoces de la Côte de Beaune et de la Côte de Nuits, tonnelleries, restaurants et hôtels, cabinets et commerces de Dijon.',
+      'Le département de l’atelier, et celui où nous travaillons tous les jours. Domaines et négoces de la Côte de Beaune et de la Côte de Nuits, tonnelleries, hôtels et restaurants, commerces, cabinets et institutions de Beaune et de Dijon. C’est le seul département où la remise en main propre est la règle.',
   },
   {
     numero: '71',
     nom: 'Saône-et-Loire',
-    reperes: 'Chalon-sur-Saône, Mâcon, Autun, Chagny',
+    reperes: 'Chalon-sur-Saône, Chagny, Mâcon, Autun, Mercurey, Givry, Rully',
     texte:
-      'Vignoble de la Côte chalonnaise et du Mâconnais, et un tissu industriel qui demande autre chose : plaques techniques, numéros de série, marquage de traçabilité.',
+      'Vignoble de la Côte chalonnaise et du Mâconnais, et un tissu industriel qui demande autre chose : plaques techniques, numéros de série, marquage de traçabilité sur inox et aluminium. Nous livrons de Chagny jusqu’à Mâcon.',
   },
   {
     numero: '89',
     nom: 'Yonne',
-    reperes: 'Auxerre, Chablis, Sens, Avallon',
+    reperes: 'Auxerre, Chablis, Sens, Avallon, Tonnerre',
     texte:
-      'Chablis et l’Auxerrois, avec les mêmes besoins qu’en Côte-d’Or : caisses et coffrets gravés, verres de dégustation, signalétique de domaine.',
+      'Chablis et l’Auxerrois, où nous comptons des clients de longue date, avec les mêmes besoins qu’en Côte-d’Or : caisses et coffrets gravés, verres de dégustation, signalétique de domaine et de caveau.',
   },
   {
     numero: '58',
     nom: 'Nièvre',
-    reperes: 'Nevers, Clamecy, Cosne-Cours-sur-Loire',
+    reperes: 'Nevers, Clamecy, Cosne-Cours-sur-Loire, Pouilly-sur-Loire',
     texte:
-      'Le département le plus éloigné de l’atelier. Les pièces y partent par transporteur, et le délai en tient compte.',
+      'Pouilly-Fumé et les domaines de la Loire nivernaise, et de la signalétique pour les commerces et les collectivités. Les pièces y partent par transporteur, et le délai en tient compte.',
+  },
+  {
+    numero: '39',
+    nom: 'Jura',
+    reperes: 'Lons-le-Saunier, Arbois, Dole, Poligny, Château-Chalon',
+    texte:
+      'Un vignoble à part, avec ses propres contenants : le clavelin du vin jaune ne se grave pas comme une bouteille bordelaise. Caisses, coffrets, verres et objets de caveau, expédiés avec un calage préparé pour le verre. Dole est l’une des villes que nous servons régulièrement.',
+  },
+  {
+    numero: '25',
+    nom: 'Doubs',
+    reperes: 'Besançon, Montbéliard, Pontarlier',
+    texte:
+      'Le département le plus industriel de la région, et celui où nos commandes sont les plus techniques : marquage de traçabilité, plaques de machine, étiquettes à données variables. S’y ajoutent la signalétique de commerce et les cadeaux d’entreprise, à Besançon comme dans le pays de Montbéliard.',
+  },
+  {
+    numero: '70',
+    nom: 'Haute-Saône',
+    reperes: 'Vesoul, Gray, Lure, Luxeuil-les-Bains',
+    texte:
+      'Mécanique, plastiques techniques et sous-traitance industrielle, pour l’essentiel. Marquage de pièces, plaques d’identification et repérage de locaux.',
+  },
+  {
+    numero: '90',
+    nom: 'Territoire de Belfort',
+    reperes: 'Belfort, Delle, Beaucourt',
+    texte:
+      'Le département le plus éloigné de l’atelier. Les commandes y sont presque toujours industrielles et expédiées : marquage de série, plaques techniques, étiquettes de traçabilité.',
   },
 ];
 
@@ -64,7 +100,7 @@ const remises = [
   {
     titre: 'Expédition',
     texte:
-      'Partout en Bourgogne et au-delà. Les pièces fragiles — verres, cristal, plaques de grand format — partent dans un calage préparé pour elles.',
+      'Partout en Bourgogne-Franche-Comté et au-delà. Les pièces fragiles — verres, cristal, plaques de grand format — partent dans un calage préparé pour elles.',
   },
 ];
 
@@ -74,9 +110,9 @@ const secteurs = (await getCollection('zones')).sort(
 
 const chemin = '/zone-d-intervention/';
 const url = urlAbsolue(chemin);
-const titre = 'Zone d’intervention : toute la Bourgogne | Beaune Gravure';
+const titre = 'Zone d’intervention : Côte-d’Or et Bourgogne-Franche-Comté';
 const description =
-  'Gravure et découpe laser en Bourgogne : Côte-d’Or, Saône-et-Loire, Yonne et Nièvre. Atelier à Ladoix-Serrigny, retrait sur place, livraison et expédition.';
+  'Gravure et découpe laser en Côte-d’Or et dans toute la Bourgogne-Franche-Comté. Atelier à Ladoix-Serrigny, près de Beaune : retrait, livraison, expédition.';
 
 const miettes = [
   { nom: 'Accueil', href: '/' },
@@ -94,12 +130,12 @@ const schema = graphe([
   <header class="section section--serree entete-page">
     <div class="enveloppe">
       <FilAriane miettes={miettes} />
-      <p class="surtitre">Côte-d’Or · Saône-et-Loire · Yonne · Nièvre</p>
-      <h1>Un atelier en Côte-d’Or, une zone qui couvre la Bourgogne.</h1>
+      <p class="surtitre">Côte-d’Or · Saône-et-Loire · Yonne · Nièvre · Jura · Doubs · Haute-Saône · Territoire de Belfort</p>
+      <h1>Un atelier en Côte-d’Or, une zone qui couvre la Bourgogne-Franche-Comté.</h1>
       <p class="chapo">
         L’atelier est à {adresse.ville}, sur la route des grands crus, entre Beaune et
-        Nuits-Saint-Georges. De là, nous travaillons pour les quatre départements
-        bourguignons&nbsp;: on vient chercher, nous livrons, ou nous expédions. Le choix
+        Nuits-Saint-Georges. De là, nous travaillons pour les huit départements de la
+        région&nbsp;: on vient chercher, nous livrons, ou nous expédions. Le choix
         dépend de la pièce et de la distance, pas d’un barème.
       </p>
     </div>
@@ -109,7 +145,7 @@ const schema = graphe([
     <div class="enveloppe">
       <div class="tete-section">
         <div>
-          <p class="surtitre">Les quatre départements</p>
+          <p class="surtitre">Les huit départements</p>
           <h2>Où nous travaillons, et ce qu’on y fait.</h2>
         </div>
       </div>
@@ -170,6 +206,16 @@ const schema = graphe([
             </div>
           </div>
 
+          <p class="secteurs__note">
+            Ces pages existent parce que nous pouvons y nommer un client et montrer une
+            pièce réellement livrée. Nous travaillons aussi, par expédition, pour des
+            clients de <strong>Mâcon</strong>, <strong>Auxerre</strong>,
+            <strong>Dole</strong> et <strong>Besançon</strong>, sans leur consacrer de
+            page faute de pièces photographiées. Ailleurs dans la région, la prestation
+            est la même et part par transporteur&nbsp;: écrivez-nous en indiquant votre
+            commune.
+          </p>
+
           <ul class="secteurs liste-filet">
             {secteurs.map((secteur) => (
               <li>
@@ -188,7 +234,7 @@ const schema = graphe([
   }
 
   <SectionDevis
-    surtitre="Vous êtes ailleurs en Bourgogne ?"
+    surtitre="Vous êtes ailleurs en Bourgogne-Franche-Comté ?"
     titre="Dites-nous d’où vous écrivez, nous vous dirons comment la pièce arrive."
     texte="Le mode de remise et le délai dépendent de la pièce autant que de la distance. Une série de verres ne voyage pas comme une plaque d’aluminium."
   />
@@ -292,6 +338,16 @@ const schema = graphe([
   .remise p {
     color: var(--c-encre-douce);
     line-height: 1.6;
+  }
+
+  /* La note précède la liste : elle explique pourquoi certaines communes ont
+     une page et pas d'autres, question que se pose le visiteur qui ne trouve
+     pas la sienne. */
+  .secteurs__note {
+    max-width: var(--largeur-texte);
+    margin-block-end: var(--e-m);
+    color: var(--c-encre-douce);
+    line-height: 1.7;
   }
 
   .secteurs a {
