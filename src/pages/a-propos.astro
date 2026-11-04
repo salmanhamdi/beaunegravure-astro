@@ -18,9 +18,17 @@ import speedy from '@assets/images/atelier/equipement-trotec-speedy-400-print-an
 
 const chemin = '/a-propos/';
 const url = urlAbsolue(chemin);
-const titre = 'Le studio Beaune Gravure | Création et fabrication';
+/*
+ * Le titre et la description nomment le PARC MACHINES, pas seulement le
+ * studio. Cette page porte le contenu technique le plus précis du site —
+ * quatre machines, leurs zones utiles, leurs matières et ce qu'elles ne font
+ * pas — et elle ne se présentait que comme une page « à propos », donc elle
+ * ne pouvait répondre à aucune des questions qu'on lui pose réellement :
+ * quelle taille maximale, quelle matière, quelle technologie.
+ */
+const titre = 'Le studio et le parc machines | Beaune Gravure';
 const description =
-  'Studio de création et de fabrication près de Beaune : vingt ans de pratique, quatre moyens de production, et deux marques développées en interne.';
+  'Le studio et l’atelier près de Beaune : quatre moyens de production détaillés — laser CO₂ 101 × 61 cm, UV, fibre 50 W, impression UV — matières et limites.';
 
 const miettes = [
   { nom: 'Accueil', href: '/' },
