@@ -2,19 +2,20 @@
 titre: "Plaques professionnelles"
 h1: "Plaques professionnelles gravées et personnalisées"
 seoTitle: "Plaques professionnelles gravées à Beaune | Sur mesure"
-description: "Plaques professionnelles gravées à Beaune pour cabinets, commerces, restaurants, hôtels et artisans. Laiton, inox, plexiglass, bois et acrylique bicouche."
+description: "Plaques gravées sur mesure à Beaune : cabinets, commerces, bureaux, portes, boîtes aux lettres et portails. Laiton, inox, plexiglass et stratifié gravable."
 surtitre: "Identité de façade"
-chapo: "Une plaque professionnelle est souvent le premier contact physique avec votre activité. Elle doit être lisible, durable et cohérente avec votre image — pas seulement porter votre nom."
+chapo: "Une plaque est souvent le premier contact physique avec une activité — ou avec une maison. Elle doit être lisible, durable et cohérente avec son lieu, pas seulement porter un nom."
 ordre: 6
 famille: "application"
 galerie: "plaques"
 visuel: "plaques-professionnelles-gravees-multi-finitions"
 points:
   - "Plaques de cabinet, de commerce et de façade"
-  - "Plaques de comptoir et supports d’accueil"
-  - "Inox, laiton, plexiglass, bois et acrylique bicouche"
+  - "Plaques de porte, de bureau et de salle"
+  - "Plaques de boîte aux lettres, de portail et numéros de maison"
+  - "Inox, laiton, plexiglass, bois et stratifié gravable"
   - "Plaques avis Google et QR code"
-usages: "Cabinets libéraux, commerces, restaurants, hôtels, chambres d’hôtes, artisans, domaines viticoles et collectivités."
+usages: "Cabinets libéraux, commerces, restaurants, hôtels, chambres d’hôtes, bureaux et entreprises, artisans, domaines viticoles, collectivités et particuliers."
 reperes:
   facteurs:
     - "La matière et sa finition"
@@ -34,6 +35,12 @@ faq:
     reponse: "Les formats courants vont de la plaque de porte de 10 × 5 cm aux panneaux de plusieurs dizaines de centimètres. La zone de gravure CO₂ atteint 101 × 65 cm et la zone fibre 30 × 30 cm pour le métal."
   - question: "Pouvez-vous reproduire une plaque existante ?"
     reponse: "Oui, à partir d’une photo nette prise de face avec une règle posée à côté pour l’échelle. Nous redessinons le tracé et vous soumettons un bon à tirer avant fabrication."
+  - question: "Faites-vous les plaques de boîte aux lettres et les numéros de maison ?"
+    reponse: "Oui, pour les particuliers comme pour les bureaux : plaque de boîte aux lettres, plaque de portail, numéro de maison, plaque de porte et de sonnette. La contrainte est toujours la même et elle est sous-estimée — une boîte aux lettres prend la pluie, le gel et le plein soleil toute l’année. L’inox, le laiton et le stratifié gravable teinté tiennent ; une plaque d’intérieur posée dehors se ternit en une saison."
+  - question: "Et pour les bureaux et les salles de réunion ?"
+    reponse: "Plaques de porte, numéros de bureau, noms de salle, repérage d’étage. L’intérêt d’une série commandée d’un coup est la cohérence : même matière, même typographie, même entraxe de perçage, ce qui évite le patchwork visible dans un couloir. Nous conservons le bon à tirer validé, donc la plaque d’un bureau réaménagé deux ans plus tard sort identique aux autres."
+  - question: "Quelles couleurs sont possibles ?"
+    reponse: "Sur stratifié gravable, 49 coloris, dont le noir et or des cabinets, le blanc et bleu très lisible de loin, et les métallisés brossés argent et or. La couche de surface s’efface sous le laser et révèle la couleur du cœur : le texte ne peut pas s’effacer, puisqu’il est la matière."
 ---
 
 ## Ce qui rend une plaque lisible
