@@ -10,6 +10,7 @@ import {
   imagesDeclarees,
   parCategorie,
   realisations,
+  sousGaleriesDe,
   type CategorieSlug,
 } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
@@ -29,6 +30,7 @@ interface Props {
 const { slug } = Astro.props;
 const categorie = CATEGORIES[slug];
 const pieces = parCategorie(slug);
+const sousGaleries = sousGaleriesDe(slug);
 
 // Savoir-faire réellement rattachés aux pièces de cette catégorie.
 const cheminsServices = [...new Set(pieces.map((p) => p.service).filter(Boolean))];
@@ -93,6 +95,34 @@ const schema = graphe([
       </nav>
     </div>
   </header>
+
+  {/*
+    Les galeries thématiques, placées entre l'en-tête et la grille complète.
+    Cette catégorie peut compter vingt pièces ; quelqu'un qui cherche des
+    couteaux de sommelier n'a pas à les parcourir toutes. Le raccourci vient
+    donc avant la grille, pas après.
+  */}
+  {
+    sousGaleries.length > 0 && (
+      <section class="section section--serree galeries">
+        <div class="enveloppe--large">
+          <p class="surtitre">Par famille de pièces</p>
+          <ul class="galeries__liste">
+            {sousGaleries.map((galerie) => (
+              <li>
+                <a href={`/realisations/${galerie.categorie}/${galerie.slug}/`}>
+                  <strong>{galerie.nom}</strong>
+                  <span class="galeries__compte">
+                    {galerie.pieces.length} pièces
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <div class="section section--serree">
     <div class="enveloppe--large">
@@ -189,6 +219,47 @@ const schema = graphe([
     border-color: var(--c-encre);
     background-color: var(--c-encre);
     color: var(--c-fond);
+  }
+
+  /* ------------------------ Galeries thématiques -------------------------- */
+
+  .galeries__liste {
+    display: grid;
+    gap: var(--e-s);
+    margin-block-start: var(--e-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 40rem) {
+    .galeries__liste {
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    }
+  }
+
+  .galeries__liste a {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block-start: var(--e-2xs);
+    border-block-start: 1px solid var(--c-filet);
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe);
+  }
+
+  .galeries__liste a:hover {
+    border-block-start-color: var(--c-encre);
+  }
+
+  .galeries__liste strong {
+    color: var(--c-encre);
+    font-weight: 600;
+  }
+
+  .galeries__compte {
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.06em;
+    color: var(--c-encre-muette);
   }
 
   /* ------------------------- Ce que montre la page ------------------------ */

@@ -810,3 +810,334 @@ export function parIds(...ids: string[]): Realisation[] {
     .map((id) => realisations.find((r) => r.id === id))
     .filter((r): r is Realisation => Boolean(r));
 }
+
+/* ======================================================================= */
+/*                            SOUS-GALERIES                                */
+/* ======================================================================= */
+
+/**
+ * Découpage fin du catalogue, en galeries thématiques.
+ *
+ * POURQUOI. Les six catégories décrivent une MATIÈRE ; elles ne décrivent pas
+ * ce qu'on cherche. Quelqu'un qui veut faire graver des couteaux de sommelier
+ * ne cherche pas « objets », et la page « Objets et cadeaux » lui demande de
+ * parcourir dix-neuf pièces pour trouver les six qui le concernent. Les
+ * sous-galeries donnent une page par famille réellement demandée.
+ *
+ * CE N'EST PAS UNE FABRIQUE DE PAGES. Chaque sous-galerie est un sous-ensemble
+ * de pièces RÉELLEMENT photographiées : rien n'est généré, rien n'est
+ * dupliqué. La contrainte est vérifiée au build par `sousGaleriesVerifiees`
+ * ci-dessous, qui refuse un identifiant inconnu, une pièce rangée dans la
+ * mauvaise catégorie, une pièce présente dans deux galeries, et toute galerie
+ * de moins de trois pièces — en dessous, une page n'a rien à montrer.
+ *
+ * La catégorie `decoupe` (quatre pièces) n'en a volontairement aucune : la
+ * découper produirait exactement les pages creuses que ce garde-fou cherche à
+ * empêcher.
+ */
+export interface SousGalerie {
+  slug: string;
+  categorie: CategorieSlug;
+  nom: string;
+  titre: string;
+  seoTitle: string;
+  description: string;
+  intro: string;
+  pieces: string[];
+}
+
+export const SOUS_GALERIES: SousGalerie[] = [
+  /* ---------------------------- Bois et coffrets --------------------------- */
+  {
+    slug: 'caisses-et-coffrets',
+    categorie: 'bois',
+    nom: 'Caisses et coffrets',
+    titre: 'Caisses de vin et coffrets gravés',
+    seoTitle: 'Caisses de vin et coffrets bois gravés',
+    description:
+      'Caisses de vin et coffrets en bois gravés pour les domaines de Bourgogne : logo, appellation, millésime, armoiries, et coffrets cadeaux personnalisés.',
+    intro:
+      'La pièce qui sort du chai et qui porte le nom du domaine. Ces caisses et ces coffrets ont été gravés sur les bois fournis par les domaines eux-mêmes — peuplier brut, pin huilé, chêne de récupération — qui ne réagissent pas de la même façon sous le faisceau. D’où l’exemplaire d’essai demandé avant chaque série.',
+    pieces: [
+      'caisses-vin-bois-gravees-appellations-bourgogne',
+      'caisse-vin-bois-gravee-domaine-bruno-colin',
+      'caisse-bois-gravee-armoiries-domaine',
+      'caisses-vin-bois-personnalisees-domaines',
+      'caisses-bois-gravees-hospices-de-beaune',
+      'coffrets-bois-graves-cadeaux-personnalises',
+      'caisse-bois-bouteille-impression-couleur',
+      'impression-uv-coffret-bois-mariage-personnalise',
+    ],
+  },
+  {
+    slug: 'panneaux-et-grand-format',
+    categorie: 'bois',
+    nom: 'Panneaux et grand format',
+    titre: 'Panneaux de bois gravés et grand format',
+    seoTitle: 'Panneaux bois gravés et gravure grand format',
+    description:
+      'Panneaux de bois gravés au laser et imprimés en UV : enseignes de domaine, panneaux d’accueil, décors et pièces de grand format jusqu’à 101 × 61 cm.',
+    intro:
+      'C’est la zone utile du laser CO₂ qui fixe la limite : 101 × 61 cm en une passe, au-delà de quoi la pièce se compose. Ces panneaux mêlent les deux procédés — la gravure creuse et brunit le bois, l’impression UV y dépose la couleur — et le choix dépend d’abord de l’exposition du panneau, pas du rendu voulu.',
+    pieces: [
+      'gravure-grand-format-panneau-domaine-viticole',
+      'gravure-laser-bois-corton-grand-cru-beaune-gravure',
+      'gravure-laser-panneau-bois-moto-club',
+      'impression-uv-bois-planches-decoratives',
+      'impression-uv-icone-religieuse-panneau-bois',
+    ],
+  },
+  {
+    slug: 'decoupe-et-decoration-bois',
+    categorie: 'bois',
+    nom: 'Découpe et décoration',
+    titre: 'Découpe laser du bois et pièces décoratives',
+    seoTitle: 'Découpe laser bois et décoration personnalisée',
+    description:
+      'Découpe laser du bois et du liège : prénoms et formes découpées, sous-verres pour la restauration, pièces décoratives et objets gravés sur mesure.',
+    intro:
+      'Ici le laser ne marque pas, il taille. Formes, prénoms, cercles, sous-verres : la découpe du bois et du liège demande un trait net et une reprise propre des angles, ce qui se règle au gabarit plutôt qu’à la machine. Les pièces fines partent avec leurs chutes, qui servent d’essai de teinte.',
+    pieces: [
+      'decoupe-bois-prenoms-cercles-personnalises',
+      'decoupe-laser-decoration-bois-personnalisee',
+      'sous-verres-liege-graves-restauration',
+      'impression-uv-tonnelet-bois-beaune-malmedy-beaune-gravure',
+    ],
+  },
+  /* ---------------------------- Métal et pièces ---------------------------- */
+  {
+    slug: 'tracabilite-et-donnees-variables',
+    categorie: 'metal',
+    nom: 'Traçabilité et données variables',
+    titre: 'Traçabilité laser : numéros de série, QR et DataMatrix',
+    seoTitle: 'Traçabilité laser : QR codes et DataMatrix',
+    description:
+      'Marquage laser de traçabilité : numéros de série incrémentés, codes DataMatrix et QR codes uniques, à partir d’un simple tableau de données.',
+    intro:
+      'Deux pièces d’une même série portent rarement le même code. Chaque pièce reçoit le sien depuis un tableau que vous transmettez : le réglage machine ne change pas, seul le fichier change. Une pièce test est marquée et scannée avant lancement — c’est cette étape qui garantit que la série sera exploitable par vos lecteurs.',
+    pieces: [
+      'plaque-metal-qr-code-donnees-variables',
+      'pieces-inox-marquage-numero-serie',
+      'outil-metal-marque-datamatrix-laser',
+      'etiquettes-industrielles-donnees-variables',
+      'etiquette-plastique-qr-code-tracabilite',
+    ],
+  },
+  {
+    slug: 'plaques-techniques',
+    categorie: 'metal',
+    nom: 'Plaques techniques',
+    titre: 'Plaques techniques et plaques de machine',
+    seoTitle: 'Plaques techniques et plaques de machine gravées',
+    description:
+      'Plaques techniques gravées au laser : plaques de machine, plaques constructeur, boîtiers et coffrets, identification d’armoires et de postes.',
+    intro:
+      'Une plaque de machine doit rester lisible après des années de nettoyage industriel. Le marquage laser fibre ne dépose rien sur l’inox ou l’aluminium : il modifie la surface, donc il ne peut pas s’écailler ni se décoller. Sur une plaque déjà au format, nous marquons sans découper — notre découpe laser ne traite pas le métal.',
+    pieces: [
+      'plaques-metal-gravees-laser-serie',
+      'plaque-inox-marquee-laser-en-production',
+      'etiquette-industrielle-jaune-metal-beaune-gravure',
+      'boitier-technique-plaque-identification',
+    ],
+  },
+  {
+    slug: 'outillage-et-pieces-marquees',
+    categorie: 'metal',
+    nom: 'Outillage et pièces',
+    titre: 'Marquage d’outillage et de pièces techniques',
+    seoTitle: 'Marquage laser d’outillage et de pièces',
+    description:
+      'Marquage laser sur outillage et pièces techniques : outils, forets, gabarits, filtres aluminium, composants plastiques et pièces de précision.',
+    intro:
+      'Identifier un outil, c’est limiter les pertes et rendre un inventaire possible. Ces pièces ont été marquées au laser fibre dans une zone utile de 20 × 20 cm, mandrin rotatif compris pour les formes cylindriques. Sur les plastiques techniques, la compatibilité se vérifie au cas par cas : ceux qui contiennent du chlore ne sont pas traités.',
+    pieces: [
+      'marquage-laser-fibre-outils-serie',
+      'outil-industriel-grave-reference',
+      'marquage-laser-filtres-aluminium-serie',
+      'marquage-laser-composant-plastique-industriel',
+      'piece-plastique-marquee-reference',
+      'piece-horlogerie-gravee-edition-limitee',
+    ],
+  },
+  /* --------------------------- Objets et cadeaux --------------------------- */
+  {
+    slug: 'sommellerie-et-couteaux',
+    categorie: 'objets',
+    nom: 'Sommellerie et couteaux',
+    titre: 'Couteaux de sommelier et objets de cave gravés',
+    seoTitle: 'Couteaux de sommelier et tire-bouchons gravés',
+    description:
+      'Couteaux de sommelier, tire-bouchons et coffrets viticoles gravés au laser : appellations, logos de domaines, prénoms, à l’unité comme en série.',
+    intro:
+      'La famille la plus demandée en Côte de Beaune, souvent commandée après les caisses et les verres — avec le même fichier, déjà préparé et validé. Sur un manche, quelques millimètres de gravure suffisent : l’objet reste un outil de travail, pas un support publicitaire.',
+    pieces: [
+      'cadeau-sommelier-personnalise-coffret',
+      'couteaux-graves-appellations-vins-bourgogne',
+      'couteaux-coffrets-viticoles-personnalises',
+      'couteaux-personnalises-gravure-laser-fibre',
+      'couteaux-pliants-personnalises-serie',
+      'tire-bouchon-bois-grave-personnalise',
+    ],
+  },
+  {
+    slug: 'gourdes-et-contenants',
+    categorie: 'objets',
+    nom: 'Gourdes et contenants',
+    titre: 'Gourdes, flasques et gobelets gravés',
+    seoTitle: 'Gourdes, flasques et gobelets inox gravés',
+    description:
+      'Gourdes et flasques inox, gobelets isothermes gravés au laser fibre : marquage permanent qui résiste au lavage, pour les séries d’entreprise.',
+    intro:
+      'Sur un contenant manipulé tous les jours, l’impression part au lavage. Le laser fibre marque l’inox sans rien déposer, donc rien ne peut s’écailler. La seule vraie question est le revêtement : un inox brossé rend très bien, un objet peint ou laqué peut s’écailler au bord du tracé, et cela se vérifie sur un exemplaire avant la série.',
+    pieces: [
+      'gourde-inox-gravee-laser-fibre',
+      'gourdes-bleues-marquees-laser-serie',
+      'flasques-inox-personnalisees-laser',
+      'gobelets-isothermes-personnalises-laser',
+    ],
+  },
+  {
+    slug: 'ecriture-et-bureau',
+    categorie: 'objets',
+    nom: 'Écriture et bureau',
+    titre: 'Stylos et objets de bureau personnalisés',
+    seoTitle: 'Stylos gravés et objets de bureau personnalisés',
+    description:
+      'Stylos bois et métal gravés, clés USB personnalisées : objets d’écriture et de bureau marqués au laser pour les cadeaux clients et les séminaires.',
+    intro:
+      'Une ligne de texte sur un stylo, pas davantage. C’est la famille où la retenue compte le plus : le destinataire doit pouvoir sortir l’objet devant quelqu’un d’autre sans gêne, ce qu’un logo surdimensionné interdit. Ces pièces ont été gravées en série pour des cadeaux clients et des séminaires.',
+    pieces: [
+      'stylo-professionnel-marque-logo-laser',
+      'stylos-bois-graves-cadeaux-entreprise',
+      'cles-usb-bois-personnalisees-gravure',
+    ],
+  },
+  {
+    slug: 'objets-du-quotidien',
+    categorie: 'objets',
+    nom: 'Objets du quotidien',
+    titre: 'Objets du quotidien gravés sur mesure',
+    seoTitle: 'Objets gravés : couverts, cuir, montres',
+    description:
+      'Couverts inox, porte-clés, briquets, montres et étuis en cuir gravés au laser : pièces uniques et petites séries, sur l’objet que vous apportez.',
+    intro:
+      'Ce sont souvent des pièces apportées par leur propriétaire, et parfois sentimentales. Avant d’intervenir sur un objet de valeur, nous vérifions la matière et la forme, nous expliquons le risque, et nous proposons un essai quand c’est possible. Une gravure ne se défait pas.',
+    pieces: [
+      'couverts-inox-personnalises-prenom',
+      'porte-cles-metal-personnalise-gravure',
+      'briquet-metal-personnalise-gravure',
+      'gravure-laser-fibre-montre-metal',
+      'gravure-laser-etui-cuir-rouge',
+    ],
+  },
+  /* ------------------------------ Verre ------------------------------------ */
+  {
+    slug: 'verres-et-flutes',
+    categorie: 'verre',
+    nom: 'Verres et flûtes',
+    titre: 'Verres à vin et flûtes gravés au logo',
+    seoTitle: 'Verres à vin et flûtes gravés au logo du domaine',
+    description:
+      'Verres à vin et de dégustation gravés au logo des domaines, des caveaux et des restaurants : un marquage satiné qui ne part pas au lave-vaisselle.',
+    intro:
+      'Chaque modèle de verre demande son propre réglage, à cause de la courbure : c’est le premier exemplaire qui coûte le plus, pas les suivants. La zone exploitable dépend de la paroi — plus elle est bombée, plus elle se réduit — et le motif s’adapte à la forme du verre plutôt que l’inverse.',
+    pieces: [
+      'verre-vin-grave-logo-domaine-muzard',
+      'verre-vin-grave-logo-domaine-patrick-guillot',
+      'verre-grave-machine-laser-logo-entreprise',
+      'verre-grave-veuve-ambal-spritz-club',
+      'verre-bleu-marquage-laser-rotatif',
+    ],
+  },
+  {
+    slug: 'mariage-et-evenement',
+    categorie: 'verre',
+    nom: 'Mariage et événement',
+    titre: 'Verres, flûtes et bouteilles pour un événement',
+    seoTitle: 'Flûtes et bouteilles gravées mariage et baptême',
+    description:
+      'Flûtes à champagne, verres et bouteilles gravés pour un mariage, un baptême ou un anniversaire : pièces uniques comme séries de table.',
+    intro:
+      'Sur ces commandes, la fabrication n’est presque jamais le facteur limitant : c’est la liste des noms, qui arrive souvent la semaine d’avant. Envoyez-la même incomplète, nous préparons le gabarit et nous n’attendons plus que les prénoms. Une paire de verres se traite avec le même soin qu’une série.',
+    pieces: [
+      'flutes-champagne-gravees-mariage',
+      'verre-vin-grave-mariage-personnalise',
+      'bouteille-vin-gravee-bapteme-personnalisee',
+      'bouteille-champagne-coffret-personnalises',
+    ],
+  },
+  /* --------------------------- Plaques et signalétique --------------------- */
+  {
+    slug: 'plaques-de-cabinet',
+    categorie: 'plaques',
+    nom: 'Plaques de cabinet',
+    titre: 'Plaques de cabinet et de façade gravées',
+    seoTitle: 'Plaques de cabinet et de façade gravées',
+    description:
+      'Plaques professionnelles gravées pour cabinets et commerces : laiton, inox, plexiglass découpé, acrylique bicouche, et badges personnalisés.',
+    intro:
+      'Une plaque de façade se choisit par son exposition avant de se choisir par son style : un laiton gravé et une plaque d’acrylique bicouche ne vieillissent pas de la même façon en plein sud. Nous demandons donc toujours où elle sera posée, et à quelle orientation, avant de proposer une matière.',
+    pieces: [
+      'plaques-professionnelles-gravees-multi-finitions',
+      'plaque-professionnelle-avocat-exterieure-beaune-gravure',
+      'plaque-plexiglass-doree-avocat-decoupee',
+      'badge-professionnel-grave-personnalise',
+    ],
+  },
+  {
+    slug: 'reperage-et-numerotation',
+    categorie: 'plaques',
+    nom: 'Repérage et numérotation',
+    titre: 'Repérage couleur, numéros de porte et signalétique',
+    seoTitle: 'Repérage couleur, numéros de porte et étiquettes',
+    description:
+      'Repérage et numérotation gravés : étiquettes en acrylique bicouche dans 49 coloris, numéros de porte découpés et séries de plaques cohérentes.',
+    intro:
+      'Sur stratifié gravable, le laser enlève la couche de surface et révèle la couleur du cœur : le texte est la matière, il ne peut donc ni pâlir ni s’effacer. Quarante-neuf coloris disponibles, dont les combinaisons normalisées du repérage — noir sur jaune, blanc sur rouge, blanc sur bleu. Dos adhésif ou perçage, selon le support de pose.',
+    pieces: [
+      'plaques-plexiglass-bicouche-reperes-couleur',
+      'decoupe-plexiglass-plaque-numero-porte',
+      'gravure-laser-plaques-vigneron-serie-atelier',
+    ],
+  },
+];
+
+/**
+ * Sous-galeries validées contre le catalogue.
+ *
+ * Le contrôle est délibérément intransigeant, et il échoue le build : une
+ * galerie qui renvoie vers une pièce absente afficherait une page à trous, et
+ * une pièce rangée sous la mauvaise catégorie casserait le fil d'Ariane.
+ */
+export const sousGaleriesVerifiees: SousGalerie[] = (() => {
+  const vues = new Map<string, string>();
+  for (const galerie of SOUS_GALERIES) {
+    if (galerie.pieces.length < 3) {
+      throw new Error(
+        `Sous-galerie « ${galerie.slug} » : ${galerie.pieces.length} pièce(s), trois au minimum.`,
+      );
+    }
+    for (const id of galerie.pieces) {
+      const piece = realisations.find((r) => r.id === id);
+      if (!piece) {
+        throw new Error(`Sous-galerie « ${galerie.slug} » : pièce introuvable — ${id}.`);
+      }
+      if (piece.categorie !== galerie.categorie) {
+        throw new Error(
+          `Sous-galerie « ${galerie.slug} » : la pièce ${id} est en catégorie « ${piece.categorie} ».`,
+        );
+      }
+      const deja = vues.get(id);
+      if (deja) {
+        throw new Error(`Pièce ${id} présente dans « ${deja} » et « ${galerie.slug} ».`);
+      }
+      vues.set(id, galerie.slug);
+    }
+  }
+  return SOUS_GALERIES;
+})();
+
+/** Sous-galeries d'une catégorie, dans l'ordre de déclaration. */
+export function sousGaleriesDe(categorie: CategorieSlug): SousGalerie[] {
+  return sousGaleriesVerifiees.filter((g) => g.categorie === categorie);
+}

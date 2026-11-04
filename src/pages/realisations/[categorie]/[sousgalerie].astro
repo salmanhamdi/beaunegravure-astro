@@ -1,0 +1,273 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import FilAriane from '@components/FilAriane.astro';
+import GrilleRealisations from '@components/GrilleRealisations.astro';
+import SectionDevis from '@components/SectionDevis.astro';
+import {
+  CATEGORIES,
+  imagesDeclarees,
+  parIds,
+  sousGaleriesDe,
+  sousGaleriesVerifiees,
+  type SousGalerie,
+} from '@data/realisations';
+import { urlAbsolue } from '@utils/env';
+import { filAriane, graphe, listeImages, organisation, pageWeb } from '@utils/schema';
+
+/**
+ * Galeries thématiques, un niveau sous les catégories de matière.
+ *
+ * La page mère décrit une MATIÈRE, celle-ci décrit une FAMILLE DE PIÈCES —
+ * « couteaux de sommelier », « traçabilité », « verres et flûtes ». C'est le
+ * niveau auquel un client formule sa demande, et celui auquel il cherche.
+ *
+ * Aucune donnée n'est inventée ici : `sousGaleriesVerifiees` a déjà refusé au
+ * build toute galerie dont une pièce manque, se trompe de catégorie, apparaît
+ * deux fois ou qui compte moins de trois pièces.
+ */
+export function getStaticPaths() {
+  return sousGaleriesVerifiees.map((galerie) => ({
+    params: { categorie: galerie.categorie, sousgalerie: galerie.slug },
+    props: { galerie },
+  }));
+}
+
+interface Props {
+  galerie: SousGalerie;
+}
+
+const { galerie } = Astro.props;
+const categorie = CATEGORIES[galerie.categorie];
+const pieces = parIds(...galerie.pieces);
+const voisines = sousGaleriesDe(galerie.categorie);
+
+// Savoir-faire réellement rattachés aux pièces montrées, jamais une liste
+// choisie à la main : si aucune pièce ne pointe vers un savoir-faire, le bloc
+// ne s'affiche pas.
+const cheminsServices = [...new Set(pieces.map((p) => p.service).filter(Boolean))];
+const services = (await getCollection('services')).filter((service) =>
+  cheminsServices.includes(`/services/${service.id}/`),
+);
+
+const chemin = `/realisations/${galerie.categorie}/${galerie.slug}/`;
+const url = urlAbsolue(chemin);
+const titre = `${galerie.seoTitle} | Beaune Gravure`;
+const description = galerie.description;
+
+const miettes = [
+  { nom: 'Accueil', href: '/' },
+  { nom: 'Réalisations', href: '/realisations/' },
+  { nom: categorie.nom, href: `/realisations/${galerie.categorie}/` },
+  { nom: galerie.nom, href: chemin },
+];
+
+const schema = graphe([
+  organisation('/og/beaune-gravure-partage.jpg'),
+  pageWeb({ url, titre, description }),
+  filAriane(miettes),
+  listeImages({
+    url,
+    nom: galerie.titre,
+    description: galerie.description,
+    images: await imagesDeclarees(pieces),
+  }),
+]);
+---
+
+<Base titre={titre} description={description} chemin={chemin} schema={schema}>
+  <header class="section section--serree entete-page">
+    <div class="enveloppe--large">
+      <FilAriane miettes={miettes} />
+      <p class="surtitre">{categorie.nom}</p>
+      <h1>{galerie.titre}</h1>
+      <p class="chapo">{galerie.description}</p>
+
+      <nav class="filtres" aria-label={`Galeries de la catégorie ${categorie.nom}`}>
+        <a href={`/realisations/${galerie.categorie}/`}>
+          Toute la catégorie
+          <span aria-hidden="true"> ({categorie.nom})</span>
+        </a>
+        {
+          voisines.map((autre) =>
+            autre.slug === galerie.slug ? (
+              <span class="filtres__actif" aria-current="page">
+                {autre.nom}
+                <span aria-hidden="true"> ({autre.pieces.length})</span>
+              </span>
+            ) : (
+              <a href={`/realisations/${autre.categorie}/${autre.slug}/`}>
+                {autre.nom}
+                <span aria-hidden="true"> ({autre.pieces.length})</span>
+              </a>
+            ),
+          )
+        }
+      </nav>
+    </div>
+  </header>
+
+  <div class="section section--serree">
+    <div class="enveloppe--large">
+      <GrilleRealisations realisations={pieces} colonnes={3} prioritaires={3} />
+    </div>
+  </div>
+
+  {/* Même parti que sur la page mère : les pièces parlent avant le texte. */}
+  <section class="section section--serree contexte">
+    <div class="enveloppe contexte__grille">
+      <div>
+        <p class="surtitre">Ce que montre cette galerie</p>
+        <p class="contexte__intro">{galerie.intro}</p>
+      </div>
+      <div class="contexte__usages">
+        <p class="contexte__etiquette">Dans la catégorie</p>
+        <p>{categorie.usages}</p>
+        <a class="lien-fleche" href={`/realisations/${galerie.categorie}/`}>
+          Voir toute la catégorie {categorie.nom.toLowerCase()}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {
+    services.length > 0 && (
+      <section class="section section--creuse">
+        <div class="enveloppe">
+          <p class="surtitre">Savoir-faire associés</p>
+          <ul class="associes">
+            {services.map((service) => (
+              <li>
+                <a href={`/services/${service.id}/`}>
+                  <strong>{service.data.titre}</strong>
+                  <span>{service.data.chapo}</span>
+                  <span class="lien-fleche">{service.data.titre} en détail</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <SectionDevis />
+</Base>
+
+<style>
+  /* Les styles reprennent ceux de la page mère : `.entete-page`, `.filtres` et
+     `.contexte` sont scopés par fichier dans ce projet, donc redéclarés ici.
+     Ne pas les faire diverger — les deux niveaux doivent se ressembler. */
+  .entete-page .fil-ariane {
+    margin-block-end: var(--e-l);
+  }
+
+  .entete-page h1 {
+    margin-block: var(--e-2xs) var(--e-m);
+    max-width: 18ch;
+  }
+
+  .filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--e-2xs);
+    margin-block-start: var(--e-xl);
+  }
+
+  .filtres a,
+  .filtres__actif {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    border: 1px solid var(--c-filet);
+    border-radius: var(--r-m);
+    color: var(--c-encre-douce);
+    font-size: var(--t--1);
+    font-weight: 500;
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe), color var(--duree) var(--courbe);
+  }
+
+  .filtres a:hover {
+    border-color: var(--c-encre);
+    color: var(--c-encre);
+  }
+
+  .filtres__actif {
+    border-color: var(--c-encre);
+    background-color: var(--c-encre);
+    color: var(--c-fond);
+  }
+
+  /* ------------------------- Ce que montre la page ------------------------ */
+
+  .contexte__grille {
+    display: grid;
+    gap: var(--e-l);
+    align-items: start;
+  }
+
+  @media (min-width: 56rem) {
+    .contexte__grille {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--e-2xl);
+    }
+  }
+
+  .contexte__intro {
+    color: var(--c-encre-douce);
+    line-height: 1.7;
+  }
+
+  .contexte__etiquette {
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-encre-muette);
+    margin-block-end: var(--e-2xs);
+  }
+
+  .contexte__usages p:not(.contexte__etiquette) {
+    color: var(--c-encre-douce);
+    line-height: 1.7;
+  }
+
+  .contexte__usages .lien-fleche {
+    margin-block-start: var(--e-s);
+    display: inline-block;
+  }
+
+  /* --------------------------- Savoir-faire liés -------------------------- */
+
+  .associes {
+    display: grid;
+    gap: var(--e-m);
+    margin-block-start: var(--e-m);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .associes {
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    }
+  }
+
+  .associes a {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block-start: var(--e-s);
+    border-block-start: 1px solid var(--c-filet);
+    text-decoration: none;
+  }
+
+  .associes strong {
+    color: var(--c-encre);
+  }
+
+  .associes span:not(.lien-fleche) {
+    color: var(--c-encre-muette);
+    font-size: var(--t--1);
+    line-height: 1.6;
+  }
+</style>
