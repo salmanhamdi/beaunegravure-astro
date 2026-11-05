@@ -57,6 +57,21 @@ export function organisation(logo: string, image?: string) {
     areaServed: zones.map((nom) => ({ '@type': 'Place', name: nom })),
     priceRange: '€€',
     knowsLanguage: 'fr-FR',
+    // Identifiants legaux. Une entreprise immatriculee se rattache a une
+    // entite reelle et unique : c'est le signal le plus fort dont dispose un
+    // moteur pour cesser de reconstruire un nom de memoire et le reprendre
+    // tel qu'il est declare. Ces donnees figurent deja aux mentions legales,
+    // ou la loi les rend obligatoires : rien de nouveau n'est divulgue ici.
+    ...(legal.siret ? { taxID: legal.siret } : {}),
+    ...(legal.tvaIntracommunautaire ? { vatID: legal.tvaIntracommunautaire } : {}),
+    identifier: [
+      ...(legal.siret
+        ? [{ '@type': 'PropertyValue', propertyID: 'SIRET', value: legal.siret }]
+        : []),
+      ...(legal.rcs
+        ? [{ '@type': 'PropertyValue', propertyID: 'RCS', value: legal.rcs }]
+        : []),
+    ],
     sameAs: [reseaux.instagram, reseaux.googleMaps],
     // Une entrée par plage : la pause méridienne interdit de déclarer une
     // amplitude unique de 09:00 à 18:00, qui annoncerait ouvert un atelier
