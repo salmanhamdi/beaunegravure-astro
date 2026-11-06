@@ -56,6 +56,8 @@ faq:
 
 C’est ce qui rend les deux adaptés aux environnements où l’identification doit rester valide plusieurs années : parc machines, outillage, pièces de rechange, armoires techniques, repérage de locaux.
 
+**Une troisième voie existe, et cette page ne la traite pas** : marquer directement la pièce métallique, sans rien y coller. Quand le produit lui-même doit porter son numéro de série, son code DataMatrix ou sa référence, c’est du [marquage laser sur métal](/services/marquage-industriel/) — un support qui n’est plus une étiquette, mais la pièce. Cette page-ci reste celle de l’étiquette que l’on pose.
+
 ## L’étiquette gravée sur mesure
 
 C’est la réponse la plus souple, et la plus demandée hors traçabilité de pièce.
