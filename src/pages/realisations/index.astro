@@ -3,7 +3,12 @@ import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
 import SectionDevis from '@components/SectionDevis.astro';
-import { categoriesOrdonnees, imagesDeclarees, realisations } from '@data/realisations';
+import {
+  categoriesOrdonnees,
+  imagesDeclarees,
+  realisations,
+  sousGaleriesDe,
+} from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, listeImages, organisation, pageWeb } from '@utils/schema';
 
@@ -17,6 +22,22 @@ const miettes = [
   { nom: 'Accueil', href: '/' },
   { nom: 'Réalisations', href: chemin },
 ];
+
+/**
+ * Les galeries thématiques, regroupées par catégorie.
+ *
+ * Elles n'étaient atteignables qu'en passant par une page de catégorie, soit
+ * trois clics depuis l'accueil. Les lister ici les ramène à deux, et surtout
+ * les rattache à une page déjà explorée : un moteur qui relit celle-ci les
+ * découvre toutes d'un coup, au lieu d'attendre qu'il repasse sur les six
+ * catégories une par une. Rien n'est inventé — ce sont les mêmes galeries,
+ * déjà vérifiées au build par `sousGaleriesVerifiees`.
+ *
+ * `decoupe` n'en a aucune et disparaît naturellement du regroupement.
+ */
+const famillesParCategorie = categoriesOrdonnees
+  .map((categorie) => ({ categorie, galeries: sousGaleriesDe(categorie.slug) }))
+  .filter((groupe) => groupe.galeries.length > 0);
 
 const schema = graphe([
   organisation('/og/beaune-gravure-partage.jpg'),
@@ -64,6 +85,38 @@ const schema = graphe([
       </nav>
     </div>
   </header>
+
+  {/*
+    Placé avant la grille : soixante-deux pièces d'affilée, c'est beaucoup à
+    parcourir quand on cherche des couteaux de sommelier ou des caisses de vin.
+    Le raccourci vient donc en premier.
+  */}
+  <section class="section section--serree familles">
+    <div class="enveloppe--large">
+      <p class="surtitre">Par famille de pièces</p>
+      <div class="familles__groupes">
+        {
+          famillesParCategorie.map(({ categorie, galeries }) => (
+            <div class="familles__groupe">
+              <h2 class="familles__categorie">
+                <a href={`/realisations/${categorie.slug}/`}>{categorie.nom}</a>
+              </h2>
+              <ul class="familles__liste">
+                {galeries.map((galerie) => (
+                  <li>
+                    <a href={`/realisations/${categorie.slug}/${galerie.slug}/`}>
+                      <strong>{galerie.nom}</strong>
+                      <span class="familles__compte">{galerie.pieces.length} pièces</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
   <div class="section section--serree">
     <div class="enveloppe--large">
@@ -121,5 +174,71 @@ const schema = graphe([
     border-color: var(--c-encre);
     background-color: var(--c-encre);
     color: var(--c-fond);
+  }
+
+  /* ------------------------ Galeries thématiques -------------------------- */
+
+  .familles__groupes {
+    display: grid;
+    gap: var(--e-l);
+    margin-block-start: var(--e-m);
+  }
+
+  @media (min-width: 48rem) {
+    .familles__groupes {
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      gap: var(--e-xl) var(--e-l);
+    }
+  }
+
+  .familles__categorie {
+    margin: 0;
+    font-size: var(--t--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .familles__categorie a {
+    color: var(--c-encre-muette);
+    text-decoration: none;
+    transition: color var(--duree) var(--courbe);
+  }
+
+  .familles__categorie a:hover {
+    color: var(--c-encre);
+  }
+
+  .familles__liste {
+    display: grid;
+    gap: var(--e-s);
+    margin-block-start: var(--e-s);
+    padding: 0;
+    list-style: none;
+  }
+
+  .familles__liste a {
+    display: grid;
+    gap: var(--e-3xs);
+    padding-block-start: var(--e-2xs);
+    border-block-start: 1px solid var(--c-filet);
+    text-decoration: none;
+    transition: border-color var(--duree) var(--courbe);
+  }
+
+  .familles__liste a:hover {
+    border-block-start-color: var(--c-encre);
+  }
+
+  .familles__liste strong {
+    color: var(--c-encre);
+    font-weight: 600;
+  }
+
+  .familles__compte {
+    font-family: var(--f-mono);
+    font-size: var(--t--2);
+    letter-spacing: 0.06em;
+    color: var(--c-encre-muette);
   }
 </style>
