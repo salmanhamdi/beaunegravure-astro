@@ -1,8 +1,8 @@
 ---
 titre: "Cadeaux personnalisés"
-h1: "Cadeaux clients et objets d’entreprise personnalisés"
-seoTitle: "Cadeau client personnalisé et cadeau d’entreprise gravé"
-description: "Cadeaux clients et objets d’entreprise personnalisés à Beaune : couteaux de sommelier, stylos, gourdes, coffrets et trophées gravés, sans minimum."
+h1: "Cadeaux d’entreprise et objets personnalisés gravés"
+seoTitle: "Cadeau d’entreprise gravé et objet personnalisé à Beaune"
+description: "Cadeaux d’entreprise et objets personnalisés gravés à Beaune : couteaux de sommelier, stylos, gourdes, coffrets et trophées. Sans minimum de commande."
 surtitre: "Objets et attentions"
 chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Cadeaux clients, remerciements, trophées de remise de prix, attentions privées : couteaux de sommelier, tire-bouchons, stylos, gourdes et coffrets. Nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
 ordre: 8
@@ -71,6 +71,11 @@ Un cadeau client réussi tient à trois choses.
 **Il est cohérent.** Un domaine viticole, un cabinet ou un hôtel n’offrent pas la même chose. Le support raconte quelque chose de celui qui l’offre.
 
 Nous vous aidons à arbitrer entre ces critères avant de graver quoi que ce soit.
+
+Si vous cherchez des pistes concrètes plutôt que des critères, nous en avons
+détaillé douze, support par support, avec ce qui se garde et ce qui finit au
+tiroir : [cadeau client personnalisé, douze idées sobres et
+utiles](/blog/cadeau-client-personnalise-idees-sobres-utiles/).
 
 Une précision utile, parce qu’elle change la façon de travailler : nous
 intervenons comme **graveur**, pas comme revendeur d’objets publicitaires. Nous
