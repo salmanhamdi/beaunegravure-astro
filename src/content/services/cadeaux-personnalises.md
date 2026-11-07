@@ -1,10 +1,10 @@
 ---
 titre: "Cadeaux personnalisés"
-h1: "Cadeaux personnalisés et objets gravés sur mesure"
-seoTitle: "Cadeaux personnalisés et objets gravés en Bourgogne"
-description: "Objets publicitaires et cadeaux personnalisés en Bourgogne : couteaux, stylos, gourdes, coffrets, trophées et médailles. À l’unité comme en série."
+h1: "Cadeaux clients et objets d’entreprise personnalisés"
+seoTitle: "Cadeau client personnalisé et cadeau d’entreprise gravé"
+description: "Cadeaux clients et objets d’entreprise personnalisés à Beaune : couteaux de sommelier, stylos, gourdes, coffrets et trophées gravés, sans minimum."
 surtitre: "Objets et attentions"
-chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Couteaux de sommelier, tire-bouchons, stylos, gourdes, coffrets, trophées : nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
+chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Cadeaux clients, remerciements, trophées de remise de prix, attentions privées : couteaux de sommelier, tire-bouchons, stylos, gourdes et coffrets. Nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
 ordre: 8
 famille: "application"
 galerie: "objets"
