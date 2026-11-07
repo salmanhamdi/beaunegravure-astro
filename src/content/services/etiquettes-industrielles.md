@@ -5,7 +5,7 @@ seoTitle: "Étiquettes industrielles gravées et plaques de machine"
 description: "Étiquettes industrielles gravées à Beaune : plaques de machine, repérage couleur en acrylique bicouche à dos adhésif, numéros de série, QR codes et DataMatrix."
 surtitre: "Industrie et traçabilité"
 chapo: "Identifier durablement une machine, un poste, un outil ou une pièce. Deux réponses selon le support : le marquage laser fibre inscrit les codes directement dans le métal, et l’étiquette gravée en acrylique bicouche se découpe sur mesure, dans une dizaine de couleurs, avec un dos adhésif ou un perçage."
-ordre: 11
+ordre: 12
 famille: "application"
 galerie: "metal"
 visuel: "etiquette-industrielle-jaune-metal-beaune-gravure"

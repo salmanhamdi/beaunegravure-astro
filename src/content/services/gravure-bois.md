@@ -133,3 +133,7 @@ cinquante.
 
 Si vous n’avez pas de support, nous pouvons en proposer un — mais nous ne tenons
 pas de catalogue à écouler : le choix reste le vôtre.
+
+Les matières voisines dans l’atelier ont leur propre page :
+[plexiglass et acrylique](/services/plexiglass-acrylique/) et
+[gravure sur métal](/services/gravure-metal/).

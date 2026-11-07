@@ -5,7 +5,7 @@ seoTitle: "Caisses de vin et coffrets bois gravés en Bourgogne"
 description: "Caisses de vin et coffrets bois gravés au laser : logo de domaine, appellation, millésime, armoiries. Pour les domaines de Bourgogne et les cadeaux d’entreprise."
 surtitre: "Bois et packaging"
 chapo: "En Bourgogne, la caisse prolonge l’histoire de la bouteille. Gravée au laser, elle porte le nom du domaine, l’appellation, le millésime ou les armoiries — et transforme un emballage en objet que l’on garde."
-ordre: 9
+ordre: 10
 famille: "application"
 galerie: "bois"
 visuel: "caisses-vin-bois-gravees-appellations-bourgogne"

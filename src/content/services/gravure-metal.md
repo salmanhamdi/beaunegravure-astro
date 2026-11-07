@@ -143,5 +143,6 @@ repérage, étiquette vissée ou collée : voir les
 série numérotée, où le métal n’est plus un support technique mais une finition.
 
 Les procédés eux-mêmes sont décrits sur la page
-[gravure laser](/services/gravure-laser/), et la matière voisine sur la page
-[gravure sur bois](/services/gravure-bois/).
+[gravure laser](/services/gravure-laser/), et les matières voisines sur les pages
+[gravure sur bois](/services/gravure-bois/) et
+[plexiglass et acrylique](/services/plexiglass-acrylique/).

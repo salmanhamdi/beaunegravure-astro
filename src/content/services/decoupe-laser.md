@@ -46,7 +46,7 @@ C’est ce qui rend le procédé intéressant pour les séries : la centième pi
 
 **Bois, contreplaqué et médium.** Décors, lettres, enseignes, médailles, gabarits, éléments d’assemblage. Le chant présente une coloration brune caractéristique du procédé.
 
-**Plexiglass, PMMA et acrylique.** Le PMMA coulé donne une gravure plus blanche et un chant plus net que l’extrudé. Disponible en transparent, teinté, opaque, dépoli ou miroir. Idéal pour les plaques, présentoirs, médaillons et enseignes.
+**Plexiglass, PMMA et acrylique.** Le PMMA coulé donne une gravure plus blanche et un chant plus net que l’extrudé. Disponible en transparent, teinté, opaque, dépoli ou miroir. Idéal pour les plaques, présentoirs, médaillons et enseignes. Le détail des variantes et des 49 coloris bicouches est sur la page [plexiglass et acrylique](/services/plexiglass-acrylique/).
 
 **Cuir, feutre, liège, papier et carton.** Découpes fines pour la papeterie, les faire-part, les accessoires et le packaging.
 

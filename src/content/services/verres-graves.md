@@ -5,7 +5,7 @@ seoTitle: "Gravure sur verre à Beaune | Verres et flûtes gravés"
 description: "Gravure laser sur verre à Beaune : verres à vin, verres de dégustation, flûtes à champagne, logos de domaines, mariages et séries professionnelles."
 surtitre: "Une spécialité de l’atelier"
 chapo: "Le verre est l’une des matières les plus exigeantes que nous travaillons : courbe, fragile, sans droit à l’erreur. La gravure laser y dépose un marquage satiné et permanent, qui ne s’efface ni au lavage ni à l’usage. Pour les projets de verrerie personnalisée menés de bout en bout, nous avons développé une marque dédiée, Glassora."
-ordre: 7
+ordre: 8
 famille: "application"
 galerie: "verre"
 visuel: "verre-grave-machine-laser-logo-entreprise"

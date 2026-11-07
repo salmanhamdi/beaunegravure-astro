@@ -5,7 +5,7 @@ seoTitle: "Signalétique sur mesure et plaques gravées à Beaune"
 description: "Signalétique intérieure à Beaune : plaques directionnelles, numéros de porte, lettres découpées et repérage pour commerces, hébergements et entreprises."
 surtitre: "Orienter un lieu"
 chapo: "Une signalétique réussie guide sans se faire remarquer. Numéros de porte, plaques directionnelles, lettres découpées : nous concevons des repères lisibles et cohérents avec l’architecture du lieu."
-ordre: 13
+ordre: 14
 famille: "application"
 galerie: "plaques"
 visuel: "gravure-grand-format-panneau-domaine-viticole"
@@ -50,7 +50,7 @@ Trois paramètres décident du résultat. Le **contraste** entre le texte et le 
 
 **Plaques directionnelles.** Flèches, étages, services. La hiérarchie typographique fait ici toute la différence.
 
-**Lettres et formes découpées.** Découpées au laser dans le bois ou le plexiglass, posées à plat ou sur entretoises pour créer un relief et une ombre portée.
+**Lettres et formes découpées.** Découpées au laser dans le bois ou le [plexiglass](/services/plexiglass-acrylique/), posées à plat ou sur entretoises pour créer un relief et une ombre portée.
 
 **Repérage technique.** Numérotation de locaux, de placards, de vannes ou d’armoires, en cohérence avec le [marquage industriel](/services/etiquettes-industrielles/).
 

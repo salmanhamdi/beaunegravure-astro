@@ -5,7 +5,7 @@ seoTitle: "Marquage laser sur métal et traçabilité industrielle"
 description: "Marquage laser sur métal à Beaune : numéros de série, QR codes et DataMatrix sur inox, acier et aluminium, à partir de votre tableau de données."
 surtitre: "Industrie et traçabilité"
 chapo: "Marquer la pièce elle-même, et non une étiquette posée dessus. Le laser fibre transforme la surface du métal : le numéro de série, le code ou la référence font partie de la pièce et traversent les huiles, les solvants et les lavages."
-ordre: 12
+ordre: 13
 famille: "application"
 galerie: "metal"
 pieces:

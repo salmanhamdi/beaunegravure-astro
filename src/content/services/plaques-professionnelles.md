@@ -5,7 +5,7 @@ seoTitle: "Plaques professionnelles gravées à Beaune | Sur mesure"
 description: "Plaques gravées sur mesure à Beaune : cabinets, commerces, bureaux, portes, boîtes aux lettres et portails. Laiton, inox, plexiglass et stratifié gravable."
 surtitre: "Identité de façade"
 chapo: "Une plaque est souvent le premier contact physique avec une activité — ou avec une maison. Elle doit être lisible, durable et cohérente avec son lieu, pas seulement porter un nom."
-ordre: 8
+ordre: 9
 famille: "application"
 galerie: "plaques"
 visuel: "plaques-professionnelles-gravees-multi-finitions"
@@ -57,7 +57,7 @@ La distance de lecture compte aussi. Une plaque lue à cinquante centimètres n�
 
 **Laiton.** Plus chaleureux, plus classique, il patine avec le temps. Adapté aux bâtiments anciens et aux professions traditionnelles.
 
-**Plexiglass et PMMA.** Léger, disponible en transparent, teinté ou doré. Permet des découpes de forme et des poses sur entretoises qui décollent la plaque du mur.
+**Plexiglass et PMMA.** Léger, disponible en transparent, teinté ou doré. Permet des découpes de forme et des poses sur entretoises qui décollent la plaque du mur. Voir la page [plexiglass et acrylique](/services/plexiglass-acrylique/) pour le choix d’une variante et d’un coloris.
 
 **Acrylique bicouche.** Deux couches de couleur : la gravure retire la couche supérieure et révèle celle du dessous. Rendu très net, idéal pour le repérage et la signalétique intérieure.
 

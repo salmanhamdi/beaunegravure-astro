@@ -5,7 +5,7 @@ seoTitle: "Cadeau d’entreprise gravé et objet personnalisé à Beaune"
 description: "Cadeaux d’entreprise et objets personnalisés gravés à Beaune : couteaux de sommelier, stylos, gourdes, coffrets et trophées. Sans minimum de commande."
 surtitre: "Objets et attentions"
 chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo juste. Cadeaux clients, remerciements, trophées de remise de prix, attentions privées : couteaux de sommelier, tire-bouchons, stylos, gourdes et coffrets. Nous personnalisons l’objet que vous avez choisi, ou nous vous aidons à le choisir."
-ordre: 10
+ordre: 11
 famille: "application"
 galerie: "objets"
 visuel: "cadeau-sommelier-personnalise-coffret"
