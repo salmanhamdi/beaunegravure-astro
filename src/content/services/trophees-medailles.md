@@ -5,7 +5,7 @@ seoTitle: "Trophées et médailles personnalisés en Bourgogne"
 description: "Trophées, coupes et médailles personnalisés : bois gravé, plexiglass découpé, verre. Pour les concours, les remises de prix et les clubs sportifs."
 surtitre: "Récompenses"
 chapo: "Un trophée se commande toujours trop tard : la liste des lauréats arrive la semaine de la remise. La fabrication, elle, tient en deux ou trois jours — ce qui fait le planning, c’est la liste, pas la machine."
-ordre: 12
+ordre: 13
 famille: "application"
 galerie: "bois"
 pieces:

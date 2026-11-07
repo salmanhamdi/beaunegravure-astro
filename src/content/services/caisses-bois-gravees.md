@@ -5,7 +5,7 @@ seoTitle: "Caisses de vin et coffrets bois gravés en Bourgogne"
 description: "Caisses de vin et coffrets bois gravés au laser : logo de domaine, appellation, millésime, armoiries. Pour les domaines de Bourgogne et les cadeaux d’entreprise."
 surtitre: "Bois et packaging"
 chapo: "En Bourgogne, la caisse prolonge l’histoire de la bouteille. Gravée au laser, elle porte le nom du domaine, l’appellation, le millésime ou les armoiries — et transforme un emballage en objet que l’on garde."
-ordre: 7
+ordre: 8
 famille: "application"
 galerie: "bois"
 visuel: "caisses-vin-bois-gravees-appellations-bourgogne"
@@ -54,6 +54,8 @@ C’est particulièrement vrai sur les coffrets destinés à être conservés : 
 Le laser CO₂ révèle le veinage. Un chêne, un peuplier de caisserie et un contreplaqué ne donnent pas le même contraste, et deux planches de la même essence peuvent réagir différemment selon leur densité.
 
 Nous en tenons compte de deux manières : en adaptant le réglage à l’essence réelle, et en vous prévenant quand un support ne donnera pas un résultat régulier. Les bois résineux, vernis ou composites sont contrôlés avant production.
+
+Cette page traite de la caisse et du coffret. Pour le bois comme matière — les essences, le grand format jusqu’à 101 × 61 cm, et le choix entre gravure, découpe et impression couleur — voir [gravure sur bois](/services/gravure-bois/).
 
 ## Ce dont nous avons besoin pour chiffrer
 

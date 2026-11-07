@@ -5,7 +5,7 @@ seoTitle: "Signalétique sur mesure et plaques gravées à Beaune"
 description: "Signalétique intérieure à Beaune : plaques directionnelles, numéros de porte, lettres découpées et repérage pour commerces, hébergements et entreprises."
 surtitre: "Orienter un lieu"
 chapo: "Une signalétique réussie guide sans se faire remarquer. Numéros de porte, plaques directionnelles, lettres découpées : nous concevons des repères lisibles et cohérents avec l’architecture du lieu."
-ordre: 11
+ordre: 12
 famille: "application"
 galerie: "plaques"
 visuel: "gravure-grand-format-panneau-domaine-viticole"

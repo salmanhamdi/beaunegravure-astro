@@ -53,7 +53,7 @@ Le résultat dépend en revanche toujours du matériau : sa couleur, son épaiss
 
 Chêne, noyer, hêtre, contreplaqué, MDF et placage : le CO₂ révèle le veinage avec un contraste qui varie selon l’essence. Il travaille aussi l’acrylique, le cuir, le liège, le papier, le carton, l’ardoise et certains textiles.
 
-**Zone maximale : 101 × 61 cm.** C’est la machine des coffrets, des caisses de vin, de la décoration, des trophées, de la signalétique et des pièces grand format.
+**Zone maximale : 101 × 61 cm.** C’est la machine des coffrets, des caisses de vin, de la décoration, des trophées, de la signalétique et des pièces grand format. Le comportement des essences, le grand format et le choix entre gravure, découpe et couleur sont détaillés sur la page [gravure sur bois](/services/gravure-bois/).
 
 ### Laser UV 355 nm — verre et surfaces délicates
 
