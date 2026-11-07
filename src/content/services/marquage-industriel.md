@@ -5,7 +5,7 @@ seoTitle: "Marquage laser sur métal et traçabilité industrielle"
 description: "Marquage laser sur métal à Beaune : numéros de série, QR codes et DataMatrix sur inox, acier et aluminium, à partir de votre tableau de données."
 surtitre: "Industrie et traçabilité"
 chapo: "Marquer la pièce elle-même, et non une étiquette posée dessus. Le laser fibre transforme la surface du métal : le numéro de série, le code ou la référence font partie de la pièce et traversent les huiles, les solvants et les lavages."
-ordre: 11
+ordre: 12
 famille: "application"
 galerie: "metal"
 pieces:
@@ -86,6 +86,10 @@ La zone utile est de **20 × 20 cm**. La pièce peut être plus grande que cela 
 ce qui compte, c’est que la zone à marquer tienne dans ce cadre et que la pièce
 se pose à plat. Les formes cylindriques passent au **mandrin rotatif** : outils,
 douilles, corps ronds.
+
+Le rendu obtenu dépend du métal bien plus que du réglage, et cela se prépare en
+amont : le détail métal par métal, anodisé contre brut, est sur la page
+[gravure sur métal](/services/gravure-metal/).
 
 Les matières traitées sont l’inox, l’acier, l’aluminium brut ou anodisé, le
 laiton, et la plupart des plastiques techniques. **Les plastiques chlorés ne sont

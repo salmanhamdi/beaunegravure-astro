@@ -5,7 +5,7 @@ seoTitle: "Plaques professionnelles gravées à Beaune | Sur mesure"
 description: "Plaques gravées sur mesure à Beaune : cabinets, commerces, bureaux, portes, boîtes aux lettres et portails. Laiton, inox, plexiglass et stratifié gravable."
 surtitre: "Identité de façade"
 chapo: "Une plaque est souvent le premier contact physique avec une activité — ou avec une maison. Elle doit être lisible, durable et cohérente avec son lieu, pas seulement porter un nom."
-ordre: 7
+ordre: 8
 famille: "application"
 galerie: "plaques"
 visuel: "plaques-professionnelles-gravees-multi-finitions"

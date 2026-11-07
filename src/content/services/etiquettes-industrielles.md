@@ -5,7 +5,7 @@ seoTitle: "Étiquettes industrielles gravées et plaques de machine"
 description: "Étiquettes industrielles gravées à Beaune : plaques de machine, repérage couleur en acrylique bicouche à dos adhésif, numéros de série, QR codes et DataMatrix."
 surtitre: "Industrie et traçabilité"
 chapo: "Identifier durablement une machine, un poste, un outil ou une pièce. Deux réponses selon le support : le marquage laser fibre inscrit les codes directement dans le métal, et l’étiquette gravée en acrylique bicouche se découpe sur mesure, dans une dizaine de couleurs, avec un dos adhésif ou un perçage."
-ordre: 10
+ordre: 11
 famille: "application"
 galerie: "metal"
 visuel: "etiquette-industrielle-jaune-metal-beaune-gravure"
@@ -107,3 +107,5 @@ Une pièce test est marquée et scannée avant lancement. C’est cette étape q
 | Plastiques techniques | Selon additifs | ABS, PA, PC compatibles ; PVC refusé |
 
 Pour toute matière fournie, la référence ou la fiche technique est nécessaire avant essai. Les plastiques contenant du chlore ne sont pas traités.
+
+Le comportement de chaque métal sous le faisceau — pourquoi l’anodisé donne un blanc net et l’aluminium brut un gris pâle, quand préférer un recuit à une gravure en creux — est détaillé sur la page [gravure sur métal](/services/gravure-metal/).
