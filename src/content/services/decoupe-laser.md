@@ -2,7 +2,7 @@
 titre: "Découpe laser"
 h1: "Découpe laser sur mesure du bois et du plexiglass"
 seoTitle: "Découpe laser bois et plexiglass sur mesure à Beaune"
-description: "Découpe laser à Beaune sur bois, plexiglass, acrylique et matières compatibles : lettres, formes, médaillons, présentoirs et pièces sur mesure."
+description: "Découpe laser à Beaune sur bois, plexiglass, cuir, textile, feutre et papier rigide : lettres, formes, médaillons, présentoirs et pièces sur mesure."
 surtitre: "Formes sur mesure"
 chapo: "Des contours nets, répétables à l’identique, obtenus sans outil coupant. La découpe laser réalise lettres, formes, médaillons et pièces d’assemblage à partir de votre fichier ou d’un dessin préparé par l’atelier."
 ordre: 3
@@ -12,6 +12,7 @@ visuel: "medaillons-plexiglass-decoupes-graves"
 points:
   - "Bois, contreplaqué et médium"
   - "Plexiglass, PMMA et acrylique"
+  - "Cuir, textile, feutre, liège, papier rigide et carton"
   - "Lettres, formes et pièces d’assemblage"
   - "Nous ne découpons pas le métal"
 usages: "Lettres découpées, présentoirs, médaillons, badges, gabarits, décors d’événement et éléments de signalétique."
@@ -48,7 +49,7 @@ C’est ce qui rend le procédé intéressant pour les séries : la centième pi
 
 **Plexiglass, PMMA et acrylique.** Le PMMA coulé donne une gravure plus blanche et un chant plus net que l’extrudé. Disponible en transparent, teinté, opaque, dépoli ou miroir. Idéal pour les plaques, présentoirs, médaillons et enseignes. Le détail des variantes et des 49 coloris bicouches est sur la page [plexiglass et acrylique](/services/plexiglass-acrylique/).
 
-**Cuir, feutre, liège, papier et carton.** Découpes fines pour la papeterie, les faire-part, les accessoires et le packaging. Sur le cuir, le rendu dépend du tannage : voir [quels cuirs marchent, lesquels déçoivent](/blog/faire-graver-du-cuir-quels-cuirs-quel-rendu/). Sur le textile, le bord des fibres synthétiques se scelle au passage du faisceau : voir [la découpe laser du textile](/blog/decoupe-laser-textile-sur-mesure-bord-net-sans-surfilage/).
+**Cuir, textile, feutre, liège, papier rigide et carton.** Découpes fines pour les accessoires, les pièces souples, le packaging, les gabarits et les décors. Nous découpons ces matières ; nous ne fabriquons pas d’imprimés — ni faire-part, ni papeterie imprimée. Sur le cuir, le rendu dépend du tannage : voir [quels cuirs marchent, lesquels déçoivent](/blog/faire-graver-du-cuir-quels-cuirs-quel-rendu/). Sur le textile, le bord des fibres synthétiques se scelle au passage du faisceau : voir [la découpe laser du textile](/blog/decoupe-laser-textile-sur-mesure-bord-net-sans-surfilage/).
 
 **Ce que nous ne découpons pas.** Le métal, sous toutes ses formes. Le PVC, le vinyle et tout plastique dont la composition est inconnue ou contient du chlore.
 
