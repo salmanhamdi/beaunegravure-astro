@@ -48,7 +48,7 @@ C’est ce qui rend le procédé intéressant pour les séries : la centième pi
 
 **Plexiglass, PMMA et acrylique.** Le PMMA coulé donne une gravure plus blanche et un chant plus net que l’extrudé. Disponible en transparent, teinté, opaque, dépoli ou miroir. Idéal pour les plaques, présentoirs, médaillons et enseignes. Le détail des variantes et des 49 coloris bicouches est sur la page [plexiglass et acrylique](/services/plexiglass-acrylique/).
 
-**Cuir, feutre, liège, papier et carton.** Découpes fines pour la papeterie, les faire-part, les accessoires et le packaging. Sur le cuir, le rendu dépend du tannage : voir [quels cuirs marchent, lesquels déçoivent](/blog/faire-graver-du-cuir-quels-cuirs-quel-rendu/).
+**Cuir, feutre, liège, papier et carton.** Découpes fines pour la papeterie, les faire-part, les accessoires et le packaging. Sur le cuir, le rendu dépend du tannage : voir [quels cuirs marchent, lesquels déçoivent](/blog/faire-graver-du-cuir-quels-cuirs-quel-rendu/). Sur le textile, le bord des fibres synthétiques se scelle au passage du faisceau : voir [la découpe laser du textile](/blog/decoupe-laser-textile-sur-mesure-bord-net-sans-surfilage/).
 
 **Ce que nous ne découpons pas.** Le métal, sous toutes ses formes. Le PVC, le vinyle et tout plastique dont la composition est inconnue ou contient du chlore.
 

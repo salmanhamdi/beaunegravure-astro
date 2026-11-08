@@ -50,6 +50,8 @@ liens:
     label: "Gravure laser : procédés et supports"
   - href: "/services/cadeaux-personnalises/"
     label: "Cadeaux d’entreprise et objets personnalisés"
+  - href: "/blog/decoupe-laser-textile-sur-mesure-bord-net-sans-surfilage/"
+    label: "Découpe laser du textile sur mesure"
   - href: "/blog/fichier-fournir-gravure-laser-propre/"
     label: "Quel fichier fournir pour une gravure propre"
 ---
