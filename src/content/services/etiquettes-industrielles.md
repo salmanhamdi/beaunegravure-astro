@@ -81,7 +81,7 @@ C’est la réponse la plus souple, et la plus demandée hors traçabilité de p
 
 **Traçabilité de pièces.** Numéros de série, numéros de lot, références fabricant sur pièces inox, aluminium ou laiton. Le marquage est appliqué à l’unité comme sur série répétable.
 
-**Codes lisibles machine.** QR codes et DataMatrix, dimensionnés pour être scannés dans les conditions réelles d’utilisation — distance, éclairage, angle.
+**Codes lisibles machine.** QR codes et DataMatrix, dimensionnés pour être scannés dans les conditions réelles d’utilisation — distance, éclairage, angle. Le choix entre les deux formats, et la place que chacun demande, sont détaillés dans le guide [marquer une pièce métallique](/blog/marquer-piece-metallique-numero-serie-datamatrix-lot/).
 
 **Plaques techniques et signalétique d’équipement.** Caractéristiques, tensions, avertissements, numéros d’inventaire sur boîtiers, coffrets et armoires.
 

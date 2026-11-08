@@ -131,6 +131,10 @@ Le réglage est le même pour une pièce que pour mille : seule la préparation 
 répartit différemment. Une série numérotée de dix pièces, un prototype, une pièce
 de rechange à réidentifier — tout cela se traite.
 
+Le guide [marquer une pièce métallique : numéro de série, DataMatrix ou numéro
+de lot](/blog/marquer-piece-metallique-numero-serie-datamatrix-lot/) détaille le choix du code, la
+profondeur de marquage et ce qui change selon le type de pièce.
+
 Les pièces viennent de vous : nous ne les fabriquons pas, nous les marquons.
 Envoyez-en une d’abord, ou apportez-la. Elle vaut mieux qu’une longue
 description, et elle évite d’engager un lot entier sur une hypothèse.

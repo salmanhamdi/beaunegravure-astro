@@ -132,7 +132,8 @@ Le métal marqué sert trois familles d’usages, et chacune a sa page.
 
 **L’identification d’une pièce ou d’une série** — numéros de série incrémentés,
 codes DataMatrix, données variables depuis un tableau : c’est le
-[marquage industriel](/services/marquage-industriel/).
+[marquage industriel](/services/marquage-industriel/), et le choix du code se
+prépare avec le guide [marquer une pièce métallique](/blog/marquer-piece-metallique-numero-serie-datamatrix-lot/).
 
 **La plaque rapportée sur une machine ou un local** — plaque de machine,
 repérage, étiquette vissée ou collée : voir les
