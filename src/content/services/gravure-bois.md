@@ -115,7 +115,8 @@ différence.
 
 **La pièce découpée.** Prénoms, formes, cercles, lettres, médaillons,
 sous-verres. Le laser taille au lieu de marquer, et reprend les angles proprement
-— ce qui se règle au gabarit plutôt qu’à la machine.
+— ce qui se règle au gabarit plutôt qu’à la machine. Pour un panneau largement
+ajouré, voir [ce qui tient et ce qui casse](/blog/panneau-ajoure-claustra-decoupe-laser-ce-qui-tient/).
 
 **L’objet.** Planches, plateaux, tonnelets, boîtes, objets de table : des pièces
 déjà fabriquées, que nous personnalisons sans les transformer.

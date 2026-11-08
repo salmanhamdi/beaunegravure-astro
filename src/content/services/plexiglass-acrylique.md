@@ -172,7 +172,8 @@ passage. C’est là que la matière est la plus libre, parce que le contour ces
 d’être une contrainte pour devenir une décision de dessin.
 
 **L’enseigne et la lettre découpée.** Lettres individuelles, panneaux, éléments
-rapportés : voir la [signalétique](/services/signaletique/).
+rapportés : voir la [signalétique](/services/signaletique/). Pour un panneau
+ajouré, [ce qui tient et ce qui casse](/blog/panneau-ajoure-claustra-decoupe-laser-ce-qui-tient/).
 
 **Le trophée et la pièce décorative.** Le transparent et le teinté, souvent
 associés au bois. Voir [trophées et médailles](/services/trophees-medailles/).

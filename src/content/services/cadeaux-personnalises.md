@@ -71,6 +71,8 @@ Un cadeau client réussi tient à trois choses.
 **Il est cohérent.** Un domaine viticole, un cabinet ou un hôtel n’offrent pas la même chose. Le support raconte quelque chose de celui qui l’offre.
 
 Nous vous aidons à arbitrer entre ces critères avant de graver quoi que ce soit.
+Sur un objet en cuir — carnet, étui, ceinture — le rendu dépend du tannage, et
+le sujet a son guide : [quels cuirs marchent, lesquels déçoivent](/blog/faire-graver-du-cuir-quels-cuirs-quel-rendu/).
 
 Si vous cherchez des pistes concrètes plutôt que des critères, nous en avons
 détaillé douze, support par support, avec ce qui se garde et ce qui finit au
