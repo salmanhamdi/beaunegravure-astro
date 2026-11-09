@@ -88,6 +88,33 @@ RedirectMatch 404 /api/\.data
     # d'un coup, sans passer par une 301 intermédiaire.
     RewriteRule ^applications/?$ - [G,L]
 
+    # ----------------------------------------------------------------------
+    # Anciennes URL du site Wix, redirigees le 09/11/2026.
+    #
+    # Search Console a signale 11 URL « Introuvable (404) » : ce sont toutes
+    # des pages de l'ancien site Wix, encore explorees par Google des mois
+    # apres la bascule (boutique, fiches produit, pages de presentation).
+    #
+    # Une 301 vers la page vivante la plus proche vaut mieux qu'un 404 : elle
+    # transmet le capital de liens accumule par l'ancienne adresse, et elle
+    # amene le visiteur venu d'un lien ancien sur un contenu utile au lieu
+    # d'une page d'erreur.
+    #
+    # Chaque motif s'arrete avant le premier caractere accentue de l'ancienne
+    # URL (« a glissiere »), afin de ne dependre ni de l'encodage du chemin
+    # ni de la facon dont Apache le decode.
+    #
+    # Placees avant la regle de slash final pour couvrir les deux ecritures
+    # d'un coup, sans 301 intermediaire.
+    RewriteRule ^product-page/(copie-de-)?caisse-bois-vin https://beaunegravure.fr/services/caisses-bois-gravees/ [R=301,L]
+    RewriteRule ^product-page/tire-bouchon https://beaunegravure.fr/realisations/objets/sommellerie-et-couteaux/ [R=301,L]
+    RewriteRule ^product-page/bouteilles-isothermes https://beaunegravure.fr/realisations/objets/gourdes-et-contenants/ [R=301,L]
+    RewriteRule ^product-page/plaque-signal https://beaunegravure.fr/services/signaletique/ [R=301,L]
+    RewriteRule ^product-page/ https://beaunegravure.fr/realisations/ [R=301,L]
+    RewriteRule ^boutique/?$ https://beaunegravure.fr/realisations/ [R=301,L]
+    RewriteRule ^quisommesnous/?$ https://beaunegravure.fr/a-propos/ [R=301,L]
+    RewriteRule ^matieres/?$ https://beaunegravure.fr/services/ [R=301,L]
+
     # Ajoute le slash final aux URL de pages, hors fichiers réels.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
