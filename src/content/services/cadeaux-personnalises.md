@@ -48,13 +48,13 @@ faq:
 
 Le réflexe habituel consiste à mettre le logo le plus grand possible. C’est presque toujours une erreur. Un objet que l’on garde est un objet **discret** : le marquage se découvre, il ne s’impose pas.
 
-Sur un couteau de sommelier, quelques millimètres de gravure sur le manche suffisent. Sur un stylo, une ligne de texte. Sur une gourde, un monogramme. L’objet reste utilisable au quotidien sans avoir l’air d’un support publicitaire.
+Sur un couteau de sommelier, quelques millimètres de gravure sur le manche suffisent — et ce n’est pas seulement un choix de goût, l’objet replié ne donne pas davantage de place, comme l’explique notre guide de la [gravure sur couteau](/blog/faire-graver-un-couteau-lame-manche-sommelier/). Sur un stylo, une ligne de texte. Sur une gourde, un monogramme. L’objet reste utilisable au quotidien sans avoir l’air d’un support publicitaire.
 
 ## Les objets que nous personnalisons le plus
 
 **L’univers du vin.** Couteaux de sommelier, tire-bouchons, coffrets, seaux, plateaux. C’est la famille la plus demandée en Côte de Beaune, seule ou en complément de [verres gravés](/services/verres-graves/) et de [caisses bois](/services/caisses-bois-gravees/).
 
-**Les objets du quotidien.** Gourdes inox, gobelets isothermes, flasques, porte-clés, briquets, couverts. Le laser fibre y grave un marquage permanent qui résiste au lavage et à l’usage.
+**Les objets du quotidien.** Gourdes inox, gobelets isothermes, flasques, porte-clés, briquets, couverts, et les [boules de pétanque](/blog/gravure-boules-petanque-laser-ce-qui-est-possible/) que vous apportez. Le laser fibre y grave un marquage permanent qui résiste au lavage et à l’usage.
 
 **Les objets d’écriture et de bureau.** Stylos bois ou métal, carnets, étuis en cuir, clés USB. Adaptés aux cadeaux clients d’entreprise et aux séminaires.
 

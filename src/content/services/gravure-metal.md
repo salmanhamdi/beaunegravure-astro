@@ -142,6 +142,11 @@ repérage, étiquette vissée ou collée : voir les
 
 **L’objet** — outillage, pièce de précision, horlogerie, objet personnalisé ou
 série numérotée, où le métal n’est plus un support technique mais une finition.
+Deux familles reviennent assez souvent pour avoir leur guide : la
+[gravure sur couteau](/blog/faire-graver-un-couteau-lame-manche-sommelier/), où
+l’acier de la lame et le bois du manche demandent deux machines différentes, et
+la [gravure sur boules de pétanque](/blog/gravure-boules-petanque-laser-ce-qui-est-possible/),
+où la forme sphérique commande tout.
 
 Les procédés eux-mêmes sont décrits sur la page
 [gravure laser](/services/gravure-laser/), et les matières voisines sur les pages

@@ -54,7 +54,7 @@ Toutes celles qui suivent sortent de l’atelier. Chacune renvoie vers des pièc
 
 **4. La carafe.** Plus cérémonielle qu’un verre, et elle reste sur la table. Un logo mesuré y passe très bien.
 
-**5. Le couteau de sommelier.** L’outil qu’un professionnel du vin garde des années dans sa poche. Gravé au prénom, il change de statut. Voir la [sommellerie](/realisations/objets/sommellerie-et-couteaux/).
+**5. Le couteau de sommelier.** L’outil qu’un professionnel du vin garde des années dans sa poche. Gravé au prénom, il change de statut. Voir la [sommellerie](/realisations/objets/sommellerie-et-couteaux/) et notre guide de la [gravure sur couteau](/blog/faire-graver-un-couteau-lame-manche-sommelier/).
 
 **6. Le tire-bouchon.** Même esprit, pour un public plus large.
 
