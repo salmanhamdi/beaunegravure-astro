@@ -18,7 +18,7 @@ pieces:
   - verre-vin-grave-logo-domaine-muzard
   - impression-uv-etiquettes-plexiglass-domaine-leflaive
   - coffrets-bois-graves-cadeaux-personnalises
-  - cadeau-sommelier-personnalise-coffret
+  - couteau-sommelier-grave-prenom-coffret
   - gravure-grand-format-panneau-domaine-viticole
 references:
   - "Domaine Bruno Colin, à Chassagne-Montrachet"

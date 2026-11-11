@@ -397,13 +397,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
 
   /* --------------------------- Objets et cadeaux -------------------------- */
   {
-    fichier: 'cadeau-sommelier-personnalise-coffret.webp',
-    titre: 'Coffret sommelier personnalisé',
-    alt: 'Couteau de sommelier personnalisé présenté dans son coffret',
-    categorie: 'objets',
-    service: '/services/cadeaux-personnalises/',
-  },
-  {
     fichier: 'couteau-sommelier-grave-prenom-coffret.webp',
     titre: 'Couteau de sommelier gravé au prénom',
     alt: 'Couteau de sommelier à manche en bois posé dans son coffret noir, la platine gravée du nom de l’atelier d’un côté et d’un prénom de l’autre',
@@ -1071,7 +1064,6 @@ export const SOUS_GALERIES: SousGalerie[] = [
     intro:
       'La famille la plus demandée en Côte de Beaune, souvent commandée après les caisses et les verres — avec le même fichier, déjà préparé et validé. Sur un manche, quelques millimètres de gravure suffisent : l’objet reste un outil de travail, pas un support publicitaire.',
     pieces: [
-      'cadeau-sommelier-personnalise-coffret',
       'couteau-sommelier-grave-prenom-coffret',
       'couteaux-graves-appellations-vins-bourgogne',
       'couteaux-coffrets-viticoles-personnalises',

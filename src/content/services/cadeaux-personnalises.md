@@ -8,7 +8,7 @@ chapo: "Un cadeau devient un souvenir quand il porte un nom, une date ou un logo
 ordre: 11
 famille: "application"
 galerie: "objets"
-visuel: "cadeau-sommelier-personnalise-coffret"
+visuel: "couteau-sommelier-grave-prenom-coffret"
 points:
   - "Couteaux de sommelier et tire-bouchons"
   - "Stylos, porte-clés, gourdes et flasques"
