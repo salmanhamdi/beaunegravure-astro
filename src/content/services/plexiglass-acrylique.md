@@ -11,7 +11,6 @@ galerie: "decoupe"
 pieces:
   - "medaillons-plexiglass-decoupes-graves"
   - "plaques-plexiglass-bicouche-reperes-couleur"
-  - "plaque-plexiglass-doree-avocat-decoupee"
   - "decoupe-plexiglass-plaque-numero-porte"
   - "decoupe-laser-plexiglass-rose-beaune-gravure"
   - "impression-uv-etiquettes-plexiglass-domaine-leflaive"

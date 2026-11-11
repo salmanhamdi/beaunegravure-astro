@@ -706,13 +706,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/plaques-professionnelles/',
   },
   {
-    fichier: 'plaque-plexiglass-doree-avocat-decoupee.webp',
-    titre: 'Plaque professionnelle en plexiglass',
-    alt: 'Plaque professionnelle dorée en plexiglass découpée et gravée pour un cabinet',
-    categorie: 'plaques',
-    service: '/services/plaques-professionnelles/',
-  },
-  {
     fichier: 'plaque-professionnelle-avocat-exterieure-beaune-gravure.webp',
     titre: 'Plaque de cabinet extérieure',
     alt: 'Plaque professionnelle extérieure gravée, posée sur une façade',
@@ -1194,7 +1187,6 @@ export const SOUS_GALERIES: SousGalerie[] = [
       'plaques-professionnelles-gravees-multi-finitions',
       'plaque-professionnelle-metal-brosse-entreprise',
       'plaque-professionnelle-avocat-exterieure-beaune-gravure',
-      'plaque-plexiglass-doree-avocat-decoupee',
       'badge-professionnel-grave-personnalise',
     ],
   },

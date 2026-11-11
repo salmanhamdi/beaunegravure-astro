@@ -17,7 +17,6 @@ pieces:
   - decoupe-plexiglass-plaque-numero-porte
   - plaques-professionnelles-gravees-multi-finitions
   - plaque-nfc-menu-avis-google-spotitap
-  - plaque-plexiglass-doree-avocat-decoupee
   - verre-grave-veuve-ambal-spritz-club
   - trophees-bois-graves-evenement-entreprise
 references:
