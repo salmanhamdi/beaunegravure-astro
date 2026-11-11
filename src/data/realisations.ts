@@ -265,6 +265,38 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     cadrage: 'center 22%',
   },
   {
+    fichier: 'caisse-bois-mariage-impression-uv-dans-machine.webp',
+    titre: 'Caisse de mariage imprimée, sur le plateau',
+    alt: 'Caisse en bois pour une bouteille, couvercle imprimé en couleur d’un décor de feuillages avec deux prénoms et une date, photographiée sur le plateau de la machine laser',
+    categorie: 'bois',
+    service: '/services/impression-uv/',
+  },
+  {
+    fichier: 'caisse-bois-bouteille-impression-uv-illustration-bourgogne.webp',
+    titre: 'Caisse une bouteille imprimée en couleur',
+    alt: 'Caisse en bois pour une bouteille imprimée en couleur d’une illustration des toits et des vignes de Bourgogne, présentée avec une bouteille, un verre et un bouchon gravé du millésime',
+    categorie: 'bois',
+    service: '/services/impression-uv/',
+    vedette: true,
+    // Photographie en portrait : le recadrage carré est remonté pour garder
+    // la caisse imprimée entière dans la vignette.
+    cadrage: 'center 35%',
+  },
+  {
+    fichier: 'caisse-bois-trois-bouteilles-impression-mariage.webp',
+    titre: 'Caisse trois bouteilles imprimée en couleur',
+    alt: 'Caisse en bois pour trois bouteilles, couvercle coulissant imprimé en couleur avec un décor de mariés et flanc gravé au laser',
+    categorie: 'bois',
+    service: '/services/impression-uv/',
+  },
+  {
+    fichier: 'caisse-bois-une-bouteille-gravee-impression-mariage.webp',
+    titre: 'Caisse une bouteille gravée et imprimée',
+    alt: 'Caisse en bois pour une bouteille : couvercle coulissant imprimé en couleur avec un décor de mariage, flanc du coffret gravé au laser',
+    categorie: 'bois',
+    service: '/services/caisses-bois-gravees/',
+  },
+  {
     fichier: 'caisses-bois-gravees-hospices-de-beaune.webp',
     titre: 'Série de caisses gravées',
     alt: 'Série de caisses en bois gravées empilées dans l’atelier',
@@ -333,7 +365,6 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Série de médailles en bois découpées et gravées pour un événement sportif',
     categorie: 'bois',
     service: '/services/decoupe-laser/',
-    vedette: true,
   },
   {
     fichier: 'trophees-bois-graves-evenement-entreprise.webp',
@@ -350,6 +381,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/caisses-bois-gravees/',
   },
   {
+    fichier: 'sous-verres-bambou-graves-beaune-grands-crus.webp',
+    titre: 'Dessous de verre en bambou gravés',
+    alt: 'Dessous de verre ronds en bambou gravés au laser de motifs de vigne et de noms d’appellations de la Côte de Beaune, présentés avec leur support',
+    categorie: 'bois',
+    service: '/services/gravure-bois/',
+  },
+  {
     fichier: 'sous-verres-liege-graves-restauration.webp',
     titre: 'Sous-verres en liège gravés',
     alt: 'Sous-verres en liège gravés pour un établissement de restauration',
@@ -362,6 +400,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     fichier: 'cadeau-sommelier-personnalise-coffret.webp',
     titre: 'Coffret sommelier personnalisé',
     alt: 'Couteau de sommelier personnalisé présenté dans son coffret',
+    categorie: 'objets',
+    service: '/services/cadeaux-personnalises/',
+  },
+  {
+    fichier: 'couteau-sommelier-grave-prenom-coffret.webp',
+    titre: 'Couteau de sommelier gravé au prénom',
+    alt: 'Couteau de sommelier à manche en bois posé dans son coffret noir, la platine gravée du nom de l’atelier d’un côté et d’un prénom de l’autre',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
   },
@@ -403,6 +448,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     vedette: true,
   },
   {
+    fichier: 'crayons-bois-graves-serie-personnalisee.webp',
+    titre: 'Crayons en bois gravés en série',
+    alt: 'Onze crayons en bois naturel gravés au laser du même nom, alignés sur un fond d’ardoise, embout métal et gomme blanche',
+    categorie: 'objets',
+    service: '/services/gravure-bois/',
+  },
+  {
     fichier: 'stylos-bois-graves-cadeaux-entreprise.webp',
     titre: 'Stylos bois en série',
     alt: 'Stylos en bois gravés pour une entreprise',
@@ -431,11 +483,32 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/cadeaux-personnalises/',
   },
   {
+    fichier: 'gourdes-isothermes-blanches-personnalisees-serie.webp',
+    titre: 'Série de gourdes isothermes personnalisées',
+    alt: 'Gourdes isothermes blanches personnalisées d’un logo noir, alignées en série devant leurs étuis d’emballage',
+    categorie: 'objets',
+    service: '/services/cadeaux-personnalises/',
+  },
+  {
+    fichier: 'gourdes-isothermes-couleurs-gravees-laser-serie.webp',
+    titre: 'Gourdes isothermes gravées en série',
+    alt: 'Gourdes isothermes de plusieurs couleurs gravées au laser, le logo apparaissant en acier nu sous la laque',
+    categorie: 'objets',
+    service: '/services/gravure-metal/',
+  },
+  {
     fichier: 'gourdes-bleues-marquees-laser-serie.webp',
     titre: 'Gourdes marquées en série',
     alt: 'Gourdes bleues personnalisées en série par marquage laser',
     categorie: 'objets',
     service: '/services/etiquettes-industrielles/',
+  },
+  {
+    fichier: 'flasques-inox-gravees-serie-plateau-laser.webp',
+    titre: 'Flasques gravées en série dans la machine',
+    alt: 'Flasques en inox gravées au laser d’un logo et d’un millésime, alignées en série sur le plateau nid d’abeille du laser',
+    categorie: 'objets',
+    service: '/services/cadeaux-personnalises/',
   },
   {
     fichier: 'flasques-inox-personnalisees-laser.webp',
@@ -450,6 +523,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Gobelets isothermes noirs personnalisés par gravure laser',
     categorie: 'objets',
     service: '/services/cadeaux-personnalises/',
+  },
+  {
+    fichier: 'boule-petanque-gravee-logo-entreprise.webp',
+    titre: 'Boule de pétanque gravée au logo',
+    alt: 'Boule de pétanque en acier tenue en main, gravée au laser du logo d’une entreprise sur la calotte supérieure, sur un terrain de jeu',
+    categorie: 'objets',
+    service: '/services/gravure-metal/',
   },
   {
     fichier: 'couverts-inox-personnalises-prenom.webp',
@@ -612,6 +692,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/impression-uv/',
   },
   {
+    fichier: 'plaques-porte-hotel-gravees-appellations-pictogrammes.webp',
+    titre: 'Plaques de porte gravées pour un hôtel',
+    alt: 'Série de plaques de porte gravées à finition argent : noms d’appellations bourguignonnes, intitulés de pièces et pictogrammes, percées pour la pose',
+    categorie: 'plaques',
+    service: '/services/signaletique/',
+  },
+  {
     fichier: 'plaques-plexiglass-bicouche-reperes-couleur.webp',
     titre: 'Repères en plexiglass bicouche',
     alt: 'Plaques et jetons en plexiglass bicouche gravés de repères et de numéros, en cinq couleurs',
@@ -657,6 +744,13 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     service: '/services/plaques-professionnelles/',
   },
   {
+    fichier: 'plaque-professionnelle-metal-brosse-entreprise.webp',
+    titre: 'Plaque d’entreprise en métal brossé',
+    alt: 'Grande plaque professionnelle en métal brossé marquée en noir de deux logos, d’une liste de prestations, d’un numéro de téléphone et de pictogrammes de réseaux sociaux, percée aux quatre angles',
+    categorie: 'plaques',
+    service: '/services/plaques-professionnelles/',
+  },
+  {
     fichier: 'plaques-professionnelles-gravees-multi-finitions.webp',
     titre: 'Signalétique multi-finitions',
     alt: 'Ensemble de plaques de signalétique gravées présentées en plusieurs finitions',
@@ -670,6 +764,14 @@ const DONNEES: Omit<Realisation, 'id'>[] = [
     alt: 'Plaques de domaine viticole gravées en série dans la machine laser',
     categorie: 'plaques',
     service: '/services/plaques-professionnelles/',
+  },
+
+  {
+    fichier: 'plaques-decoratives-bordeaux-cave-route-grands-crus.webp',
+    titre: 'Plaques décoratives pour une cave',
+    alt: 'Deux plaques décoratives bordeaux à lettres et motifs de vigne blancs, dont une en forme de plaque de rue, posées devant des bouteilles de Bourgogne',
+    categorie: 'plaques',
+    service: '/services/signaletique/',
   },
 
   /* ------------------------ Découpe et plexiglass ------------------------- */
@@ -867,6 +969,10 @@ export const SOUS_GALERIES: SousGalerie[] = [
       'coffrets-bois-graves-cadeaux-personnalises',
       'caisse-bois-bouteille-impression-couleur',
       'impression-uv-coffret-bois-mariage-personnalise',
+      'caisse-bois-une-bouteille-gravee-impression-mariage',
+      'caisse-bois-bouteille-impression-uv-illustration-bourgogne',
+      'caisse-bois-mariage-impression-uv-dans-machine',
+      'caisse-bois-trois-bouteilles-impression-mariage',
     ],
   },
   {
@@ -900,6 +1006,7 @@ export const SOUS_GALERIES: SousGalerie[] = [
     pieces: [
       'decoupe-bois-prenoms-cercles-personnalises',
       'decoupe-laser-decoration-bois-personnalisee',
+      'sous-verres-bambou-graves-beaune-grands-crus',
       'sous-verres-liege-graves-restauration',
       'impression-uv-tonnelet-bois-beaune-malmedy-beaune-gravure',
     ],
@@ -972,6 +1079,7 @@ export const SOUS_GALERIES: SousGalerie[] = [
       'La famille la plus demandée en Côte de Beaune, souvent commandée après les caisses et les verres — avec le même fichier, déjà préparé et validé. Sur un manche, quelques millimètres de gravure suffisent : l’objet reste un outil de travail, pas un support publicitaire.',
     pieces: [
       'cadeau-sommelier-personnalise-coffret',
+      'couteau-sommelier-grave-prenom-coffret',
       'couteaux-graves-appellations-vins-bourgogne',
       'couteaux-coffrets-viticoles-personnalises',
       'couteaux-personnalises-gravure-laser-fibre',
@@ -992,7 +1100,10 @@ export const SOUS_GALERIES: SousGalerie[] = [
     pieces: [
       'gourde-inox-gravee-laser-fibre',
       'gourdes-bleues-marquees-laser-serie',
+      'gourdes-isothermes-couleurs-gravees-laser-serie',
+      'gourdes-isothermes-blanches-personnalisees-serie',
       'flasques-inox-personnalisees-laser',
+      'flasques-inox-gravees-serie-plateau-laser',
       'gobelets-isothermes-personnalises-laser',
     ],
   },
@@ -1008,6 +1119,7 @@ export const SOUS_GALERIES: SousGalerie[] = [
       'Une ligne de texte sur un stylo, pas davantage. C’est la famille où la retenue compte le plus : le destinataire doit pouvoir sortir l’objet devant quelqu’un d’autre sans gêne, ce qu’un logo surdimensionné interdit. Ces pièces ont été gravées en série pour des cadeaux clients et des séminaires.',
     pieces: [
       'stylo-professionnel-marque-logo-laser',
+      'crayons-bois-graves-serie-personnalisee',
       'stylos-bois-graves-cadeaux-entreprise',
       'cles-usb-bois-personnalisees-gravure',
     ],
@@ -1023,6 +1135,7 @@ export const SOUS_GALERIES: SousGalerie[] = [
     intro:
       'Ce sont souvent des pièces apportées par leur propriétaire, et parfois sentimentales. Avant d’intervenir sur un objet de valeur, nous vérifions la matière et la forme, nous expliquons le risque, et nous proposons un essai quand c’est possible. Une gravure ne se défait pas.',
     pieces: [
+      'boule-petanque-gravee-logo-entreprise',
       'couverts-inox-personnalises-prenom',
       'porte-cles-metal-personnalise-gravure',
       'briquet-metal-personnalise-gravure',
@@ -1079,6 +1192,7 @@ export const SOUS_GALERIES: SousGalerie[] = [
       'Une plaque de façade se choisit par son exposition avant de se choisir par son style : un laiton gravé et une plaque d’acrylique bicouche ne vieillissent pas de la même façon en plein sud. Nous demandons donc toujours où elle sera posée, et à quelle orientation, avant de proposer une matière.',
     pieces: [
       'plaques-professionnelles-gravees-multi-finitions',
+      'plaque-professionnelle-metal-brosse-entreprise',
       'plaque-professionnelle-avocat-exterieure-beaune-gravure',
       'plaque-plexiglass-doree-avocat-decoupee',
       'badge-professionnel-grave-personnalise',
@@ -1093,8 +1207,9 @@ export const SOUS_GALERIES: SousGalerie[] = [
     description:
       'Repérage et numérotation gravés : étiquettes en acrylique bicouche dans 49 coloris, numéros de porte découpés et séries de plaques cohérentes.',
     intro:
-      'Sur stratifié gravable, le laser enlève la couche de surface et révèle la couleur du cœur : le texte est la matière, il ne peut donc ni pâlir ni s’effacer. Quarante-neuf coloris disponibles, dont les combinaisons normalisées du repérage — noir sur jaune, blanc sur rouge, blanc sur bleu. Dos adhésif ou perçage, selon le support de pose.',
+      'Sur stratifié gravable, le laser enlève la couche de surface et révèle la couleur du cœur : le texte est la matière, il ne peut donc ni pâlir ni s’effacer. Quarante-neuf coloris disponibles, dont les combinaisons normalisées du repérage — noir sur jaune, blanc sur rouge, blanc sur bleu. Dos adhésif ou perçage, selon le support de pose. Le même travail de série vaut pour la signalétique intérieure d’un hôtel ou d’une maison d’hôtes : les plaques de porte doivent rester identiques d’une chambre à l’autre, des années après la pose.',
     pieces: [
+      'plaques-porte-hotel-gravees-appellations-pictogrammes',
       'plaques-plexiglass-bicouche-reperes-couleur',
       'decoupe-plexiglass-plaque-numero-porte',
       'gravure-laser-plaques-vigneron-serie-atelier',

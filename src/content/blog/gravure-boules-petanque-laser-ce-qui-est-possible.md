@@ -6,8 +6,8 @@ chapo: "Une boule est une sphère en acier, et c’est tout le problème : le fa
 categorie: "guides-atelier"
 datePublication: 2026-11-10
 dateModification: 2026-11-10
-couverture: "tete-laser-fibre-plateau-gradue.jpg"
-couvertureAlt: "Tête de laser fibre au-dessus d’un plateau gradué, à l’atelier"
+couverture: "boule-petanque-gravee-logo-entreprise.webp"
+couvertureAlt: "Boule de pétanque en acier tenue en main, gravée au laser du logo d’une entreprise"
 tempsLecture: "6 min"
 pilier: false
 aRetenir:

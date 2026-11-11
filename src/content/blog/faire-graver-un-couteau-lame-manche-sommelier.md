@@ -6,8 +6,8 @@ chapo: "Un couteau n’est pas une surface, c’est un assemblage : une lame en 
 categorie: "guides-atelier"
 datePublication: 2026-11-10
 dateModification: 2026-11-10
-couverture: "couteaux-graves-appellations-vins-bourgogne.webp"
-couvertureAlt: "Couteaux gravés au nom d’appellations de Bourgogne"
+couverture: "couteau-sommelier-grave-prenom-coffret.webp"
+couvertureAlt: "Couteau de sommelier à manche en bois gravé au prénom, posé dans son coffret"
 tempsLecture: "7 min"
 pilier: false
 aRetenir:
