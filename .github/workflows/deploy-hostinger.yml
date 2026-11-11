@@ -24,7 +24,11 @@ permissions:
 jobs:
   deployer:
     name: Construire et téléverser
-    runs-on: ubuntu-latest
+    # « ubuntu-latest » est passé à l'image ubuntu-26.04 le 11/11/2026, dont la
+    # configuration des miroirs apt ne résout plus : l'installation de lftp y
+    # échoue systématiquement et bloque tout déploiement. L'image est donc
+    # épinglée à la précédente LTS, celle qui déployait jusqu'ici.
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Récupérer le dépôt
