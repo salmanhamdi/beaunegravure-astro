@@ -6,8 +6,8 @@ chapo: "Sur un tissu synthétique, le laser ne coupe pas vraiment : il fait fond
 categorie: "guides-atelier"
 datePublication: 2026-11-08
 dateModification: 2026-11-08
-couverture: "atelier-laser-uv-beaune-gravure-hero.jpg"
-couvertureAlt: "Poste de préparation de l’atelier, machine laser en fonctionnement"
+couverture: "equipement-trotec-speedy-400-print-and-cut.webp"
+couvertureAlt: "Trotec Speedy 400, la machine CO2 qui découpe le textile en scellant le bord"
 tempsLecture: "6 min"
 pilier: false
 aRetenir:

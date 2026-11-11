@@ -6,8 +6,8 @@ chapo: "Le prix d’une gravure laser dépend surtout du support, du temps de pr
 categorie: "guides-atelier"
 datePublication: 2026-06-08
 dateModification: 2026-07-09
-couverture: "gravure-laser-bois-corton-grand-cru-beaune-gravure.webp"
-couvertureAlt: "Planche de bois gravée au laser avec le nom d'un grand cru"
+couverture: "gravure-laser-plaques-vigneron-serie-atelier.webp"
+couvertureAlt: "Plaques de domaine viticole gravées en série dans la machine laser"
 tempsLecture: "2 min"
 pilier: false
 aRetenir:

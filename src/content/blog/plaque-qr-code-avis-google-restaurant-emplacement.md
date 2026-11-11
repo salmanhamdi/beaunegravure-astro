@@ -6,8 +6,8 @@ chapo: "Dans un restaurant, une plaque QR code avis Google fonctionne surtout si
 categorie: "plaques-signaletique"
 datePublication: 2026-06-29
 dateModification: 2026-07-09
-couverture: "plaque-professionnelle-avocat-exterieure-beaune-gravure.webp"
-couvertureAlt: "Plaque gravée destinée à un établissement recevant du public"
+couverture: "impression-uv-chevalet-nfc-avis-google-osteopathe.webp"
+couvertureAlt: "Chevalet de comptoir imprimé en couleur avec une puce NFC et un QR code, posé sur un bureau"
 tempsLecture: "2 min"
 pilier: false
 aRetenir:

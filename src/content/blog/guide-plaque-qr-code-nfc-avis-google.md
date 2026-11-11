@@ -6,8 +6,8 @@ chapo: "Le guide pour concevoir une plaque connectee utile : QR code, NFC, avis
 categorie: "plaques-signaletique"
 datePublication: 2026-02-20
 dateModification: 2026-07-09
-couverture: "plaque-professionnelle-avocat-exterieure-beaune-gravure.webp"
-couvertureAlt: "Plaque professionnelle gravée posée en façade"
+couverture: "plaque-nfc-menu-avis-google-spotitap.webp"
+couvertureAlt: "Plaque ronde NFC réunissant menu en ligne, avis Google et accès Wi-Fi, tenue dans une main"
 tempsLecture: "2 min"
 pilier: false
 aRetenir:
