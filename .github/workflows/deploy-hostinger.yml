@@ -98,9 +98,27 @@ jobs:
         # simplement le déploiement. lftp vient de l'archive Ubuntu : la mise à
         # jour des index peut échouer partiellement sans conséquence, alors que
         # l'installation, elle, reste bloquante.
+        #
+        # 11/11/2026 : deux déploiements de suite ont échoué sur un
+        # « Temporary failure resolving 'archive.ubuntu.com' » — une panne DNS
+        # du côté des runners, sans rapport avec le site. L'installation est
+        # donc retentée trois fois, en espaçant les essais.
         run: |
-          sudo apt-get update || echo 'Index apt partiellement indisponibles : on poursuit.'
-          sudo apt-get install -y lftp
+          set -uo pipefail
+          if command -v lftp >/dev/null 2>&1; then
+            echo "lftp déjà présent sur le runner."
+            exit 0
+          fi
+          for essai in 1 2 3; do
+            sudo apt-get update || echo 'Index apt partiellement indisponibles : on poursuit.'
+            if sudo apt-get install -y lftp; then
+              exit 0
+            fi
+            echo "Essai $essai échoué (archives Ubuntu injoignables). Nouvelle tentative dans $((essai * 20)) s."
+            sleep $((essai * 20))
+          done
+          echo "lftp reste introuvable après trois essais : archives Ubuntu injoignables." >&2
+          exit 1
 
       - name: Téléverser
         env:
