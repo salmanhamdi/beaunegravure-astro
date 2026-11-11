@@ -120,7 +120,21 @@ jobs:
             echo "Essai $essai échoué (archives Ubuntu injoignables). Nouvelle tentative dans $((essai * 20)) s."
             sleep $((essai * 20))
           done
-          echo "lftp reste introuvable après deux essais : archives Ubuntu injoignables." >&2
+
+          # Repli : Homebrew est préinstallé sur les runners et télécharge ses
+          # paquets depuis ghcr.io, pas depuis les archives Ubuntu. Quand ce
+          # sont ces dernières qui tombent — le cas du 11/11/2026 — cette
+          # voie reste ouverte et livre le même lftp. Le reste de l'étape de
+          # téléversement est inchangé : seule la provenance du binaire varie.
+          echo "Archives Ubuntu injoignables : tentative par Homebrew."
+          BREW="$(command -v brew || echo /home/linuxbrew/.linuxbrew/bin/brew)"
+          if [ -x "$BREW" ] && "$BREW" install lftp; then
+            echo "$(dirname "$("$BREW" --prefix lftp)/bin/lftp")" >> "$GITHUB_PATH"
+            "$("$BREW" --prefix lftp)/bin/lftp" --version | head -1
+            exit 0
+          fi
+
+          echo "lftp introuvable : ni les archives Ubuntu ni Homebrew ne répondent." >&2
           exit 1
 
       - name: Téléverser
