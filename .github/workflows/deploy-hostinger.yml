@@ -24,11 +24,7 @@ permissions:
 jobs:
   deployer:
     name: Construire et téléverser
-    # « ubuntu-latest » est passé à l'image ubuntu-26.04 le 11/11/2026, dont la
-    # configuration des miroirs apt ne résout plus : l'installation de lftp y
-    # échoue systématiquement et bloque tout déploiement. L'image est donc
-    # épinglée à la précédente LTS, celle qui déployait jusqu'ici.
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Récupérer le dépôt
@@ -103,17 +99,20 @@ jobs:
         # jour des index peut échouer partiellement sans conséquence, alors que
         # l'installation, elle, reste bloquante.
         #
-        # 11/11/2026 : deux déploiements de suite ont échoué sur un
-        # « Temporary failure resolving 'archive.ubuntu.com' » — une panne DNS
-        # du côté des runners, sans rapport avec le site. L'installation est
-        # donc retentée trois fois, en espaçant les essais.
+        # 11/11/2026 : quatre déploiements de suite ont échoué sur un
+        # « Temporary failure resolving 'archive.ubuntu.com' ». Les archives
+        # Ubuntu étaient injoignables depuis les runners, sur ubuntu-24.04
+        # comme sur ubuntu-26.04 : rien à voir avec l'image ni avec le site.
+        # Deux essais espacés suffisent à absorber un incident court ; au-delà,
+        # mieux vaut échouer vite et relancer plus tard qu'immobiliser le
+        # runner un quart d'heure.
         run: |
           set -uo pipefail
           if command -v lftp >/dev/null 2>&1; then
             echo "lftp déjà présent sur le runner."
             exit 0
           fi
-          for essai in 1 2 3; do
+          for essai in 1 2; do
             sudo apt-get update || echo 'Index apt partiellement indisponibles : on poursuit.'
             if sudo apt-get install -y lftp; then
               exit 0
@@ -121,7 +120,7 @@ jobs:
             echo "Essai $essai échoué (archives Ubuntu injoignables). Nouvelle tentative dans $((essai * 20)) s."
             sleep $((essai * 20))
           done
-          echo "lftp reste introuvable après trois essais : archives Ubuntu injoignables." >&2
+          echo "lftp reste introuvable après deux essais : archives Ubuntu injoignables." >&2
           exit 1
 
       - name: Téléverser
