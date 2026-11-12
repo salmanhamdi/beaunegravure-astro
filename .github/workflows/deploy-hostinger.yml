@@ -252,6 +252,21 @@ jobs:
           bye
           FTP
 
+      # Prévenir les moteurs doit se faire APRÈS le téléversement : sinon ils
+      # viennent lire l'ancienne version. Production uniquement — la
+      # préproduction est volontairement non indexable.
+      #
+      # La clef n'est pas un secret : le protocole exige qu'elle soit publiée
+      # en clair à la racine du site, dans « public/<clef>.txt ». C'est
+      # justement ce fichier public qui prouve que l'émetteur contrôle le
+      # domaine. La mettre dans un secret GitHub donnerait l'illusion d'une
+      # confidentialité qui n'existe pas.
+      - name: Prévenir les moteurs (IndexNow)
+        if: inputs.cible == 'production'
+        env:
+          INDEXNOW_KEY: 9da49715bd818c20db621e3741f6e7f6
+        run: node scripts/indexnow.mjs
+
       - name: Rappel
         run: |
           echo "Déploiement terminé sur ${{ inputs.cible }}."
