@@ -813,6 +813,19 @@ export const imagesRealisations: Record<string, ImageMetadata> = Object.fromEntr
   realisations.map((r) => [r.id, resoudre(r.fichier)]),
 );
 
+/**
+ * Textes alternatifs, indexés par identifiant de réalisation.
+ *
+ * Les bandes « matières » de l'accueil et de la page Savoir-faire affichaient
+ * ces photographies avec un « alt » vide : du point de vue d'un lecteur
+ * d'écran comme d'un moteur, l'image n'existait pas. Elles ne sont pourtant
+ * pas décoratives — ce sont de vraies pièces, et leur description est déjà
+ * écrite dans le catalogue. Cette table la rend accessible par identifiant.
+ */
+export const altsRealisations: Record<string, string> = Object.fromEntries(
+  realisations.map((r) => [r.id, r.alt]),
+);
+
 export function imageDe(realisation: Realisation): ImageMetadata {
   return imagesRealisations[realisation.id]!;
 }

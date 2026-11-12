@@ -79,6 +79,11 @@ const dimensions = (ratio: number, hauteur: number) => ({
       {/*
         Copie strictement visuelle : même source, donc aucune requête
         supplémentaire, et aucune duplication pour les technologies d'assistance.
+
+        Le « alt » reprend le nom du client bien que le ruban soit
+        « aria-hidden » : un lecteur d'écran ignore tout ce sous-arbre, le
+        texte n'y sera donc jamais annoncé deux fois. En revanche un « alt »
+        vide y était compté par Bing comme vingt-deux images non décrites.
       */}
       <ul class="clients__ruban" aria-hidden="true">
         {
@@ -86,7 +91,7 @@ const dimensions = (ratio: number, hauteur: number) => ({
             <li class="clients__item" style={`--clients-h: ${client.hauteur}`}>
               <img
                 src={`/logos/${client.fichier}`}
-                alt=""
+                alt={client.nom}
                 {...dimensions(client.ratio, client.hauteur)}
                 loading="eager"
                 fetchpriority="low"

@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '@layouts/Base.astro';
 import FilAriane from '@components/FilAriane.astro';
 import SectionDevis from '@components/SectionDevis.astro';
-import { imagesRealisations } from '@data/realisations';
+import { altsRealisations, imagesRealisations } from '@data/realisations';
 import { urlAbsolue } from '@utils/env';
 import { filAriane, graphe, organisation, pageWeb } from '@utils/schema';
 
@@ -55,7 +55,7 @@ const schema = graphe([
                 <div class="services__media">
                   <Picture
                     src={imagesRealisations[service.data.visuel]!}
-                    alt=""
+                    alt={altsRealisations[service.data.visuel]!}
                     widths={[400, 640, 900]}
                     sizes="(min-width: 68rem) 30vw, (min-width: 44rem) 46vw, 92vw"
                     loading={index < 2 ? 'eager' : 'lazy'}

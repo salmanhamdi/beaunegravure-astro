@@ -115,6 +115,15 @@ RedirectMatch 404 /api/\.data
     RewriteRule ^quisommesnous/?$ https://beaunegravure.fr/a-propos/ [R=301,L]
     RewriteRule ^matieres/?$ https://beaunegravure.fr/services/ [R=301,L]
 
+    # 12/11/2026 : ces deux anciennes pages Wix n'avaient aucune regle. Elles
+    # tombaient sur la regle de slash final, puis sur une 404 - Bing les
+    # connait encore et les proposait donc vers une erreur.
+    #   phototheque        : la galerie de l'ancien site.
+    #   envoyezvosfichiers : la page d'envoi de fichiers, dont le formulaire
+    #                        de contact a repris le role.
+    RewriteRule ^phototheque/?$ https://beaunegravure.fr/realisations/ [R=301,L]
+    RewriteRule ^envoyezvosfichiers/?$ https://beaunegravure.fr/contact/ [R=301,L]
+
     # Ajoute le slash final aux URL de pages, hors fichiers réels.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

@@ -6,7 +6,7 @@ import BandeauClients from '@components/BandeauClients.astro';
 import GrilleRealisations from '@components/GrilleRealisations.astro';
 import HeroScene from '@components/HeroScene.astro';
 import SectionDevis from '@components/SectionDevis.astro';
-import { imagesRealisations, parIds, realisations } from '@data/realisations';
+import { altsRealisations, imagesRealisations, parIds, realisations } from '@data/realisations';
 import { projets } from '@data/projets';
 import { adresse, reseaux, site, zones } from '@data/site';
 import { urlAbsolue } from '@utils/env';
@@ -280,7 +280,7 @@ const schema = graphe([
                 */}
                 <Picture
                   src={imagesRealisations[matiere.id]!}
-                  alt=""
+                  alt={altsRealisations[matiere.id]!}
                   width={560}
                   height={700}
                   fit="cover"
